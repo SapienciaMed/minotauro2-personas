@@ -1,0 +1,16 @@
+<div class="table-responsive">
+	<table class="table table-bordered table-condensed">
+	  <thead class="thcolor">
+		<tr>
+			<th width="15%"></th>
+			<th >Fecha</th>
+			<th >Correo Electronico</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personascorreos">
+		<% @persona.personascorreos.order('updated_at DESC, id DESC').each do |personascorreo| %>
+	       <%= render 'personascorreos/tr', personascorreo: personascorreo %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

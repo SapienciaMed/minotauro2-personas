@@ -1,0 +1,7 @@
+<% @planesrecaudos.includes([:personasobligacion,:user,:portafoliossucursal,:planesrecaudosdocs,:portafolioscuenta,:parorigenespago]).each do |planesrecaudo| %>
+  <legend>Recaudo del <%=h planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d") rescue nil %> 
+    <%= link_to veraplicacion_planesrecaudos_path(:id=>planesrecaudo.id), data: { toggle: 'tooltip' }, class: 'popup2', title: 'Ver información completa' do %>
+      <button class="btn btn-xs btn-info"><i class="fa fa-clone">Ver Aplicación</i></button>
+    <% end %>
+  </legend>
+<% end %>

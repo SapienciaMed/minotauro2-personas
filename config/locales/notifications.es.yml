@@ -1,0 +1,12 @@
+es:
+  notifications:
+    records:
+      create: Registro creado satisfactoriamente.
+      update: Registro modificado satisfactoriamente.
+      destroy: Registro eliminado satisfactoriamente.
+      unique: Ya se encuentra registrado.
+    errors:
+      restrict_dependent_exception: "No se pudo eliminar debido a una dependencia con %{record}"
+      company:
+        non_branch: debe tener al menos una Sede
+

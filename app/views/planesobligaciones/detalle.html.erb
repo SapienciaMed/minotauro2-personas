@@ -1,0 +1,56 @@
+<% title 'Plan de Pagos' %>
+<% isportafolio = is_portafolio.to_i %>
+<div class="box box-primary">
+  <%= render :partial => "/personasobligaciones/detalle" %>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#tab1" data-toggle="tab"> <i class="fa fa-file-text" ></i> <span></span> Detalle plan de pagos</a>
+        </li>
+        <% if [10140,10145,10146,10147,10148,10144,10141,10143,10016].include?(isportafolio) %>
+          <li>
+            <a href="#tab3" data-toggle="tab"> <i class="fa fa-server" ></i> <span></span> Detalle de Gastos</a>
+          </li>
+        <% end -%>
+      </ul>
+    <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+      <div class="tab-pane active" id="tab1">
+        <%= render :partial => "tabla" %>
+      </div>
+        <div class="tab-pane" id="tab3">
+          <div class="table-responsive">
+            <% if Personasprogasto.where(["personasobligacion_id = #{@personasobligacion.id}"]).exists? %>
+              <table class="table table-bordered table-condensed table-striped">
+                <tr class="thcolor">
+                  <th><div align="center" style='font-size: 12px;'>Tipo de Gasto</div></th>
+                  <th><div align="center" style='font-size: 12px;'>Valor Gasto</div></th>
+                  <th><div align="center" style='font-size: 12px;'>Fecha de Aprobación</div></th>
+                  <th><div align="left" style='font-size: 12px;'>Usuario</div></th>
+                  <th><div align="left" style='font-size: 12px;'>Ruc Emisor</div></th>
+                  <th><div align="center" style='font-size: 12px;'>Estudio</div></th>
+                  <th><div align="center" style='font-size: 12px;'>Detracción</div></th>
+                </tr>
+              <% for p in Personasprogasto.where(["personasobligacion_id = #{@personasobligacion.id}"]) %>
+                  <tr valign="middle">
+                    <td><div align="center" style='font-size: 12px;'><%= Portafoliosgasto.find(p.portafoliosgasto_id).descripcion + ' - ' + Portafoliosgasto.find(p.portafoliosgasto_id).tipo rescue nil%></div></td>
+                    <td><div align="center" style='font-size: 12px;'><strong><%=p.valor rescue nil%></strong> <%=is_simbolo(Personasobligacion.find(p.personasobligacion_id).simbolo) %></div></td>
+                    <td><div align="center" style='font-size: 12px;'><%=p.fecha_autolega.strftime('%Y-%m-%d') rescue nil%></div></td>
+                    <td><div align="left" style='font-size: 12px;'><%=User.find(p.user_autolega).nombre rescue nil%></div></td>
+                    <td><div align="left" style='font-size: 12px;'><%= Emisoresgasto.find(p.emisoresgasto_id).identificacion rescue nil %></div></td>
+                    <td><div align="center" style='font-size: 12px;'><strong><%= camponumerico(p.valor_estudio) rescue nil %></strong></div></td>
+                    <td><div align="center" style='font-size: 12px;'><strong><%= camponumerico(p.valor_detraccion) rescue nil %></strong></div></td>
+                  </tr>
+              <% end %>
+              </table>
+          <% else %>
+              <div class="alert alert-warning"><h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4>No hay datos</div>
+          <% end %>
+        </div>
+      </div>
+    </div> <!-- /tabbable -->
+  </div>
+</div>
+</div>

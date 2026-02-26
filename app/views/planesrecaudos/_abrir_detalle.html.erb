@@ -1,0 +1,63 @@
+<table width="100%">
+  <tr>
+    <td style="vertical-align: top;" width="47%">
+      <% if planesrecaudo.planesrecaudosdetalles.where("valor_aplicado > 0").exists? %>
+        <table class="table table-bordered table-condensed">
+          <thead>
+          <tr class="thcolor">
+            <th width="55%" style='font-size: 12px;'>Tipo</th>
+            <th class="text-right" style='font-size: 12px;' width="45%">Valor Aplicado</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% for planesrecaudosdetalle in planesrecaudo.planesrecaudosdetalles.where("valor_aplicado > 0").order('id asc') %>
+            <tr>
+              <td style='font-size: 12px;'><%= planesrecaudosdetalle.tipo %></td>
+              <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesrecaudosdetalle.valor_aplicado) rescue nil %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <th class="thcolor" style='font-size: 12px;'>Valor total del pago</th>
+            <th class="text-right" style='font-size: 12px;'><%= camponumerico(planesrecaudo.valor) rescue nil %></th>
+          </tr>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="alert alert-danger">Recaudo No Aplicado</div>
+      <% end %>
+    </td>
+    <td width="3%">&nbsp;</td>
+    <td style="vertical-align: top;" width="50%">
+      <table class="table table-bordered table-condensed">
+        <tr>
+          <th colspan="2" class="thcolor" style='font-size: 12px;'>Observación</th>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="text-red" align="justify" style='font-size: 12px;'><%= planesrecaudo.observaciones rescue nil %> &nbsp;<%= planesrecaudo.codcuenta_origen rescue nil %></div>
+          </td>
+        </tr>
+        <% if planesrecaudo.estado.to_s == 'ANULADO' %>
+          <tr>
+            <th colspan="2" class="thcolorred" style="text-align: center;"><strong>RECAUDO ANULADO</strong>
+            </th>
+          </tr>
+          <tr>
+            <th class="thcolorred" width="30%" style='font-size: 12px;'>Usuario</th>
+            <td width="70%" style='font-size: 12px;'><%= User.find(planesrecaudo.useranula_id).username rescue nil %></td>
+          </tr>
+          <tr>
+            <th class="thcolorred" style='font-size: 12px;'>Fecha Anulación</th>
+            <td style='font-size: 12px;'><%= planesrecaudo.updated_at.strftime("%Y-%m-%d %X") rescue nil %></td>
+          </tr>
+          <tr>
+            <th class="thcolorred" style='font-size: 12px;'>Observación</th>
+            <td style='font-size: 12px;'>
+              <div align="justify"><%= planesrecaudo.obser_anulacion.to_s rescue nil %></div>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,8 @@
+<% if ENV['NOMBRE_APLICACION'].to_s == 'EXPERIENCIA.CO' %>
+  <%= render 'users/registrations/experiencia' %>
+<% elsif ENV['NOMBRE_APLICACION'].to_s == 'VARDI' %>
+  <%= render 'users/registrations/vardi' %>
+<% else %>
+  <%= render 'users/registrations/teseo' %>
+<% end %>
+

@@ -1,0 +1,12 @@
+en:
+  notifications:
+    records:
+      create: Record created successfully.
+      update: Record successfully modified.
+      destroy: Record successfully removed.
+      unique: Already registered.
+    errors:
+      restrict_dependent_exception: "Could not be removed due to a dependency with %{record}"
+      company:
+        non_branch: debe tener al menos una Sede
+

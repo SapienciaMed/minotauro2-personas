@@ -1,0 +1,93 @@
+<%
+  #@personasobligacion = personasobligacion if personasobligacion.present? rescue nil
+  @planesrecaudos = Planesrecaudo.where("personasobligacion_id = #{@personasobligacion.id}").order(fecha_recaudo: :asc)
+%>
+  <div align="center">
+    <br/>
+    <table width="700" border="0">
+      <tr valign="top">
+        <td height="700">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <div align="justify" style="font-size: 12px; font-family: Tahoma;">
+                  Medellin, <%= namedate2(Time.now) %><br/><br/><br/>
+                  Señor(a):<br/>
+                  <strong><%= @personasobligacion.persona.nombre_completo rescue nil %></strong><br/>
+                  <%= @personasobligacion.persona.tiposdocumento.codigo rescue nil %> <%= @personasobligacion.persona.identificacion rescue nil %>
+                </div>
+                <br/>
+                <div align="center" style="font-size: 16px; font-family: Tahoma;"><b>ESTADO DE CUENTA</b></div>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <table width="100%" border="0" class="no-split-table">
+            <thead>
+            <tr style="background: #adadad">
+              <th width="10%"  style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Fecha Deposito</div></th>
+              <th width="15%"  style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Valor Recaudo</div></th>
+              <th width="25%"  style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tipo Pago</div></th>
+              <th width="40%"  style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Detalle Aplicación</div></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% for p in @planesrecaudos %>
+              <tr style="page-break-inside: avoid;">   <!-- ← solo este style extra -->
+                <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%= p.fecha_recaudo.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">$ <%= camponumerico_nologin p.valor rescue 0 %></div></td>
+                <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%= p.tipo_pago rescue nil %></div></td>
+                <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;">
+                  <div align="left">
+                    <table width="100%" border="0">
+                      <% for planesrecaudosdetalle in p.planesrecaudosdetalles.all.where("valor_aplicado > 0").order('id asc') %>
+                        <tr style="page-break-inside: avoid;">   <!-- ← también aquí -->
+                          <td width="70%" style="border:1px solid #EDEDED; font-size: 9px; font-family: Tahoma;">
+                            <%= planesrecaudosdetalle.tipo %>
+                          </td>
+                          <td style="border:1px solid #EDEDED; font-size: 9px; font-family: Tahoma;" class="text-right">
+                            $ <%= camponumerico_nologin(planesrecaudosdetalle.valor_aplicado) rescue nil %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+
+          <style>
+              /* === SOLUCIÓN DEFINITIVA PARA QUE LAS FILAS NO SE CORTEN EN PDF === */
+              table {
+                  page-break-inside: auto;
+              }
+
+              tr {
+                  page-break-inside: avoid !important;   /* ← LO MÁS IMPORTANTE */
+                  page-break-after: auto;
+              }
+
+              thead {
+                  display: table-header-group;   /* Repite el encabezado en cada página */
+              }
+
+              tbody {
+                  page-break-inside: avoid;
+              }
+
+              /* Para que las tablas anidadas (los detalles) tampoco se corten */
+              table table tr {
+                  page-break-inside: avoid !important;
+              }
+          </style>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+
+

@@ -1,0 +1,34 @@
+$("#personasimagen_form").html("<%= j render 'form' %>");
+$(".tooltip").tooltip("hide");
+$('[data-toggle="tooltip"]').tooltip();
+$("#personasimagen_form").collapse("show");
+$(".select2").select2();
+
+$(document).ready(function(){
+  $("#newimage").click(function(){
+    $("#formimg").append("ew");
+  });
+});
+
+
+// PARA CARGUE ARRASTRANDO ARCHIVOS - DOCUMENTOS
+var $fileInput = $('.file_input');
+var $droparea = $('.file_droparea');
+
+$fileInput.on('dragenter focus click', function () {
+    $droparea.addClass('is-active');
+});
+
+$fileInput.on('dragleave blur drop', function () {
+    $droparea.removeClass('is-active');
+});
+
+$fileInput.on('change', function () {
+    var filesCount = $(this)[0].files.length;
+    var $textContainer = $(this).prev('.js-set-number');
+    if (filesCount === 1) {
+        $textContainer.text($(this).val().split('\\').pop());
+    } else {
+        $textContainer.text(filesCount + ' uploaded files');
+    }
+});

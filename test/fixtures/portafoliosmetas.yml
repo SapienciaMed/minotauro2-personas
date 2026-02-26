@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  portafolio: one
+  valor: 9.99
+  mes: MyString
+  anno: MyString
+  user: one
+
+two:
+  portafolio: two
+  valor: 9.99
+  mes: MyString
+  anno: MyString
+  user: two

@@ -1,0 +1,312 @@
+<div id="wrapper">
+  <div id="right">
+    <div id="showcase">
+      <div class="showcase-content"></div>
+    </div>
+  </div>
+  <div id="left">
+    <div id="signin">
+      <div class="logo" align="center">
+        <img src="http://www.sygma-tech.co/wp-content/uploads/2017/10/logo-slide.png" alt="Sluralpright"/>
+        <h3 style="color: #000; text-align: center">Por Favor selecciona los Datos correctos</h3>
+      </div>
+      <div class="box-body text-center" style="margin-top: -34px;">
+        <%= form_tag recaptcha_session_two_factor_index_path, :method => 'get' do %>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <small style="color: red;"><%= flash[:recaptcha_error]%></small>
+            <%= recaptcha_tags %>
+          </div>
+          <div class="row">
+            <div class="col-md-12" align="center">
+
+              <%= submit_tag 'Ingresar', class: 'btn btn-primary', style: 'background-color: #00205B;
+        height: 40px;
+        border-color: #00205B;
+        color: white;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <footer id="main-footer">
+      <p>Copyright © 2022 Sygma Tech S.A.S | Todos los derechos reservados.</p>
+    </footer>
+  </div>
+</div>
+
+
+<style>
+
+    .alert_remove {
+        font-size: 14px;
+    }
+
+    .callout_message-danger {
+        width: 20%;
+        background-color: red;
+        height: 40px;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        bottom: 10px;
+        position: absolute;
+        right: 75%;
+    }
+
+    .callout_message-success {
+        width: 100%;
+        background-color: green;
+        height: 40px;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        bottom: 10px;
+        position: absolute;
+        right: 75%;
+    }
+
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        background: #fff;
+        color: #fff;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: 300;
+    }
+
+    #wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #left {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    #right {
+        flex: 1;
+    }
+
+    /* Sign In */
+    #signin {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        padding-bottom: 1rem;
+    }
+
+    #signin form {
+        width: 80%;
+        padding-bottom: 1.8rem;
+    }
+
+    #signin .logo {
+        margin-bottom: 3vh;
+    }
+
+    #signin .logo img {
+        width: 300px;
+    }
+
+    #signin label {
+        font-size: 0.9rem;
+        line-height: 2rem;
+        font-weight: 500;
+        color: #000;
+    }
+
+    #signin .text-input {
+        margin-bottom: 1.3rem;
+        width: 100%;
+        border-radius: 2px;
+        background: #f1f1f1;
+        border: 1px solid #555;
+        color: #000;
+        padding: 0.5rem 1rem;
+        line-height: 1.3rem;
+    }
+
+    #signin .primary-btn {
+        width: 100%;
+    }
+
+    #signin .secondary-btn,
+    .or,
+    .links {
+        width: 60%;
+    }
+
+    #signin .links a {
+        display: block;
+        color: #000000;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    #signin .or {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1.2rem;
+        align-items: center;
+    }
+
+    #signin .or .bar {
+        flex: auto;
+        border: none;
+        height: 1px;
+        background: #aaa;
+    }
+
+    #signin .or span {
+        color: #ccc;
+        padding: 0 0.8rem;
+    }
+
+    /* Showcase */
+    #showcase {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('https://www.eafit.edu.co/vivirenmedellin/sobre-medellin/PublishingImages/Vivir%20en%20MEDELLIN%202.jpg') no-repeat center center / cover;
+        height: 100vh;
+        text-align: center;
+    }
+
+    #showcase .showcase-text {
+        font-size: 3rem;
+        width: 100%;
+        color: #fff;
+        margin-bottom: 1.5rem;
+    }
+
+    #showcase .secondary-btn {
+        width: 60%;
+        margin: auto;
+    }
+
+    /* Footer */
+    #main-footer {
+        color: #C8C8C8;
+        text-align: center;
+        font-size: 0.8rem;
+        max-width: 80%;
+        padding-top: 5rem;
+    }
+
+    /* Button */
+    .primary-btn {
+        padding: 0.7rem 1rem;
+        height: 2.7rem;
+        display: block;
+        border: 0;
+        border-radius: 2px;
+        font-weight: 500;
+        background: #20447d;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.5s;
+    }
+
+    .primary-btn:hover {
+        background-color: #476CA6;
+    }
+
+    .secondary-btn {
+        padding: 0.7rem 1rem;
+        height: 2.7rem;
+        display: block;
+        border: 1px solid #f4f4f4;
+        border-radius: 2px;
+        font-weight: 500;
+        background: none;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.5s;
+    }
+
+    .secondary-btn:hover {
+        border-color: #ff7b39;
+        color: #ff7b39;
+    }
+
+    /* Media Queries */
+    @media (min-width: 1200px) {
+        #left {
+            flex: 4;
+        }
+
+        #right {
+            flex: 6;
+        }
+    }
+
+    @media (max-width: 768px) {
+        body {
+            overflow: auto;
+        }
+
+        #right {
+            display: none;
+        }
+
+        #left {
+            justify-content: start;
+            margin-top: 4vh;
+        }
+
+        #signin .logo {
+            margin-bottom: 2vh;
+        }
+
+        #signin .text-input {
+            margin-bottom: 0.7rem;
+        }
+
+        #main-footer {
+            padding-top: 1rem;
+        }
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sapiencia</title>
+  <%= csrf_meta_tags %>
+
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+
+<body>
+<%= yield %>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
+    @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
+
+    .error-container {
+        text-align: center;
+        font-size: 150px;
+        font-family: 'Catamaran', sans-serif;
+        font-weight: 800;
+        margin: 0px 0px;
+    }
+
+    .error-container > span {
+        display: inline-block;
+        line-height: 0.7;
+        position: relative;
+        color: #FFB485;
+    }
+
+    .error-container > span {
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+    }
+
+    .error-container > span:nth-of-type(1) {
+        color: #20447d;
+        animation: colordancing 4s infinite;
+    }
+
+    .error-container > span:nth-of-type(3) {
+        color: #BBBBBB;
+        animation: colordancing2 4s infinite;
+    }
+
+    .error-container > span:nth-of-type(2) {
+        width: 120px;
+        height: 120px;
+        border-radius: 999px;
+    }
+
+    .error-container > span:nth-of-type(2):before,
+    .error-container > span:nth-of-type(2):after {
+        border-radius: 0%;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: inherit;
+        height: inherit;
+        border-radius: 999px;
+        box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+        inset 0 30px 0 rgba(174, 197, 207, 0.4),
+        inset -30px 0 0 rgba(200, 200, 200, 0.4),
+        inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        animation: shadowsdancing 4s infinite;
+    }
+
+    .error-container > span:nth-of-type(2):before {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .screen-reader-text {
+        position: absolute;
+        top: -9999em;
+        left: -9999em;
+    }
+
+    @keyframes shadowsdancing {
+        0% {
+            box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+            inset 0 30px 0 rgba(174, 197, 207, 0.4),
+            inset -30px 0 0 rgba(200, 200, 200, 0.4),
+            inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        }
+        25% {
+            box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+            inset 0 30px 0 rgba(174, 197, 207, 0.4),
+            inset -30px 0 0 rgba(200, 200, 200, 0.4),
+            inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        }
+        50% {
+            box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+            inset 0 30px 0 rgba(174, 197, 207, 0.4),
+            inset -30px 0 0 rgba(200, 200, 200, 0.4),
+            inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        }
+        75% {
+            box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+            inset 0 30px 0 rgba(174, 197, 207, 0.4),
+            inset -30px 0 0 rgba(200, 200, 200, 0.4),
+            inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        }
+        100% {
+            box-shadow: inset 30px 0 0 rgba(32, 68, 125, 0.4),
+            inset 0 30px 0 rgba(174, 197, 207, 0.4),
+            inset -30px 0 0 rgba(200, 200, 200, 0.4),
+            inset 0 -30px 0 rgba(50, 50, 50, 0.4);
+        }
+    }
+
+    @keyframes colordancing {
+        0% {
+            color: #20447d;
+        }
+        25% {
+            color: #BBBBBB;
+        }
+        50% {
+            color: #5A5A5A;
+        }
+        75% {
+            color: #4B61B3;
+        }
+        100% {
+            color: #20447d;
+        }
+    }
+
+    @keyframes colordancing2 {
+        0% {
+            color: #5A5A5A;
+        }
+        25% {
+            color: #4B61B3;
+        }
+        50% {
+            color: #20447d;
+        }
+        75% {
+            color: #BBBBBB;
+        }
+        100% {
+            color: #5A5A5A;
+        }
+    }
+
+    /* demo stuff */
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    body {
+        margin-bottom: 50px;
+    }
+
+    html, button, input, select, textarea {
+        font-family: 'Montserrat', Helvetica, sans-serif;
+        color: #92a4ad;
+    }
+
+    h1 {
+        text-align: center;
+        margin: 30px 15px;
+    }
+
+    .zoom-area {
+        max-width: 490px;
+        margin: 30px auto 30px;
+        font-size: 19px;
+        text-align: center;
+    }
+
+    .link-container {
+        text-align: center;
+    }
+
+    a.more-link {
+        text-transform: uppercase;
+        font-size: 13px;
+        background-color: #20447d;
+        padding: 10px 15px;
+        border-radius: 0;
+        color: #fff;
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        line-height: 1.5;
+        text-decoration: none;
+        margin-top: 50px;
+        letter-spacing: 1px;
+        border-radius: 10px;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<div class="table-responsive">
+
+	<table class="table table-bordered table-condensed table-striped">
+	  <thead>
+	    <tr class="thcolor">
+			<th width="15%"></th>
+			<th class="text-center" width="13%" style="font-size: 12px;">Fecha Recaudo</th>
+			<th class="text-right" width="14%" style="font-size: 12px;">Valor Total</th>
+			<th class="text-center" width="15%" style="font-size: 12px;">Tipo Pago</th>
+			<th class="text-center" width="15%" style="font-size: 12px;">Tipo Afectacion</th>
+			<th class="text-center" width="28%" style="font-size: 12px;">Transacción realizada por</th>
+	    </tr>
+	  </thead>
+	  <tbody id="tbody_planesrecaudos">
+<%    @i = 0
+      @ii = 0
+      @idrecaudoult_teseo = 0
+
+      usr = current_user
+      isadmin = usr.id
+
+		cadper = Userspermiso.joins(:objeto).select("objetos.descripcion").where(["userspermisos.user_id = ? and objetos.descripcion in ('detallerecaudo','planesrecaudosdocs','cambiotipopago','reversionavanzada','recaudos_noaplica') and userspermisos.crea = 'S'", isadmin]).map(&:descripcion)
+
+		@auth_detallerecaudo = cadper.include?('detallerecaudo') ? true : false
+		@auth_planesrecaudosdocs = cadper.include?('planesrecaudosdocs') ? true : false
+		@auth_cambiotipopago = cadper.include?('cambiotipopago') ? true : false
+		@auth_reversionavanzada = cadper.include?('reversionavanzada') ? true : false
+		@auth_recaudosnoaplica = cadper.include?('recaudos_noaplica') ? true : false
+
+		@auth_personasrecaudo = is_auth_e("personasrecaudo")
+
+        @vcExisteReestruct = Personasoblcambio.where(personasobligacion_id: @personasobligacion.id, estado: 'APROBADO').exists?
+	    @planesrecaudos.each do |planesrecaudo|
+        @ii = @ii + 1
+		  if planesrecaudo.estado.to_s != 'ANULADO'
+	      	@i = @i + 1
+	      end
+		  if planesrecaudo.existeresp.to_s == 'X'
+	        @idrecaudoult_teseo = planesrecaudo.id
+	      end
+%>
+	       <%= render '/planesrecaudos/tr', planesrecaudo:planesrecaudo %>
+<%    end %>
+	  </tbody>
+	</table>
+</div>

@@ -1,0 +1,297 @@
+<%
+  isportafolio = is_portafolio
+%>
+<div align="center">
+<table width="700" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th style="font-size: 10px; font-family: Tahoma;"><div align="left">
+        <% if isportafolio == 10000 %>
+          <%=image_tag("logomundial_mini.png")%>
+        <% elsif [10018,10118].include?(isportafolio) %>
+          <%=image_tag("credito2.png", size: '130x40')%>
+        <% elsif isportafolio == 10008 %>
+          <%=image_tag("soluciones_mini2.png")%>
+        <% end %></div></th>
+      <th style="font-size: 13px; font-family: Tahoma;"><div align="center"><strong>RECIBO DE PAGO
+      <% if @planesrecaudo.estado.to_s == 'ANULADO' %> (ANULADO)<% end %>
+      <br/>No. <%=@planesrecaudo.consecutivo rescue 0%></strong></div></th>
+    </tr>
+  </table><br/>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Cliente</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Identificación</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Nro. Credito</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.personasobligacion.persona.nombres rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.persona.identificacion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.nro_obligacion rescue nil %></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Originador</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Analista</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=Portafoliossucursal.find(User.find(@planesrecaudo.userasesor_id).portafoliossucursal_id).descripcion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%= Cliente.find(@planesrecaudo.personasobligacion.cliente).nombre rescue nil %>
+      </div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=User.find(@planesrecaudo.userasesor_id).nombre rescue nil %></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th width="12%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Fecha de Pago</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Tipo de Pago</div></th>
+      <th width="13%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Canal</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Entidad</div></th>
+      <th width="35%" colspan="2" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina Recaudo</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d") rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.tipo_pago rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.canal rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.entidad rescue nil%></div></td>
+      <td colspan="2" style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=Portafoliossucursal.find(@planesrecaudo.portafoliossucursal_id).descripcion rescue nil%></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor al credito</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Honorarios</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Iva</div></th>
+      <th colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor total pagado</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor_honorarios.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.honorarios_iva.to_i) rescue 0%></div></td>
+      <td colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valortotal.to_i) rescue 0%> (<%=numero_a_palabras(@planesrecaudo.valortotal.to_i) rescue nil%> DE PESOS ML.)</div></td>
+    </tr>
+    <tr class="odd1">
+      <th colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Observaciones</div></th>
+    </tr>
+    <tr>
+      <td colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="justify"><%=@planesrecaudo.observaciones rescue nil%></div></td>
+    </tr>
+  </table>
+  <div style="font-size: 7px; font-family: Tahoma;">Este recibo no es válido sin la firma y sello del cajero. La empresa no se responsabiliza por pagos con recibos no autorizados. Si el pago es en cheque ó tarjeta de crédito, este se aplicará una vez se haga efectivo.</div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="14%" height="20" style="font-size: 9px; font-family: Tahoma;"><div align="left">Firma Cliente:</div></th>
+      <th width="30%" style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+      <th width="56%" rowspan="3" style="font-size: 9px; font-family: Tahoma;"><div align="center"><br/>___________________________________________<br/>Firma y Sello CAJA
+      </div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Dirección:</div></th>
+      <th style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Teléfono:</div></th>
+      <th style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+  </table>
+  <div style="font-size: 8px; font-family: Tahoma;">FC-<%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d %X") rescue nil%> - TESEO - <%=Time.now().strftime("%Y-%m-%d %H:%M:%S")%> - <%=is_usuario%></div>
+  <div style="font-size: 9px; font-family: Tahoma;" align="center"> - CLIENTE -</div>
+    </td>
+  </tr>
+</table>
+<hr style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;" noshade/>
+<table width="700" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th style="font-size: 10px; font-family: Tahoma;"><div align="left">
+        <% if isportafolio == 10000 %>
+          <%=image_tag("logomundial_mini.png")%>
+        <% elsif [10018,10118].include?(isportafolio) %>
+          <%=image_tag("credito2.png", size: '130x40')%>
+        <% elsif isportafolio == 10008 %>
+          <%=image_tag("soluciones_mini2.png")%>
+        <% end %></div></th>
+      <th style="font-size: 13px; font-family: Tahoma;"><div align="center"><strong>RECIBO DE PAGO<% if @planesrecaudo.estado.to_s == 'ANULADO' %> (ANULADO)<% end %><br/>No. <%=@planesrecaudo.consecutivo rescue 0%></strong></div></th>
+    </tr>
+  </table>
+  <br/>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Cliente</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Identificación</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Nro. Credito</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.personasobligacion.persona.nombres rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.persona.identificacion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.nro_obligacion rescue nil %></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Originador</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Analista</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=Portafoliossucursal.find(User.find(@planesrecaudo.userasesor_id).portafoliossucursal_id).descripcion rescue nil %></div></td>
+       <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%= Cliente.find(@planesrecaudo.personasobligacion.cliente).nombre rescue nil %>
+      </div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=User.find(@planesrecaudo.userasesor_id).nombre rescue nil %></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th width="12%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Fecha de Pago</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Tipo de Pago</div></th>
+      <th width="13%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Canal</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Entidad</div></th>
+      <th width="35%" colspan="2" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina Recaudo</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d") rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.tipo_pago rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.canal rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.entidad rescue nil%></div></td>
+      <td colspan="2" style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=Portafoliossucursal.find(@planesrecaudo.portafoliossucursal_id).descripcion rescue nil%></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor al credito</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Honorarios</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Iva</div></th>
+      <th colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor total pagado</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor_honorarios.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.honorarios_iva.to_i) rescue 0%></div></td>
+      <td colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valortotal.to_i) rescue 0%> (<%=numero_a_palabras(@planesrecaudo.valortotal.to_i) rescue nil%> DE PESOS ML.)</div></td>
+    </tr>
+    <tr class="odd1">
+      <th colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Observaciones</div></th>
+    </tr>
+    <tr>
+      <td colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="justify"><%=@planesrecaudo.observaciones rescue nil%></div></td>
+    </tr>
+  </table>
+  <div style="font-size: 7px; font-family: Tahoma;">Este recibo no es válido sin la firma y sello del cajero. La empresa no se responsabiliza por pagos con recibos no autorizados. Si el pago es en cheque ó tarjeta de crédito, este se aplicará una vez se haga efectivo.</div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="14%" height="20" style="font-size: 9px; font-family: Tahoma;"><div align="left">Firma Cliente:</div></th>
+      <th width="30%" style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+      <th width="56%" rowspan="3" style="font-size: 9px; font-family: Tahoma;"><div align="center"><br/>___________________________________________<br/>Firma y Sello CAJA
+      </div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Dirección:</div></th>
+      <th style="font-size: 10px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Teléfono:</div></th>
+      <th style="font-size: 10px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+  </table>
+  <div style="font-size: 6px; font-family: Tahoma;">FC-<%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d %X") rescue nil%> - TESEO - <%=Time.now().strftime("%Y-%m-%d %H:%M:%S")%> - <%=is_usuario%></div>
+  <div style="font-size: 9px; font-family: Tahoma;" align="center"> - CONTABILIDAD -</div>
+    </td>
+  </tr>
+</table>
+<hr style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;" noshade/>
+<table width="700" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th style="font-size: 10px; font-family: Tahoma;"><div align="left">
+        <% if isportafolio == 10000 %>
+          <%=image_tag("logomundial_mini.png")%>
+        <% elsif [10018,10118].include?(isportafolio) %>
+          <%=image_tag("credito2.png", size: '130x40')%>
+        <% elsif isportafolio == 10008 %>
+          <%=image_tag("soluciones_mini2.png")%>
+        <% end %></div></th>
+      <th style="font-size: 13px; font-family: Tahoma;"><div align="center"><strong>RECIBO DE PAGO<% if @planesrecaudo.estado.to_s == 'ANULADO' %> (ANULADO)<% end %><br/>No. <%=@planesrecaudo.consecutivo rescue 0%></strong></div></th>
+    </tr>
+  </table>
+<br/>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Cliente</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Identificación</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Nro. Credito</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.personasobligacion.persona.nombres rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.persona.identificacion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=@planesrecaudo.personasobligacion.nro_obligacion rescue nil %></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Originador</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center">Analista</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">
+      <%=Portafoliossucursal.find(User.find(@planesrecaudo.userasesor_id).portafoliossucursal_id).descripcion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%= Cliente.find(@planesrecaudo.personasobligacion.cliente).nombre rescue nil %>
+      </div></td>
+      <td colspan="2" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="center"><%=User.find(@planesrecaudo.userasesor_id).nombre rescue nil %></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th width="12%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Fecha de Pago</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Tipo de Pago</div></th>
+      <th width="13%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Canal</div></th>
+      <th width="15%" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Entidad</div></th>
+      <th width="35%" colspan="2" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Oficina Recaudo</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d") rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.tipo_pago rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.canal rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=@planesrecaudo.entidad rescue nil%></div></td>
+      <td colspan="2" style="border:1px solid #CCCCCC; font-size: 9px; font-family: Tahoma;"><div align="left"><%=Portafoliossucursal.find(@planesrecaudo.portafoliossucursal_id).descripcion rescue nil%></div></td>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor al credito</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Honorarios</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor Iva</div></th>
+      <th colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Valor total pagado</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valor_honorarios.to_i) rescue 0%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.honorarios_iva.to_i) rescue 0%></div></td>
+      <td colspan="3" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left"><%=camponumerico(@planesrecaudo.valortotal.to_i) rescue 0%> (<%=numero_a_palabras(@planesrecaudo.valortotal.to_i) rescue nil%> DE PESOS ML.)</div></td>
+    </tr>
+    <tr class="odd1">
+      <th colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="left">Observaciones</div></th>
+    </tr>
+    <tr>
+      <td colspan="6" style="border:1px solid #CCCCCC; font-size: 10px; font-family: Tahoma;"><div align="justify"><%=@planesrecaudo.observaciones rescue nil%></div></td>
+    </tr>
+  </table>
+  <div style="font-size: 6px; font-family: Tahoma;">Este recibo no es válido sin la firma y sello del cajero. La empresa no se responsabiliza por pagos con recibos no autorizados. Si el pago es en cheque ó tarjeta de crédito, este se aplicará una vez se haga efectivo.</div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="14%" height="20" style="font-size: 9px; font-family: Tahoma;"><div align="left">Firma Cliente:</div></th>
+      <th width="30%" style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+      <th width="56%" rowspan="3" style="font-size: 9px; font-family: Tahoma;"><div align="center"><br/>___________________________________________<br/>Firma y Sello CAJA
+      </div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Dirección:</div></th>
+      <th style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+    <tr>
+      <th height="10" style="font-size: 9px; font-family: Tahoma;"><div align="left">Teléfono:</div></th>
+      <th style="font-size: 9px; font-family: Tahoma;"><div align="left">________________________________________________</div></th>
+    </tr>
+  </table>
+  <div style="font-size: 6px; font-family: Tahoma;">FC-<%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d %X") rescue nil%> - TESEO - <%=Time.now().strftime("%Y-%m-%d %H:%M:%S")%> - <%=is_usuario%></div>
+  <div style="font-size: 9px; font-family: Tahoma;" align="center"> - OFICINA -</div>
+    </td>
+  </tr>
+</table>
+</div>

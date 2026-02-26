@@ -1,0 +1,11 @@
+<% if @active_record.present? %>
+	$("#personascorreo_<%= @active_record.id %>").replaceWith("<%= j render 'tr', personascorreo: @active_record %>");
+<% end %>
+$("#personascorreo_form").html("<%= j render 'personascorreos_form' %>");
+$(".datetimepicker").datetimepicker({
+	showClear: true
+});
+$(".tooltip").tooltip("hide");
+$('[data-toggle="tooltip"]').tooltip();
+$("#personascorreo_form").collapse("show");
+$(".select2").select2();

@@ -1,0 +1,57 @@
+<%= form_for(infgruposcampo) do |f| %>
+  <% if infgruposcampo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(infgruposcampo.errors.count, "error") %> prohibited this infgruposcampo from being saved:</h2>
+
+      <ul>
+      <% infgruposcampo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :infgrupo_id %>
+    <%= f.text_field :infgrupo_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :orden %>
+    <%= f.number_field :orden %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nombre %>
+    <%= f.text_field :nombre %>
+  </div>
+
+  <div class="field">
+    <%= f.label :campo %>
+    <%= f.text_field :campo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estilo %>
+    <%= f.text_field :estilo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo %>
+    <%= f.text_field :tipo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tamano %>
+    <%= f.text_field :tamano %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estilo_encabezado %>
+    <%= f.text_field :estilo_encabezado %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

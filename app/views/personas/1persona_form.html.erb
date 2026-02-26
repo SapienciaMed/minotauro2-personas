@@ -1,0 +1,198 @@
+<% dato = permiso("cartera", "A").to_s %>
+<% judi = permiso("judicial", "A").to_s %>
+<% actresol = permiso("actresolucion", "A").to_s %>
+
+<% if @empleado.etapa.to_s == "1" %>
+  <%= render "form" %>
+<% else %>
+
+
+<div class="page-header"><h3>Información
+  <% unless @persona.new_record? %>(<%= @persona.autobuscar rescue nil %>)
+  <% end %> <%= link_to 'Regresar', personas_path, :class => "btn btn-success" %></h3></div>
+<% unless @persona.new_record? %>
+  <div class="btn-group">
+    <%= link_to "Demográficos", edit_persona_path(:id => @persona.id, :etapa => "A"), :class => "#{@persona.d_etapa('A')}" %>
+    <% if dato.to_s == 'S' %>
+      <%= link_to "Juridica PAC", edit_persona_path(:id => @persona.id, :etapa => "G"), :class => "#{@persona.d_etapa('G')}" %>
+      <%= link_to "Garantias", edit_persona_path(:id => @persona.id, :etapa => "B"), :class => "#{@persona.d_etapa('B')}" %>
+      <%= link_to "Academico", edit_persona_path(:id => @persona.id, :etapa => "C"), :class => "#{@persona.d_etapa('C')}" %>
+      <%= link_to "Giros", edit_persona_path(:id => @persona.id, :etapa => "D"), :class => "#{@persona.d_etapa('D')}" %>
+      <%= link_to "Liquidacion PAC", edit_persona_path(:id => @persona.id, :etapa => "E"), :class => "#{@persona.d_etapa('E')}" %>
+      <%= link_to "Credito", edit_persona_path(:id => @persona.id, :etapa => "F"), :class => "#{@persona.d_etapa('F')}" %>
+      <%= link_to "Gestion Cobro", edit_persona_path(:id => @persona.id, :etapa => "J"), :class => "#{@persona.d_etapa('J')}" %>
+      <% if judi.to_s == 'S' %>
+        <%= link_to "Cobranza juridica", edit_persona_path(:id => @persona.id, :etapa => "H"), :class => "#{@persona.d_etapa('H')}" %>
+      <% end %>
+      <%= link_to "Digital", edit_persona_path(:id => @persona.id, :etapa => "I"), :class => "#{@persona.d_etapa('I')}" %>
+    <% else %>
+      <%= link_to "Juridica PAC", edit_persona_path(:id => @persona.id, :etapa => "G"), :class => "#{@persona.d_etapa('G')}" %>
+      <%= link_to "Academico", edit_persona_path(:id => @persona.id, :etapa => "C"), :class => "#{@persona.d_etapa('C')}" %>
+      <%= link_to "Giros", edit_persona_path(:id => @persona.id, :etapa => "D"), :class => "#{@persona.d_etapa('D')}" %>
+      <%= link_to "Digital", edit_persona_path(:id => @persona.id, :etapa => "I"), :class => "#{@persona.d_etapa('I')}" %>
+    <% end %>
+  </div>
+<% end %>
+<% if @persona.etapa.to_s == 'A' %>
+  <% form_for(@persona) do |f| %>
+    <br/>
+    <legend>Datos básicos de la persona</legend>
+      <% tipo_prejuridico = @persona.personasimagenes.all(:conditions => ["tipo = ?", 'COBRO PREJURIDICO']) %>
+      <% unless tipo_prejuridico.blank? %>
+        <% prejuridico = @persona.personasimagenes.all(:conditions => ["descripcion = ?", 'COBRO PREJURIDICO BENEFICIARIO']) %>
+        <% juridico = @persona.personasimagenes.all(:conditions => ["descripcion = ?", 'ALISTAMIENTO']) %>
+        <% if juridico.blank? && !prejuridico.blank? %>
+          <div class="alert alert-success">Persona en proceso de cobro <strong>prejurídico</strong></div>
+        <% else %>
+          <div class="alert alert-danger">Persona en proceso de cobro <strong>jurídico</strong></div>
+        <% end %>
+      <% end %>
+      <% if @persona.observacion_creacion.to_s != "" %>
+        <div class="alert alert-danger">Inconsistencia en el proceso de pagos "<%=@persona.observacion_creacion.to_s rescue nil %></div>
+      <% end %>
+        <table width="100%">
+          <tr>
+            <th width="20%" height="30"><div align="left">Tipo de Documento *</div></th>
+            <th width="27%"><div align="left">Identificaci&oacute;n *</div></th>
+            <th width="27%"><div align="left">Primer Nombre *</div></th>
+            <th width="26%"><div align="left">Segundo Nombre *</div></th>
+          </tr>
+          <tr>
+            <td height="30"><%= select(:persona, :tipodocumento, select_tipodoc, {:include_blank => true}, {:style => "width:150px"}) %>
+              <%= error_message_on :persona, :tipodocumento, :css_class => "cerror" %>
+            </td>
+            <td><%= f.text_field :identificacion, {:class => "span3"} %>
+              <%= error_message_on :persona, :identificacion, :css_class => "cerror" %>
+            </td>
+            <td><%= f.text_field :primer_nombre, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :primer_nombre, :css_class => "cerror" %></td>
+            <td><%= f.text_field :segundo_nombre, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :segundo_nombre, :css_class => "cerror" %></td>
+          </tr>
+        </table>
+        <table width="100%">
+          <tr>
+            <th width="25%" height="30"><div align="left">Primer Apellido *</div></th>
+            <th width="25%"><div align="left">Segundo Apellido *</div></th>
+            <th width="25%"><div align="left">Radicado Beneficiario</div></th>
+            <th width="25%"><div align="left">Radicado Deudor Solidario</div></th>
+          </tr>
+          <tr>
+            <td height="30"><%= f.text_field :primer_apellido, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :primer_apellido, :css_class => "cerror" %></td>
+            <td><%= f.text_field :segundo_apellido, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :segundo_apellido, :css_class => "cerror" %></td>
+            <td><%= f.text_field :radicado, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :radicado, :css_class => "cerror" %></td>
+            <td><%= f.text_field :radicado_solidario, {:class => "span3", :onChange => "javascript:this.value=this.value.toUpperCase();"} %>
+              <%= error_message_on :persona, :radicado_solidario, :css_class => "cerror" %></td>
+          </tr>
+        </table>
+        <table width="100%">
+          <tr>
+            <th width="20%" height="30"><div align="left">Nro Resolucion</div></th>
+            <th width="17%"><div align="left">Valor Total</div></th>
+            <th width="18%"><div align="left">Nro Envio</div></th>
+            <th width="22%"><div align="left">ICETEX</div></th>
+            <th width="15%"><div align="left">Identificación Anterior</div></th>
+          </tr>
+          <tr>
+            <% if actresol == 'S' %>
+              <td><%= f.text_field :resolucion_2017, {:class => "span2_1", :onChange => "
+                javascript:this.value=this.value.toUpperCase();"} %>
+                <%= calendar_date_select "persona", "fecha_resolucion", :year_range => 50.years.ago..0.years.ago, :class => "span2_1", :size => 10, :time => false, :onfocus => "this.blur()" %>
+              </td>
+              <td><%= f.text_field :valortotal, {:class => "span2", :onChange => "javascript:this.value=this.value.toUpperCase();"} %></td>
+            <% else %>
+              <td><%= @persona.resolucion_2017 rescue nil %></td>
+              <td><%= @persona.valortotal rescue nil %></td>
+            <% end %>
+            <td>
+              <div class="btn btn-mini btn-danger"><%= @persona.nro_envio rescue nil %><% if @persona.envio_prioritario.to_s != "" %> - (PRIORITARIO) <% end %></div>
+            </td>
+            <td>
+              <% if @persona.icetex.to_s != "" and @persona.valor_icetex.to_s != "" %>
+                <%= camponumerico(@persona.valor_icetex) rescue nil %> (<%= @persona.icetex rescue nil %>)
+              <% else %>
+                SIN INFORMACIÓN
+              <% end %>
+            </td>
+            <td height="30"><%= @persona.identificacion_ori rescue nil %></td>
+          </tr>
+        </table>
+        <table width="100%">
+          <tr>
+            <th width="60%" height="30"><div align="left">Proceso</div></th>
+            <td width="8%"></td>
+          </tr>
+          <tr>
+            <td height="30"><%= select(:persona, :proceso, select_procesopersona, {:include_blank => true}, {:style => "width:750px"}) %></td>
+            <td width="8%"></td>
+          </tr>
+        </table>
+        <% if permiso("persona", "A").to_s == "S" %>
+          <table width="90%" class="table">
+            <tr valign="top">
+              <td>
+                <div align="right">
+                  <%= submit_tag "Guardar", :class => "btn btn-primary" %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        <% end %>
+  <% end %>
+  <% unless @persona.new_record? %>
+    <div id="personastelefonos_form">
+      <%= render :partial => "/personastelefonos/personastelefonos" %>
+    </div>
+    <div id="personasdirecciones_form">
+      <%= render :partial => "/personasdirecciones/personasdirecciones" %>
+    </div>
+    <div id="personascorreos_form">
+      <%= render :partial => "/personascorreos/personascorreos" %>
+    </div>
+  <% end %>
+<% elsif @persona.etapa.to_s == 'B' %><br/>
+  <div id="personascodeudores_form">
+    <%= render :partial => "/personascodeudores/personascodeudores" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'C' %>
+  <div id="personasacademicos_form">
+    <%= render :partial => "/personasacademicos/personasacademicos" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'D' %><br/>
+  <div id="personasgiros_form">
+    <%= render :partial => "/personasgiros/personasgiros" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'E' %><br/>
+  <div id="personasliquidaciones_form">
+    <%= render :partial => "/personasliquidaciones/personasliquidaciones" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'F' %><br/>
+  <div id="personasobligaciones_form">
+    <%= render :partial => "/personasobligaciones/personasobligaciones" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'G' %><br/>
+  <div id="controles_form">
+    <%= render :partial => "/controles/controles" %>
+  </div>
+  <div id="personascontroles_form">
+    <%= render :partial => "/personascontroles/personascontroles" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'H' %><br/>
+  <%= link_to 'Crear alistamiento', {:controller => "personasalistamientos", :action => "new", :id => @persona.id}, :class => "btn btn-success" %> -
+  <%= link_to 'Vigilancia judicial', {:controller => "personasprocesos", :action => "new", :id => @persona.id}, :class => "btn btn-success" %>
+  <br/><br/>
+  <%= render '/personas/alistamiento' %>
+  <br/>
+  <%= render '/personas/proceso' %>
+<% elsif @persona.etapa.to_s == 'I' %><br/>
+  <div id="personasimagenes_form">
+    <%= render :partial => "/personasimagenes/personasimagenes" %>
+  </div>
+<% elsif @persona.etapa.to_s == 'J' %><br/>
+  <div id="personasobservaciones_form">
+    <%= render :partial => "/personasobservaciones/personasobservaciones" %>
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  persona_id.integer: MyString
+  fecha_recaudo: 2022-09-20
+  valor: 1
+  user_id: 1
+  forma_pago: MyString
+  estado: MyString
+  observacion: MyString
+  personasobligacion_id: 1
+
+two:
+  persona_id.integer: MyString
+  fecha_recaudo: 2022-09-20
+  valor: 1
+  user_id: 1
+  forma_pago: MyString
+  estado: MyString
+  observacion: MyString
+  personasobligacion_id: 1

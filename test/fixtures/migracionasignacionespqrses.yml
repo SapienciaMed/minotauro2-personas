@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consecutivo: 1
+  namefile: 
+  portafolio_id: 1
+  queja_id: 1
+  identificacion: MyString
+  error: MyString
+  aplicado: MyString
+
+two:
+  consecutivo: 1
+  namefile: 
+  portafolio_id: 1
+  queja_id: 1
+  identificacion: MyString
+  error: MyString
+  aplicado: MyString

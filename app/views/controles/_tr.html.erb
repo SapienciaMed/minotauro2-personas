@@ -1,0 +1,46 @@
+<tr id="control_<%= control.id %>">
+  <td class="text-center">
+    <% if @con or is_auth_e('control') %>
+      <%= link_to edit_persona_control_path(@persona, control), remote: true, data: { toggle: 'tooltip' }, class: 'edit_control_button', title: "#{t :title_editar}" do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+      <%#= link_to_remote(image_tag("check.png", :title => "Presente"),{:url => edit_persona_control_path(@persona, control),:method => :get})%>
+      <% if is_auth_e('control') %>
+        <% if control.tiposcontrol_id.to_i == 10005 %>
+            <%= link_to persona_control_path(@persona, control), remote: true, method: :delete, data: { confirm: "¿Seguro? Recuerde que este registro ya fue enviado a Cartera, por favor notifique para que el proceso sea detenido..", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+              <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+            <% end %>
+        <% else %>
+          <%= link_to persona_control_path(@persona, control), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+            <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if control.tiposcontrol_id == 10004 %> 
+        <%= link_to acta1_controles_path(id: control.id, format: :pdf), data: {toggle: 'tooltip'}, class: 'popup', :title => "Notificación por Aviso" do %>
+          <button class="btn btn-xs btn-primary"><i class="fa fa-file-pdf-o"></i></button>
+        <% end %>
+    <% elsif control.tiposcontrol_id == 10001 %>
+        <%= link_to acta2_controles_path(id: control.id, format: :pdf), data: {toggle: 'tooltip'}, class: 'popup', :title => "Acta de Notificación Personal" do %>
+          <button class="btn btn-xs btn-warning"><i class="fa fa-file-pdf-o"></i></button>
+        <% end %>
+    <% elsif control.tiposcontrol_id == 10005 %>
+        <%= link_to acta3_controles_path(id: control.id, format: :pdf), data: {toggle: 'tooltip'}, class: 'popup', :title => "Acta de Renuncia de Terminos" do %>
+          <button class="btn btn-xs btn-danger"><i class="fa fa-file-pdf-o"></i></button>
+        <% end %>
+    <% end %>
+  </td>
+  <td><%=control.updated_at.strftime("%Y-%m-%d %X")%> <br/><%=control.user.username rescue nil%></td>
+  <td><%=control.tiposcontrol.descripcion rescue nil %>
+    <% if control.tiposcontrol_id.to_i == 10003 %>
+      <br/><strong>Resolución recurso : </strong><%=control.resolucion rescue nil%>
+      <br/><strong>Repone : </strong><%=control.repone rescue nil%>
+      <br/><strong>Saldo Pagar : </strong><%=camponumerico(control.valor_final) rescue nil%>
+    <% end %>
+  </td>
+  <td class="text-center"><%=control.fecha.strftime("%Y-%m-%d") rescue nil %></td>
+  <td class="text-center"><%=control.fecha_vencimiento.strftime("%Y-%m-%d") rescue nil %></td>
+  <td><%=User.find(control.user_marcaterminacion).username rescue nil%><br/><%=control.fecha_realterminacion.strftime("%Y-%m-%d %X") rescue nil %></td>
+
+</tr>

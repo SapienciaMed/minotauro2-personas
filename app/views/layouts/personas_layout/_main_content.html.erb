@@ -1,0 +1,11 @@
+<div class="content-wrapper" style="padding-top: 0px;">
+  <section class="content-header" style="position: static; padding-top: 0px;">
+    <h1>
+      <%= @empleado.descripcion rescue nil %>
+      <small><%= @empleado.rol rescue nil %></small>
+    </h1>
+  </section>
+  <section class="content">
+    <%= yield %>
+  </section>
+</div>

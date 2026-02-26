@@ -1,0 +1,74 @@
+
+<div class="table-responsive">
+  <% if personasobligacion.solicitudes.exists? %>
+    <legend>Solicitudes Registradas (<%=personasobligacion.solicitudes.count.to_i rescue nil%>)</legend>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr class="thcolor">
+          <th width="8%"></th>
+          <th width="10%"><div align="center">Fecha Solicitud</div></th>
+          <th width="12%"><div align="center">Analista</div></th>
+          <th><div align="center">Antecedentes</div></th>
+          <th width="12%"><div align="center">Propuesta</div></th>
+          <th width="12%"><div align="center">Estado</div></th>
+        </tr>
+        <% personasobligacion.solicitudes.order("id desc").each do |solicitud|  %>
+        <tr>
+          <td><div align="center">
+            <% if solicitud.estado.to_s == "RADICADA" or solicitud.estado.to_s == "PENDIENTE"%>
+              <% if is_auth_a('solicitud') %>
+                    <%= link_to edit_solicitud_path(solicitud), data: { toggle: 'tooltip' }, class: 'edit_personasobservacion_button', title: "#{t :title_editar}" do %>
+                      <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+                    <% end %>
+              <% end %>
+              <% if is_auth_e('solicitud') %>
+                    <%= link_to solicitud_path(solicitud), remote: true, method: :delete, data: { confirm:'Esta Seguro de Eliminar?', toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+                      <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                    <% end %>
+              <% end %>
+                <% if is_auth_e('personasobligacion') %>
+                      <%= link_to activar_solicitudes_path(id: solicitud.id), remote: true, data: { confirm:'Esta seguro que desea habilitar para el comite?', toggle: 'tooltip' }, title: "Habilitar para comite" do %>
+                        <button class="btn btn-xs btn-success"><i class="fa fa-check-circle"></i></button>
+                      <% end %>
+                <% end %>
+            <% else %>
+                <%= link_to visualizar_solicitudes_path(id: solicitud.id, :format => :pdf), data: { toggle: 'tooltip' }, class: 'popup', title: "Evaluar Solicitud" do %>
+                  <button class="btn btn-xs btn-info"><i class="fa fa-copy"></i></button>
+                <% end %>
+            <% end %>
+            </div>
+          </td>
+          <td><div align="center"><%=solicitud.fecha_solicitud rescue nil %></div></td>
+          <td><div align="center"><%=solicitud.user.username rescue nil %></div></td>
+          <td><div style="font-size:11px;" align="justify"><%=solicitud.antecedentes rescue nil %></div></td>
+          <td><div style="font-size:11px;" align="center"><%=solicitud.propuesta rescue nil %></div></td>
+          <td><div style="color:red; font-size:13px; font-family: Tahoma;" align="center"><strong><%=solicitud.estado rescue nil %></strong></div></td>
+        </tr>
+        <% end  %>
+      </table>
+    <% end %>
+    <% if personasobligacion.personasoblcambios.exists? %>
+    <legend>Recreacion del credito (<%=personasobligacion.personasoblcambios.count.to_i rescue nil%>)</legend>
+      <table class="table table-bordered table-condensed table-striped">
+        <tr class="thcolor">
+          <th width="10%"><div align="center">Fecha Matricula</div></th>
+          <th width="15%"><div align="center">Analista</div></th>
+          <th width="8%"><div align="center">Plazo</div></th>
+          <th width="10%"><div align="center">TasaFinal</div></th>
+          <th width="10%"><div align="center">Valor</div></th>
+          <th width="10%"><div align="center">Estado</div></th>
+          <th><div align="center">Observacion</div></th>
+        </tr>
+        <% personasobligacion.personasoblcambios.each do |personasoblcambio|  %>
+          <tr>
+            <td><div align="center"><%=personasoblcambio.fecha_matricula rescue nil %></div></td>
+            <td><div align="left"><%=personasoblcambio.user.username rescue nil %></div></td>
+            <td><div align="center"><%=personasoblcambio.plazo rescue nil %></div></td>
+            <td><div align="center"><%=camponumerico personasoblcambio.tasa_final rescue nil %>% E.A.</div></td>
+            <td><div align="center">$ <%=camponumerico personasoblcambio.valor rescue nil %></div></td>
+            <td><div style="color:red; font-size:12px; font-family: Tahoma;" align="center"><strong><%=personasoblcambio.estado rescue nil %></strong></div></td>
+            <td><div align="justify"><%= personasoblcambio.observaciones rescue nil %></div></td>
+          </tr>
+        <% end  %>
+      </table>
+    <% end %>
+</div>

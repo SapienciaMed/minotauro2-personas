@@ -1,0 +1,16 @@
+<% if @marcacion == 'MARCACION' or params[:personasobligacion][:judicializado].to_s != "" %>
+  $(document).ready( function() {
+      url = "<%= edit_persona_path(id: @personasobligacion.persona_id, etapa: 'F') %>"
+      $(location).attr("href", url);
+  });
+<% elsif @personasobligacion.tipo_autorizacion.to_s != "" %>
+  $("#obligacionesautorizacion").html("<%= j render '/personasobligaciones/datos' %>");
+  $("#personasobligaciones").html("<%= j render '/personasobligaciones/tabla' %>");
+
+  $('#autorizaciones').modal('hide');
+<% else %>
+  $(document).ready( function() {
+    url = "<%= edit_persona_path(id: @personasobligacion.persona_id, etapa: 'F') %>"
+    $(location).attr("href", url);
+  });
+<% end %>

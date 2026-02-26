@@ -1,0 +1,82 @@
+<div align="center">
+<table width="750" border="0">
+  <tr>
+    <td height="0"><img src="/images/logo_sapiencia.png"/></td>
+  </tr>
+  <tr valign="top">
+    <td height="700">
+    <div class="page-header">
+      <h3>Plan de Pagos (<%=@personasobligacion.persona.autobuscar rescue nil%>)</h3>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th colspan="6"><div align="left">ESCENARIO ACTUAL</div></th>
+      </tr>
+      <tr>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota <%=is_fechahoy.strftime("%m-%Y") rescue nil%></div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Intereses</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total a pagar</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Plazo Original</div></th>
+      </tr>
+      <tr>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%> - Tasa Mora: <%=@personasobligacion.tasa_mora rescue nil %>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.vlrcuota) rescue nil %></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.saldocapital) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.totalcorriente) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.saldototalsimulador) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@personasobligacion.obplazo rescue nil%></div></td>
+      </tr>
+      <tr>
+        <th colspan="6"><div align="left">ESCENARIO SIMULACION</div></th>
+      </tr>
+      <tr>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota <%=is_fechahoy.strftime("%m-%Y") rescue nil%></div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Intereses</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total a pagar</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Plazo Simulación</div></th>
+      </tr>
+      <tr>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%> - Tasa Mora: <%=@personasobligacion.tasa_mora rescue nil %>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.vlrcuotasimulacion) rescue nil %></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.saldocapital) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.totalcorrientesimulacion) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@personasobligacion.saldocapital.to_i + @personasobligacion.totalcorrientesimulacion.to_i) rescue nil%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@personasobligacion.obplazosimulacion rescue nil%></div></td>
+      </tr>
+    </table>
+    <div class="page-header">
+      <h3>Detalle Simulación plan de pagos</h3>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr valign="middle">
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">#</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Fecha vence</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Inicial</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Amortizacion</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Corriente</div></th>
+        <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Final</div></th>
+      </tr>
+    <%  @planessimulaciones.each do |planessimulacion|%>
+      <tr valign="middle">
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=planessimulacion.nro_cuota%></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=planessimulacion.fecha_vence.strftime("%Y-%m-%d") %></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="right"><strong><%=camponumerico(planessimulacion.inicial) %></strong></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="right"><strong><%=camponumerico(planessimulacion.cuota) %></strong></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="right"><strong><%=camponumerico(planessimulacion.amortiza) %></strong></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="right"><strong><%=camponumerico(planessimulacion.corriente) %></strong></div></td>
+        <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="right"><strong><%=camponumerico(planessimulacion.final) %></strong></div></td>
+      </tr>
+    <% end %>
+    </table><br/>
+    <div width="100%" align="justify" style="font-size: 11px; font-family: Verdana, Geneva, sans-serif;">
+      <strong>S I S - Sistema de Informacion SAPIENCIA - <%=Time.now.strftime("%Y-%m-%d %X")%></strong>
+    </div>  
+    </td>
+  </tr>
+</table>
+</div>

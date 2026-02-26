@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : 'App' %> | Sapiencia</title>
+    <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <%= stylesheet_link_tag    'application', media: 'all'%>
+    <%= javascript_include_tag 'application'%>
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+  </head>
+  <% if current_user.etapa.to_s == 'GE' and (params[:controller].to_s == 'personas' or params[:controller].to_s == 'menus') %>
+    <body class="sidebar-mini skin-blue-light sidebar-collapse">
+  <% else %>
+    <body class="sidebar-mini skin-blue-light">
+  <% end %>
+    <div class="wrapper">
+      <% if is_estudiante %>
+        <%= render 'layouts/main_layout/main_header' %> <!-- app/layouts/_main_header.html.erb -->
+        <%= render 'layouts/without_layouts/main_sidebar' %>
+        <%= render 'layouts/without_layouts/content_wrapper' %>
+        <%= render 'layouts/main_layout/main_footer' %> <!-- app/layouts/_main_footer.html.erb -->
+        <%= render 'layouts/main_layout/control_sidebar' %> <!-- app/layouts/_control_sidebar.html.erb -->
+      <% elsif current_user.etapa.to_s == 'GE' and ((params[:controller].to_s == 'personas' and params[:action].to_s != 'vista') or params[:controller].to_s == 'menus') %>
+        <%= render 'layouts/main_layout/main_header' %>
+        <%= render 'layouts/modogestion' %>
+        <%= render 'layouts/main_layout/control_sidebar' %>
+      <% else %>
+        <%= render 'layouts/main_layout/main_header' %>
+        <%= render 'layouts/main_layout/main_sidebar' %>
+        <%= render 'layouts/main_layout/main_content' %>
+        <%= render 'layouts/main_layout/main_footer' %>
+        <%= render 'layouts/main_layout/control_sidebar' %>
+      <% end %>
+    </div>
+
+  <script type="text/javascript" charset="utf-8">
+      // PARA CARGUE ARRASTRANDO ARCHIVOS - DOCUMENTOS
+      var $fileInput = $('.file_input');
+      var $droparea = $('.file_droparea');
+
+      $fileInput.on('dragenter focus click', function () {
+          $droparea.addClass('is-active');
+      });
+
+      $fileInput.on('dragleave blur drop', function () {
+          $droparea.removeClass('is-active');
+      });
+
+      $fileInput.on('change', function () {
+          var filesCount = $(this)[0].files.length;
+          var $textContainer = $(this).prev('.js-set-number');
+          if (filesCount === 1) {
+              $textContainer.text($(this).val().split('\\').pop());
+          } else {
+              $textContainer.text(filesCount + ' uploaded files');
+          }
+      });
+  </script>
+  </body>
+</html>

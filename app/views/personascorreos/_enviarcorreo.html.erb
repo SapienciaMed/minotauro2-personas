@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+  <h4 class="modal-title"><strong><i class="fa fa-envelope"></i> Enviar correo a <%= @persona.try(:nombres) rescue nil %> (<%= params[:email].to_s %>)</strong></h4>
+</div>
+<%= form_tag enviar_persona_personascorreo_path, method: :post, remote: true do %>
+	<%= hidden_field_tag :email, @email %>
+	<%= hidden_field_tag :persona_id, @persona.id %>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-4">
+				<%= text_field_tag :asunto, params[:asunto], { class: 'form-control', placeholder: 'Asunto' } %>	
+			</div>
+			<div class="col-md-8">
+				<%= text_field_tag :copia, params[:copia], { class: 'form-control', placeholder: 'Copia' } %>	
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-12">
+				<%= text_area_tag :mensaje, params[:mensaje], { rows: 8, cols: 100, class: 'form-control wysihtml5', placeholder: 'Mensaje' } %>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="pull-left btn btn-flat btn-default" data-dismiss="modal"><%=t :cancelar%></button>
+	  <div class="box-tools pull-right">
+      <%= button_tag :submit, class: 'btn btn-flat btn-primary' do %>
+      	<i class="fa fa-envelope-o"></i> Enviar
+      <% end %>
+    </div>
+	</div>
+<% end %>

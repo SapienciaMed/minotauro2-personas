@@ -1,0 +1,17 @@
+<%= simple_form_for [@persona, @personasacademico], remote: true do |f|   %>
+  <div class="bs-callout">
+    
+    <div class="row">
+      <div class="col-md-6">
+        <% if @personasacademico.new_record? %>
+          <%= button_tag "#{t :cancelar}", type: 'button', data: { target: '#personasacademico_form' }, class: 'cancel_button btn btn-flat btn-default  pull-left', aria_hidden: true %>
+        <% else %>
+          <%= link_to "#{t :cancelar}", persona_personasacademico_path(@persona, @personasacademico), class: 'btn btn-flat btn-default pull-left', aria_hidden: true, remote: true %>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <%= f.button :button, "#{t :guardar}", data: { disable_with: "#{t :procesando}" }, class: 'btn btn-danger pull-right' %>
+      </div>
+    </div>
+  </div>
+<% end %>

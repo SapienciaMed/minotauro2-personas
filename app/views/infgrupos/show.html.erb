@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @infgrupo.nombre %>
+</p>
+
+<p>
+  <strong>Nombre archivo:</strong>
+  <%= @infgrupo.nombre_archivo %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @infgrupo.estado %>
+</p>
+
+<p>
+  <strong>Clase:</strong>
+  <%= @infgrupo.clase %>
+</p>
+
+<p>
+  <strong>Consulta:</strong>
+  <%= @infgrupo.consulta %>
+</p>
+
+<%= link_to 'Edit', edit_infgrupo_path(@infgrupo) %> |
+<%= link_to 'Back', infgrupos_path %>

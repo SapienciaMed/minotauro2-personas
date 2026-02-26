@@ -1,0 +1,2 @@
+class Infgrupo < ApplicationRecord
+end

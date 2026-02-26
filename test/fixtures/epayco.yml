@@ -1,0 +1,127 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  personasoblrecibo_id: MyString
+  integer: MyString
+  x_cust_id_cliente: MyString
+  x_ref_payco: MyString
+  x_id_factura: MyString
+  x_id_invoice: MyString
+  x_description: MyText
+  x_amount: MyString
+  x_amount_country: MyString
+  x_amount_ok: MyString
+  x_tax: MyString
+  x_amount_base: MyString
+  x_currency_code: MyString
+  x_bank_name: MyString
+  x_cardnumber: MyString
+  x_quotas: MyString
+  x_respuesta: MyString
+  x_response: MyString
+  x_approval_code: MyString
+  x_transaction_id: MyString
+  x_fecha_transaccion: 2025-11-20 17:44:15
+  x_transaction_date: 2025-11-20 17:44:15
+  x_cod_respuesta: MyString
+  x_cod_response: MyString
+  x_response_reason_text: MyString
+  x_errorcode: MyString
+  x_cod_transaction_state: MyString
+  x_transaction_state: MyString
+  x_franchise: MyString
+  x_business: MyString
+  x_customer_doctype: MyString
+  x_customer_document: MyString
+  x_customer_name: MyString
+  x_customer_lastname: MyString
+  x_customer_email: MyString
+  x_customer_phone: MyString
+  x_customer_movil: MyString
+  x_customer_ind_pais: MyString
+  x_customer_country: MyString
+  x_customer_city: MyString
+  x_customer_address: MyString
+  x_customer_ip: MyString
+  x_test_request: MyString
+  x_extra1: MyString
+  x_extra2: MyString
+  x_extra3: MyString
+  x_extra4: MyString
+  x_extra5: MyString
+  x_extra6: MyString
+  x_extra7: MyString
+  x_extra8: MyString
+  x_extra9: MyString
+  x_extra10: MyString
+  x_tax_ico: MyString
+  x_payment_date: 2025-11-20 17:44:15
+  x_signature: MyString
+  x_transaction_cycle: MyString
+  is_processable: MyString
+  raw_payload: MyText
+  processed_at: 2025-11-20 17:44:15
+  ip_origen: MyString
+
+two:
+  personasoblrecibo_id: MyString
+  integer: MyString
+  x_cust_id_cliente: MyString
+  x_ref_payco: MyString
+  x_id_factura: MyString
+  x_id_invoice: MyString
+  x_description: MyText
+  x_amount: MyString
+  x_amount_country: MyString
+  x_amount_ok: MyString
+  x_tax: MyString
+  x_amount_base: MyString
+  x_currency_code: MyString
+  x_bank_name: MyString
+  x_cardnumber: MyString
+  x_quotas: MyString
+  x_respuesta: MyString
+  x_response: MyString
+  x_approval_code: MyString
+  x_transaction_id: MyString
+  x_fecha_transaccion: 2025-11-20 17:44:15
+  x_transaction_date: 2025-11-20 17:44:15
+  x_cod_respuesta: MyString
+  x_cod_response: MyString
+  x_response_reason_text: MyString
+  x_errorcode: MyString
+  x_cod_transaction_state: MyString
+  x_transaction_state: MyString
+  x_franchise: MyString
+  x_business: MyString
+  x_customer_doctype: MyString
+  x_customer_document: MyString
+  x_customer_name: MyString
+  x_customer_lastname: MyString
+  x_customer_email: MyString
+  x_customer_phone: MyString
+  x_customer_movil: MyString
+  x_customer_ind_pais: MyString
+  x_customer_country: MyString
+  x_customer_city: MyString
+  x_customer_address: MyString
+  x_customer_ip: MyString
+  x_test_request: MyString
+  x_extra1: MyString
+  x_extra2: MyString
+  x_extra3: MyString
+  x_extra4: MyString
+  x_extra5: MyString
+  x_extra6: MyString
+  x_extra7: MyString
+  x_extra8: MyString
+  x_extra9: MyString
+  x_extra10: MyString
+  x_tax_ico: MyString
+  x_payment_date: 2025-11-20 17:44:15
+  x_signature: MyString
+  x_transaction_cycle: MyString
+  is_processable: MyString
+  raw_payload: MyText
+  processed_at: 2025-11-20 17:44:15
+  ip_origen: MyString

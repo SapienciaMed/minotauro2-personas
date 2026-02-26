@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consecutivo: 1
+  namefile: MyString
+  userreg_id: 1
+  portafolio_id: 1
+
+two:
+  consecutivo: 1
+  namefile: MyString
+  userreg_id: 1
+  portafolio_id: 1

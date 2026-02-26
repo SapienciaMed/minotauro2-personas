@@ -1,0 +1,229 @@
+<%= javascript_include_tag 'bootstrap-tab'%>
+<div class="page-header"><h3>Solicitud (<%=Persona.find(@solicitud.persona_id).autobuscar rescue nil%>)</h3></div>
+<% if @solicitud.propuesta.to_s == 'AMPLIACION DE PLAZO' or @solicitud.propuesta.to_s == 'DISMINUCION DE PLAZO'%>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th colspan="6" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="left">ESCENARIO ACTUAL</div></th>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Intereses</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total a pagar</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Plazo Original</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="IPC <%=@solicitud.tasa_ipc rescue nil%> + <%=@solicitud.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@solicitud.tasa_final rescue nil%> E.A.</a></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.cuota) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.saldocapital) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.totalinteres) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.totalpagar) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.plazo rescue nil%></div></td>
+    </tr>
+    <tr class="odd1">
+      <th colspan="6" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="left">ESCENARIO SIMULACION</div></th>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Intereses</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total a pagar</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Plazo Simulación</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="IPC <%=@solicitud.tasa_ipc rescue nil%> + <%=@solicitud.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@solicitud.tasa_final rescue nil%> E.A.</a></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_cuota) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_saldocapital) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_totalinteres) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_totalpagar) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.sim_plazo rescue nil%></div></td>
+    </tr>
+  </table>
+<% elsif @solicitud.propuesta.to_s == 'REESTRUCTURACION' or @solicitud.propuesta.to_s == 'CONGELAMIENTO OBLIGACION'%>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="left">ESCENARIO ACTUAL</div></th>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Nro Obligacion</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Fecha Creación</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Dias Vencidos Credito</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Calificación Cartera</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Valor Credito</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Fch Ult. Pago</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Vlr Ult. Pago</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@personasobligacion.nro_obligacion rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@personasobligacion.created_at.strftime("%Y-%m-%d %X") rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="Año <%=@personasobligacion.tasa_anno rescue nil%> - IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.ori_diasvencoblig rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.ori_calificacion rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_valor) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.ori_fch_ult_pago.strftime("%Y-%m-%d") rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_valortotalrecaudo) rescue nil%></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital Vencido</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Int. Corriente Vencido</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Otros</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Int. de Mora</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Vencido</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Vlr Minimo Pagar</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Capital por Pagar</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Total Deuda</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_saldocapitalvencido) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_saldointerescorriente) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_saldootros) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_saldointeresmora) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_totalvencido) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuota) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuotaminimo) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_capitalporpagar) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.ori_saldototaldeuda) rescue nil%></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th width="8%"><div align="center">Plazo</div></th>
+      <td width="5%"><div align="center"><%=@solicitud.ori_obplazo rescue nil%></div></td>
+      <th width="12%"><div align="center">Altura del Credito</div></th>
+      <td width="5%"><div align="center"><%=@solicitud.ori_obaltura rescue nil%></div></td>
+      <th width="12%"><div align="center">Cuotas Pagadas</div></th>
+      <td width="5%"><div align="center"><%=@solicitud.ori_obcuotaspagadas rescue nil%></div></td>
+      <th width="12%"><div align="center">Cuotas en Mora</div></th>
+      <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasmora rescue nil%></div></td>
+      <th width="12%"><div align="center">Cuotas por Facturar</div></th>
+      <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasporpagar rescue nil%></div></td>
+      <td width="15%"><div style="color:red; font-size:16px; font-family: Tahoma;" align="center"><strong><%=@solicitud.ori_estadoobli  rescue nil%></strong></div></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <th colspan="7" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="left">ESCENARIO SIMULACION</div></th>
+    </tr>
+    <tr class="odd1">
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Tasa Interes PAC</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Cuota</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Saldo Capital</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Intereses</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total Otros</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Total a pagar</div></th>
+      <th style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">Plazo Simulación</div></th>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><a title="IPC <%=@solicitud.tasa_ipc rescue nil%> + <%=@solicitud.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@solicitud.tasa_final rescue nil%> E.A.</a></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_cuota) rescue nil %></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_saldocapital) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_totalinteres) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_otros) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center">$ <%=camponumerico(@solicitud.sim_totalpagar) rescue nil%></div></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="center"><%=@solicitud.sim_plazo rescue nil%></div></td>
+    </tr>
+  </table>
+<% end%>
+<br/>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="odd1">
+      <td width="30%" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Propuesta</strong></td>
+      <td width="70%" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.propuesta rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Fecha Solicitud</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.fecha_solicitud rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Situación del beneficiario frente a educación superior</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.situacion_bene rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Situación economica del beneficiario</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.situacion_econo rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Beneficiario Tiene Independencia Economica</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.ind_economica rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Actividad Economica</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.actividad_economica rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Ingresos informados por el deudor</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=camponumerico(@solicitud.ingresos) rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Egresos informados por el deudor</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=camponumerico(@solicitud.egresos) rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Nombre empresa donde labora</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.nombre_empresa rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Dirección empresa</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.direccion_empresa rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Telefono empresa</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.telefono_empresa rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>El deudor solidario labora?</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=@solicitud.ds_labora rescue nil%></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Antecedentes</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><%=replaceenter(@solicitud.antecedentes) rescue nil%></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Concepto Analista</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="justify"><%=replaceenter(@solicitud.concepto_auxiliar) rescue nil%></div></td>
+    </tr>
+    <tr class="odd1">
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><strong>Concepto Juridico</strong></td>
+      <td style="border:1px solid #CCCCCC; font-size: 11px; font-family: Tahoma;"><div align="justify"><%=replaceenter(@solicitud.concepto_juridico) rescue nil%></div></td>
+    </tr>
+  </table>
+<br/>
+<% form_for :solicitud, :url => { :action => "update2", :id => @solicitud.id, :conse1 =>@conse1.to_i } do |f| %>
+   <table class="table table-bordered table-striped table-hover">
+      <tr>
+        <td><strong>Estado de la solicitud</strong></td>
+        <td><%=select(:solicitud,:estado, [["APROBADO","APROBADO"],["DEVUELTO","DEVUELTO"],["NEGADO","NEGADO"]],
+                    { :include_blank => true },
+                  { :style=>"width:200px"})%>
+                <%=  error_message_on :solicitud,  :nombre_empresa, :css_class =>"cerror"%></td>
+      </tr>
+      <% if @solicitud.propuesta.to_s == 'CONGELAMIENTO OBLIGACION'%>
+      <tr>
+        <td><strong>Fecha reinicio obligación</strong></td>
+        <td><%= calendar_date_select :solicitud, :fch_reinicio, :year_range => ["2010","2018"], :class=> "span2_1", :size => 10, :time => false%>
+      <%=  error_message_on :solicitud,  :fch_reinicio, :css_class =>"cerror"%></td>
+      </tr>
+      <% end%>
+      <tr valign="top">
+        <td><strong>Observaciones *</strong></td>
+        <td><%=text_area(:solicitud, :observaciones_comite, :class=>"input-xxlarge", :rows=>"6", :onChange=> "javascript:this.value=this.value.toUpperCase();") %>
+            <%= error_message_on :solicitud, :observaciones_comite, :css_class =>"cerror"%></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><%= submit_tag "Guardar", :class=>"btn btn-primary", :confirm=>"Esta seguro que desea actualizar el estado de la solicitud?"%></td>
+      </tr>
+    </table>
+<% end %>
+<% if @conse1.to_i > 0 
+    comitessolicitud = Comitessolicitud.find(@conse1)%>
+    <div align="right"><%= link_to "Siguiente Solicitud", {:controller=>"solicitudes", :action=>"visualizarcomite", :id=>comitessolicitud.solicitud_id, :consecutivo=>comitessolicitud.id}, :popup => ['new_window','height=600,width=900,scrollbars=yes'], :class=>"btn btn-success"%></div>
+<% end %>

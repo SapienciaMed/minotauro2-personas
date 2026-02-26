@@ -1,0 +1,42 @@
+<%= form_for(infgrupo) do |f| %>
+  <% if infgrupo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(infgrupo.errors.count, "error") %> prohibited this infgrupo from being saved:</h2>
+
+      <ul>
+      <% infgrupo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nombre %>
+    <%= f.text_field :nombre %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nombre_archivo %>
+    <%= f.text_field :nombre_archivo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estado %>
+    <%= f.text_field :estado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :clase %>
+    <%= f.text_field :clase %>
+  </div>
+
+  <div class="field">
+    <%= f.label :consulta %>
+    <%= f.text_field :consulta %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

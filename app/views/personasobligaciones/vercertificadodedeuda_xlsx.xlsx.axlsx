@@ -1,0 +1,86 @@
+wd = xlsx_package.workbook
+wd.styles do |style|
+  title = wd.styles.add_style(b: true,sz: 12,font_name: "Calibri",:alignment=>{:horizontal => :left, :vertical => :center})
+  title2 = wd.styles.add_style(b: true,sz: 13,font_name: "Calibri",:alignment=>{:horizontal => :center, :vertical => :center})
+  title3 = wd.styles.add_style(sz: 13,font_name: "Calibri",:alignment=>{:horizontal => :left, :vertical => :center})
+  header = wd.styles.add_style(b: true,sz: 12,font_name: "Calibri",:alignment=>{:horizontal => :center,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  header1 = wd.styles.add_style(b: true,sz: 12,font_name: "Calibri",:alignment=>{:horizontal => :left,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  header2 = wd.styles.add_style(sz: 12,font_name: "Calibri",:alignment=>{:horizontal => :center,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  header3 = wd.styles.add_style(sz: 12,font_name: "Calibri",:alignment=>{:horizontal => :left,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  header4 = wd.styles.add_style(b: true, bg_color: "FFDFDFDF",fg_color: '000000',sz: 13,font_name: "Calibri",:alignment=>{:horizontal => :center,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  header5 = wd.styles.add_style(b: true, bg_color: "FFDFDFDF",fg_color: '000000',sz: 13,font_name: "Calibri",:alignment=>{:horizontal => :left,:wrap_text => true},:border=>Axlsx::STYLE_THIN_BORDER)
+  datosiz = wd.styles.add_style(sz: 11,font_name: "Calibri",:alignment=>{:horizontal => :left, :vertical => :center})
+  datoscent = wd.styles.add_style(sz: 11,font_name: "Calibri",:alignment=>{:horizontal => :center, :vertical => :center})
+  datosder = wd.styles.add_style(sz: 11,font_name: "Calibri",:alignment=>{:horizontal => :right, :vertical => :center})
+  fecha = wd.styles.add_style(sz: 11,font_name: "Calibri", :format_code => 'dd-mm-yyyy',:alignment=>{:horizontal => :center, :vertical => :center})
+  datosnumeros = wd.styles.add_style(:format_code => '#,###,##0.#0',sz: 11,font_name: "Calibri",:alignment=>{:horizontal => :right, :vertical => :center})
+  
+  wd.add_worksheet(:name => "Certificado Deuda")  do |sheet|
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row [""]       
+    sheet.add_row ["","Fecha de Liquidacion: #{namedate2(Time.now) rescue nil} "], :style => title, :widths=>[10,10]
+    sheet.add_row ["","#{Time.now.strftime("%X") rescue nil} "], :style => title3, :widths=>[10,10]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row ["","Señor(a)"], :style => title, :widths=>[10,10]
+    sheet.add_row ["","#{@personasobligacion.persona.nombre_completo rescue nil}  - #{@personasobligacion.persona.identificacion rescue nil}"], :style => title3, :widths=>[10,10]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row ["","","","LIQUIDACIÓN"], :style => title2, :widths=>[10,10,10,10,10]
+    sheet.merge_cells("D14:E14")
+    sheet.add_row [""]
+    sheet.add_row ["","","CONTRATO DEUDA","PRODUCTO","SUBPRODUCTO","MONEDA"], :style => [nil,nil,header4,header4,header4,header4], :widths=>[10,10,30,30,20,30]
+    sheet.add_row ["","","#{@personasobligacion.nro_obligacion rescue nil}",
+                         "#{@personasobligacion.partiposproducto.descripcion rescue nil}",
+                         "","#{@personasobligacion.partiposproducto.descripcion rescue nil}"], :style => [nil,nil,header2,header2,header2,header2], :widths=>[10,10,30,30,20,30],:types => [nil,nil,:string,nil,nil,nil] 
+    sheet.add_row ["","","CUENTA SAC","TASA DE INTERES EFECTIVA","",""], :style => [nil,nil,header4,header5,header5,header5], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("D18:F18")
+    sheet.add_row ["","","#{@personasobligacion.obligacion_gps rescue nil}","#{@personasobligacion.tasa_final rescue nil}","",""], :style => [nil,nil,header2,header3,header3,header3], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("D19:F19")
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    compensatorio = @personasobligacion.saldointerescorriente + @personasobligacion.saldointeresmora
+    pp = Personasobligacion.where(["persona_id = #{@personasobligacion.persona_id} and obligacion_gps = substr('#{@personasobligacion.obligacion_gps}',0,13) || 'G'"]).first 
+    juzgado = Personasprojuzgado.where(["personasproceso_id in (select personasproceso_id 
+                                                       from personasproobligaciones 
+                                                       where personasobligacion_id in (select id 
+                                                                                       from personasobligaciones 
+                                                                                       where id = #{@personasobligacion.id} and portafolio_id = #{is_portafolio})) and fecha_fin is null"]).first
+    abogado = @personasobligacion.personasoblusers.last 
+    sheet.add_row ["","","CAPITAL ADEUDADO VENCIDO","",":","#{@personasobligacion.saldocapitalvencido rescue 0}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C23:D23")
+    sheet.add_row ["","","INTERESES COMPENSATORIOS","",":","#{compensatorio}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C24:D24")
+    sheet.add_row ["","","INTERESES MORATORIOS","",":","0.00"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C25:D25")
+    sheet.add_row ["","","OTROS","",":","#{@personasobligacion.saldototalotros rescue 0}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C26:D26")
+    sheet.add_row ["","","SEGUROS","",":","0.00"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C27:D27")
+    sheet.add_row ["","","-----------------------------------------------------------------------------------------------------------------------------------","",":","------------------------------------------"], :style => [nil,nil,title,nil,title2], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C28:D28")
+    sheet.add_row ["","","TOTAL SALDO DEUDOR","",":","#{@personasobligacion.saldototaldeuda}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C29:D29")
+    sheet.add_row [""]
+    sheet.add_row ["","","CONTRATO GASTO (#{pp.obligacion_gps rescue nil})","","",""], :style => [nil,nil,title,nil,title2,nil], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C31:D31")
+    sheet.add_row ["","","GASTOS JUDICIALES","",":","#{pp.saldocapitalvencido rescue 0}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C32:D32")
+    sheet.add_row ["","","HONORARIOS ESTUDIO","",":","0.00"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C33:D33")
+    sheet.add_row ["","","TOTAL DEUDA + GASTOS","",":","#{pp.saldocapitalvencido rescue 0}"], :style => [nil,nil,title,nil,title2,datosnumeros], :widths=>[10,10,30,30,20,30]
+    sheet.merge_cells("C34:D34")
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row ["","","ABOGADO: #{Portafoliossucursal.find(abogado.portafoliossucursalnuevo_id).descripcion rescue nil}"], :style => title, :widths=>[10,10]
+    sheet.add_row ["","","JUZGADO: #{Juzgado.find(juzgado.juzgado_id).descripcion rescue nil}"], :style => title, :widths=>[10,10]
+    sheet.add_row [""]
+    sheet.add_row [""]
+    sheet.add_row ["","Puede realizar el pago de su deuda, acercándose a cualquier agencia del BANCO y solicitar el pago a favor de PAT- FID. TIT CUSCO 2018, indicándo el código del contrato."], :style => title, :widths=>[10,10]
+
+  end
+end

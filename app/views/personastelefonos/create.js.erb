@@ -1,0 +1,26 @@
+$(".alert_flash").fadeOut(1000, function() {
+	$(this).remove();
+});
+
+<% if @persona.personastelefonos.count == 1 %>
+	$("#personastelefonos").html("<%= j render 'tabla' %>");
+<% else %>
+	$("#personastelefonos").html("<%= j render 'tabla' %>");
+<% end %>
+
+$(".clean_personastelefono").val("").trigger('change');
+
+$('[data-toggle="tooltip"]').tooltip();
+
+$(".flash_messages").html("<%= j render 'layouts/flash_messages' %>");
+
+$(".form-group").removeClass("has-error");
+$(".form-group > .help-block.help-block-error").remove();
+
+$("#personastelefono_form").collapse("hide");
+
+setTimeout(function() {
+	$(".alert_flash").fadeOut(1000, function() {
+		$(this).remove();
+	});
+}, 5000);

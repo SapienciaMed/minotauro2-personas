@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "5231a87d-5135-46ed-b0dc-b6e47c0d7ca9",
+		"name": "WS_Universal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Proceso Universal",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Access-Token",
+						"value": "c84f722c791655b0d90997649cdd8d189583f52ed5fed132a784cdeae12822ad88ec0410137a1dead069af3328fec2dad8528fc2f68a56edfac7256d8fa6b689ed872103333e4a23869273d59ac76ca1c288f65507bbc40d4f90e40fbbd741dbde810221f9b5087110c9785a8e13c43e5aef44009d05af0973496bc43293b9b86534f31d33c8be0baf3745b0a3d38ee0bf109d605e3da878491a6154f6ed9394bfae6d496abcda383151abded823392d8a54bd28a9afbe1829e3c38279c9228e0d0b132d2ce479a7",
+						"type": "text"
+					},
+					{
+						"key": "Tipo-Servicio",
+						"value": "VARDI/SIGRU",
+						"type": "text"
+					},
+					{
+						"key": "Portafolio",
+						"value": "10040",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"parametros\": {\n  \"insurance_status\": \"01\",\n  \"entity_id\": \"10\",\n  \"insurance_rate\": \"1,5\",\n  \"insurance_fee\": 5,\n  \"insurance_value\": \"200000\",\n  \"insurance_start_date\": \"15/05/2020\",\n  \"insurance_type\": \"PRUEBA POLIZA\",\n  \"insurance_company_name\": \"BIOCREDIT\",\n  \"user_face_image\": \"foto.png\",\n  \"user_address\": \"CALLE 9 SUR 56 C 68\",\n  \"user_first_name\": \"ANDRES\",\n  \"user_second_name\": \"FELIPE\",\n  \"user_first_last_name\": \"PELAEZ\",\n  \"user_second_last_name\": \"ALVAREZ\",\n  \"user_birthday\": \"15/05/2020\",\n  \"user_state\": \"ANTIOQUIA\",\n  \"user_id\": \"1036615515\",\n  \"user_document_id\": \"1036615515\",\n  \"user_email\": \"apelaez.info@sygmatech.co\",\n  \"user_gender\": \"MASCULINO\",\n  \"user_phone_number\": \"3016789099\",\n  \"user_city\": \"MEDELLIN\",\n  \"user_civil_status\": \"CASADO\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://testing-sygma.com/ws_universal",
+					"protocol": "http",
+					"host": [
+						"testing-sygma",
+						"com"
+					],
+					"path": [
+						"ws_universal"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

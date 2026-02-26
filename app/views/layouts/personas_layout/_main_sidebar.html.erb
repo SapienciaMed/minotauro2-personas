@@ -1,0 +1,93 @@
+<%
+  dato = is_auth_a("cartera")
+  judi = is_auth_a("judicial")
+%>
+<aside class="main-sidebar" style="position: fixed;">
+  <section class="sidebar">
+    <ul class="sidebar-menu" data-widget="tree">
+      <li style="font-size: 12px !important;">
+        <%= link_to personas_path do %>
+          <i class="fa fa-arrow-left text-success"></i> <%= I18n.t("regresar") %>
+        <% end %>
+      </li>
+      <li class="header"><%= I18n.t("menu") %></li>
+    <% unless @persona.new_record? %>
+      <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'A')) %>">
+        <%= link_to edit_persona_path(etapa: 'A', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+          <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Demográficos</span>
+        <% end %>
+      </li>
+      <% if dato %>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'G')) %>">
+          <%= link_to edit_persona_path(etapa: 'G', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Juridica PAC</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'B')) %>">
+          <%= link_to edit_persona_path(etapa: 'B', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Garantias</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'C')) %>">
+          <%= link_to edit_persona_path(etapa: 'C', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Academico</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'D')) %>">
+          <%= link_to edit_persona_path(etapa: 'D', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Giros</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'E')) %>">
+          <%= link_to edit_persona_path(etapa: 'E', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Liquidacion PAC</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'F')) %>">
+          <%= link_to edit_persona_path(etapa: 'F', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Credito</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'J')) %>">
+          <%= link_to edit_persona_path(etapa: 'J', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Gestion Cobro</span>
+          <% end %>
+        </li>
+        <% if judi %>
+          <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'H')) %>">
+            <%= link_to edit_persona_path(etapa: 'H', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+              <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Cobranza juridica</span>
+            <% end %>
+          </li>
+        <% end %>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'I')) %>">
+          <%= link_to edit_persona_path(etapa: 'I', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Digital</span>
+          <% end %>
+        </li>
+      <% else %>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'G')) %>">
+          <%= link_to edit_persona_path(etapa: 'G', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Juridica PAC</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'C')) %>">
+          <%= link_to edit_persona_path(etapa: 'C', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Academico</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'D')) %>">
+          <%= link_to edit_persona_path(etapa: 'D', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Giros</span>
+          <% end %>
+        </li>
+        <li class="<%= active_class(edit_persona_path(id: @persona.id, etapa: 'I')) %>">
+          <%= link_to edit_persona_path(etapa: 'I', id: @persona.id), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Digital</span>
+          <% end %>
+        </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </section>
+</aside>

@@ -1,0 +1,86 @@
+<%
+  isadmin = is_admin
+  user = User.find(isadmin)
+%>
+
+<header class="main-header">
+  <%= link_to root_path, class: 'logo', style: "back" do %>
+    <span class="logo-lg" style="font-size: 18px; margin-top: 0px;"><b>SAPIENCIA 5.0</b></span>
+  <% end %>
+  
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-static-top" style="background-color: black !important; color: white !important;" role="navigation">
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+
+    <div class="navbar-collapse collapse" id="navbar-collapse" aria-expanded="false">
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <%= link_to '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' } do %>
+              <%= user.img_foto rescue nil %>
+              <%#= image_tag user.avatar.url(:medium), class: 'user-image', alt: 'User Image' %>
+              <% persona = Persona.find_by(identificacion: user.identificacion) %>
+              <span class="hidden-xs"><%= user.username %></span>
+            <% end %>
+
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <%= user.img_foto rescue nil %>
+                <p><%= user.nombre %></p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <%= link_to edit_user_registration_path do %>
+                    <button class="btn btn-flat btn-default"><i class="fa fa-edit"> <b><%= t :editar_perfil %></b></i>
+                    </button>
+                  <% end %>
+                </div>
+                <div class="pull-right">
+                  <%= link_to logout_path, data: { confirm: '¿Esta seguro ' + "#{user.nombre}" + ' que quiere desconectarse?' } do %>
+                    <button class="btn btn-flat btn-default"><i class="fa fa-sign-in"> <b><%= t :salir %></b></i>
+                    </button>
+                  <% end %>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+    .main-header .logo {
+        background-color: #fff !important;
+        color:rgb(13, 4, 3) !important;
+        height: 50px !important;
+    }
+
+    .navbar-nav > li > a {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        height: 47px;
+    }
+
+    .main-header .navbar {
+        -webkit-transition: margin-left .3s ease-in-out !important;
+        -o-transition: margin-left .3s ease-in-out !important;
+        transition: margin-left .3s ease-in-out !important;
+        margin-bottom: 0 !important;
+        border: none !important;
+        min-height: 43px !important;
+        border-radius: 0 !important;
+    }
+
+</style>

@@ -1,0 +1,26 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <legend>
+      <%= link_to archivos_path, data: { toggle: 'tooltip' }, title: 'Regresar' do %>
+        <i class="fa fa-arrow-left fa-fw text-success" aria-hidden="true"></i>
+      <% end %>
+      Cargue de Archivos
+    </legend>
+  </div>
+  <div class="box-body">
+    <%= simple_form_for @archivo do |f| %>
+    <%= f.hidden_field :proceso, value: @archivo.proceso %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.input :upload, as: :file %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.button :submit, "#{t :guardar}", class: "btn-flat btn-danger" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

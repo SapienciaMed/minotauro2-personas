@@ -1,0 +1,33 @@
+
+wd = xlsx_package.workbook
+wd.styles do |style|
+  title = wd.styles.add_style(b: true, bg_color: "FF045FB4", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  header = wd.styles.add_style(b: true, bg_color: "FF7DB4F4", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  header1 = wd.styles.add_style(b: true, bg_color: "FFE87F07", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  header2 = wd.styles.add_style(b: true, bg_color: "FF5EFF33", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  header3 = wd.styles.add_style(b: true, bg_color: "FF417932", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  header4 = wd.styles.add_style(b: true, bg_color: "FFE16E28", fg_color: 'F5F6CE', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  datosiz = wd.styles.add_style(sz: 11, font_name: "Calibri", :alignment => { :horizontal => :left, :vertical => :center })
+  datoscent = wd.styles.add_style(sz: 11, font_name: "Calibri", :alignment => { :horizontal => :center, :vertical => :center })
+  datosder = wd.styles.add_style(sz: 11, font_name: "Calibri", :alignment => { :horizontal => :right, :vertical => :center })
+  fecha = wd.styles.add_style(sz: 11, font_name: "Calibri", :format_code => 'dd-mm-yyyy', :alignment => { :horizontal => :center, :vertical => :center })
+  datosnumeros = wd.styles.add_style(:format_code => '#,###,###0.#0', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :right, :vertical => :center })
+  datosint = wd.styles.add_style(:format_code => '#,###,###0', sz: 11, font_name: "Calibri", :alignment => { :horizontal => :right, :vertical => :center })
+  porcentaje = wd.styles.add_style(:num_fmt => Axlsx::NUM_FMT_PERCENT, sz: 11, font_name: "Calibri", :alignment => { :horizontal => :right, :vertical => :center })
+  observacion = wd.styles.add_style(sz: 11, font_name: "Calibri", :alignment => { :horizontal => :left, :vertical => :center, :wrap_text => true })
+  fecha_min = wd.styles.add_style(sz: 11, font_name: "Calibri", :format_code => 'dd-mm-yyyy HH:MM:SS', :alignment => { :horizontal => :center, :vertical => :center })
+
+  tamano = [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 120]
+
+    moduloscampos = Moduloscampo.where(modulo_id: @moduloid).order("orden asc")
+    nombreinforme = Modulo.find(@moduloid).descripcion.to_s rescue nil
+    wd.add_worksheet(:name => nombreinforme) do |sheet|
+      campo = moduloscampos.map(&:encabezado).join(',').split(',')
+      tipo = moduloscampos.map(&:tipo).join(',').split(',')
+      detalle = moduloscampos.map(&:detalle).join(',').split(',')
+      sheet.add_row campo, :style => title, :widths => tamano
+      sheet.add_row tipo, :style => header, :widths => tamano
+      sheet.add_row detalle, :style => header1, :widths => tamano
+    end
+
+end

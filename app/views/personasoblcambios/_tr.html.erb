@@ -1,0 +1,10 @@
+<tr id="personasoblcambio_<%=personasoblcambio.id%>">
+  <td class="text-center"></td>
+  <td><div align="center"><%=personasoblcambio.fecha_matricula rescue nil %></div></td>
+  <td><div align="left"><%=personasoblcambio.user.username rescue nil %></div></td>
+  <td><div align="center"><%=personasoblcambio.plazo rescue nil %></div></td>
+  <td><div align="center"><%=camponumerico personasoblcambio.tasa_final rescue nil %>% E.A.</div></td>
+  <td><div align="center">$ <%=camponumerico personasoblcambio.valor rescue nil %></div></td>
+  <td><div style="color:red; font-size:12px; font-family: Tahoma;" align="center"><strong><%=personasoblcambio.estado rescue nil %></strong></div></td>
+  <td><div align="justify"><%=personasoblcambio.observaciones rescue nil %></div></td>
+</tr>

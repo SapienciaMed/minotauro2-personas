@@ -1,0 +1,19 @@
+<div id="personasobligacion_<%= personasobligacion.id %>">
+  <div class="box-header with-border">
+    <div style="min-height: .01%;">
+      <table class="table table-bordered table-condensed" border="2">
+        <tr style="background-color: #ecf0f5;">
+          <th><%= render '/personasobligaciones/botones', personasobligacion: personasobligacion %></th>
+          <th width="20%">
+            <div align="center">
+              <span class="label label-danger"><strong>
+                Valor Minimo de pago <%= camponumerico (personasobligacion.totalvencido.to_f + personasobligacion.vlrcuota.to_f) rescue 0 %></strong></span>
+            </div>
+          </th>
+        </tr>
+      </table>
+    </div>
+    <%= render "/personasobligaciones/parte1", personasobligacion: personasobligacion %>
+    <%= render "/personasobligaciones/parte2", personasobligacion: personasobligacion %>
+  </div>
+</div>

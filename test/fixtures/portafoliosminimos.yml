@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  portafolio_id: 1
+  user_id: 1
+  diasminicio: 1
+  diasmfin: 1
+  portafoliosvehiculo_id: 1
+  portatoliossucursal_id: 1
+  cliente_id: 1
+  instancia1: 9.99
+  instancia2: 9.99
+  instancia3: 9.99
+  aplicable_a: MyString
+
+two:
+  portafolio_id: 1
+  user_id: 1
+  diasminicio: 1
+  diasmfin: 1
+  portafoliosvehiculo_id: 1
+  portatoliossucursal_id: 1
+  cliente_id: 1
+  instancia1: 9.99
+  instancia2: 9.99
+  instancia3: 9.99
+  aplicable_a: MyString

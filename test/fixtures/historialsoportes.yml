@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  userasigna_id: 1
+  user_id: 1
+  soporte_id: 1
+
+two:
+  userasigna_id: 1
+  user_id: 1
+  soporte_id: 1

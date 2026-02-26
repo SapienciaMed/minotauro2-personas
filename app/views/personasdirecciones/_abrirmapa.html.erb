@@ -1,0 +1,99 @@
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzdJ4apPLQbCjiG4Mvrc4_AssKzDP88Ys&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters"></script>
+<div class="modal-header">
+	  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+	  <h3 class="modal-title"><strong><i class="fa fa-map-marker" aria-hidden="true"></i> <%= @personasdireccion.persona.identificacion rescue nil%> <%= @personasdireccion.persona.primer_nombre rescue nil%></strong> <small><%= @personasdireccion.direccion rescue nil%></small></h3>
+	</div>
+	<div class="modal-body" style="height: 720px;">
+		<div class="row">
+      <div class="col-md-5" id="floating-panel">    
+        <input id="address" type="hidden"  size="45">
+        <input id="submit" type="hidden" value="Buscar">
+       </div>
+    </div>
+	<div style='width: 800px;'>
+	  <div id="map" style='width: 1275px; height: 670px;'></div>
+	</div>
+</div>
+ <script>
+    function initMap() {
+      var uluru = {lat: <%= @personasdireccion.coordenada_y %>, lng: <%= @personasdireccion.coordenada_x %>};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        center: uluru
+      });
+
+
+      var geocoder = new google.maps.Geocoder();
+      var infowindow = new google.maps.InfoWindow;
+
+      document.getElementById('submit').addEventListener('click', function() {
+        geocodeAddress(geocoder, map);
+      });
+
+
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+      attachSecretMessage(marker, "<strong>DIRECCIÓN: </strong><%= @personasdireccion.direccion %><br/><strong>LATITUD: </strong><%= @personasdireccion.coordenada_x %><br/><strong>LONGITUD: </strong><%= @personasdireccion.coordenada_y %><br/><strong>OBSERVACIÓN: </strong><%= @personasdireccion.observacion %>");
+
+    }
+
+    function geocodeLatLng(geocoder, map, infowindow) {
+        var input = document.getElementById('latlng').value;
+        var latlngStr = input.split(',', 2);
+        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[1]) {
+              map.setZoom(11);
+              var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              infowindow.open(map, marker);
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+
+
+    // MUESTRA EL MENSAJE CON CLIC
+    function attachSecretMessage(marker, secretMessage) {
+        var infowindow = new google.maps.InfoWindow({
+          content: secretMessage
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(marker.get('map'), marker);
+        });
+      }
+
+      // BUSCADOR POR DIRECCION
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('address').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } else {
+            alert('La busqueda no tuvo éxito por la siguiente razón: ' + status);
+          }
+        });
+      }    
+
+
+  </script> </div>
+
+
+
+

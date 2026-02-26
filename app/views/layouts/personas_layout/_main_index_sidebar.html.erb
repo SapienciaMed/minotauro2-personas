@@ -1,0 +1,84 @@
+<aside class="main-sidebar" style="margin-top: 10px;">
+  <section class="sidebar">
+    <div align="center"><%= link_to root_path do %> <i class="fa fa-arrow-left text-success"></i> <%= I18n.t("regresar") %><% end %></div>
+      <%
+        @user = User.find(is_admin)
+        usr = @user
+        estados = []
+        estados << 'BUSCADOR'
+        if is_auth_c("empleado")
+          estados << 'PRESUPUESTOS EN PROCESO'
+        end
+        estados << 'REPORTES'
+      %>
+
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="header"><%= I18n.t("menu") %></li>
+      <%
+        estados.each do |p|
+          if usr.etapa.to_s == p
+            clase = "active"
+          else
+            clase = ""
+          end
+      %>
+        <li class="<%= clase %>">
+          <%= link_to etapar_personas_path(etapa: p), style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;"><%= p.capitalize %></span>
+          <% end %>
+        </li>
+      <% end %>
+      <% if is_auth_c("empleado") %>
+        <li class="<%= active_class(rubros_path) %>">
+          <%= link_to rubros_path, style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Rubros</span>
+          <% end %>
+        </li>
+      <% end %>
+      <% if is_auth_c("minutaenproceso") %>
+        <li class="<%= active_class(dash_estudiosprevios_path) %>">
+          <%= link_to dash_estudiosprevios_path, style: "padding: 7px 0px 7px 15px;" do %>
+            <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Minutas en Proceso</span>
+          <% end %>
+        </li>
+      <% end %>
+<%
+  is_auth_c_controlvacaciones = is_auth_c("controlvacaciones")
+  is_auth_c_controltiquetera = is_auth_c("controltiquetera")
+  is_auth_c_tiqueterasdato = is_auth_c("tiqueterasdato")
+%>
+      <% if is_auth_c_controlvacaciones or is_auth_c_controltiquetera or is_auth_c_tiqueterasdato%>
+        <li class="header">Opciones Administrativas</li>
+        <%
+          estados2 = []
+          clase2 = ""
+          if is_auth_c_controlvacaciones
+            estados2 << 'VACACIONES'
+          end
+          if is_auth_c_controltiquetera
+            estados2 << 'TIQUETERA'
+          end
+          estados2.each do |p|
+            if usr.etapa.to_s == p
+              clase2 = "active"
+            else
+              clase2 = ""
+            end
+        %>
+          <li class="<%= clase2 %>">
+            <%= link_to etapar_personas_path(etapa: p), style: "padding: 7px 0px 7px 15px;" do %>
+              <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Control <%= p.capitalize %></span>
+            <% end %>
+          </li>
+        <% end %>
+        <% if is_auth_c_tiqueterasdato %>
+          <li class="<%= active_class(tiqueteras_path) %>">
+            <%= link_to tiqueteras_path, style: "padding: 7px 0px 7px 15px;" do %>
+              <i class="fa fa-cog"></i> <span style="font-size: 12px !important;">Admin Tiqueteras</span>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </section>
+</aside>

@@ -1,0 +1,58 @@
+<% isportafolio = is_portafolio %>
+<% if isportafolio == 10142 %>
+  <tr id="planesobligacion_<%= planesobligacion.id %>">
+    <td><div align="center" style='font-size: 12px;'><%=planesobligacion.nro_cuota%></div></td>
+    <td><div align="center" style='font-size: 12px;'><%=planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.inicial) %></td>
+    <td class="text-right" style='font-size: 12px;'><strong><%=camponumerico(planesobligacion.cuota) %></strong></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.amortiza) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.corriente) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.igv) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.valor_seguro2) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.final) %></td>
+    <td style='font-size: 12px;'><div align="center"><%=planesobligacion.nro_cuota%></div></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.comp) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.igv_comp) %></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.mora) %></td>
+    <td class="text-right" style='font-size: 12px;'><strong><%=camponumerico(planesobligacion.valorpagarfit) rescue 0%></strong></td>
+  </tr>
+<% else%>
+  <tr id="planesobligacion_<%= planesobligacion.id %>">
+    <td><div align="center" style='font-size: 12px;'><%=planesobligacion.nro_cuota%></div></td>
+    <% if planesobligacion.fechadepago.to_s != "" %>
+    <td><div align="center" style='font-size: 12px;'><%=planesobligacion.fechadepago.strftime("%Y-%m-%d") rescue nil%></div></td>
+    <% end %>
+    <td><div align="center" style='font-size: 12px;'>
+    <% if @planesobligaciones.count.to_i == 1 and [10018,10118,10100].exclude?(isportafolio) %>
+        <a title="Fecha inicio en teseo: <%=planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %>">
+        <%=planesobligacion.personasobligacion.fecha_iniciomora.strftime("%Y-%m-%d") rescue nil%>
+        </a>
+    <% else %>
+        <%=planesobligacion.fecha_vence.strftime("%Y-%m-%d") %>
+    <% end %>
+        </div></td>
+    <td class="text-right" style='font-size: 12px;'>
+      <strong><%=camponumerico(planesobligacion.inicial) %></strong></td>
+    <td class="text-right" style='font-size: 12px;'><strong><%=camponumerico(planesobligacion.cuota) %></strong></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.cuota_ori) %></td>
+    <td class="text-right" style='font-size: 12px;'><strong><%=camponumerico(planesobligacion.amortiza) %></strong></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.amortiza_ori) %></td>
+    <td class="text-right" style='font-size: 12px;'><strong><%=camponumerico(planesobligacion.corriente) %></strong></td>
+    <td class="text-right" style='font-size: 12px;'><%=camponumerico(planesobligacion.corriente_ori) %></td>
+    <td class="text-right" style='font-size: 12px;'>
+      <% if planesobligacion.final != planesobligacion.final_ori and planesobligacion.fecha_vence <= is_fechahoy%>
+        <div class="text-red">
+          <strong><a title="Extraordinario"><%=camponumerico(planesobligacion.final) %></a></strong>
+        </div>
+      <% else %>
+        <strong><%=camponumerico(planesobligacion.final) %></strong>
+      <% end %>
+    </td>
+    <td><div align="right" style="font-size: 12px;"><%=camponumerico(planesobligacion.final_ori) %></div></td>
+    <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+    <td><div align="right" style="font-size: 12px;"><%=camponumerico(planesobligacion.otros) %></div></td>
+    <% end %>
+    <td><div align="right" style="font-size: 12px;"><%=camponumerico(planesobligacion.valor_pagar) %></div></td>
+    <td style='font-size: 12px;'><div align="center"><%=planesobligacion.nro_cuota%></div></td>
+  </tr>
+<% end %>

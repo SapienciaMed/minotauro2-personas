@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesrecmanual: one
+  user: one
+  observacion: MyText
+
+two:
+  planesrecmanual: two
+  user: two
+  observacion: MyText

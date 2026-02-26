@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesrecaudo_id: 1
+  personasobligacion: one
+  fecha: 2021-09-25
+  : one
+  valor_original: 9.99
+  valor: 9.99
+
+two:
+  planesrecaudo_id: 1
+  personasobligacion: two
+  fecha: 2021-09-25
+  : two
+  valor_original: 9.99
+  valor: 9.99

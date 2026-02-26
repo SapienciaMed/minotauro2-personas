@@ -1,0 +1,12 @@
+<% if @clientesusers.present? %>
+  $('#personasobligacion_clientesuser').empty();
+  $('#personasobligacion_clientesuser').append('<option selected>Seleccione</option>');
+  <% @clientesusers.each do |personasobligacion| %>
+    $('#personasobligacion_clientesuser').append('<option value="<%= personasobligacion.id %>"><%= personasobligacion.descripcion %></option>');
+  <% end %>
+  $('#personasobligacion_clientesuser').prop('disabled', false);
+<% else %>
+  $('#personasobligacion_clientesuser').empty();
+  $('#personasobligacion_clientesuser').append('<option selected>Seleccione</option>');
+  $('#personasobligacion_clientesuser').prop('disabled', true);
+<% end %>

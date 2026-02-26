@@ -1,0 +1,13 @@
+<% if @ruta == 'ABRIR' %>
+$("#abrir_detalle<%= @planesrecaudo.id %>").html('<%= j render "abrir_detalle", planesrecaudo: @planesrecaudo %>');
+$("#abrir<%= @planesrecaudo.id %>").addClass("hide");
+$("#cerrar<%= @planesrecaudo.id %>").removeClass("hide");
+<% else %>
+$("#abrir<%= @planesrecaudo.id %>").removeClass("hide");
+$("#cerrar<%= @planesrecaudo.id %>").addClass("hide");
+$("#abrir_detalle<%= @planesrecaudo.id %>").html(null);
+<% end %>
+
+$(function(){
+    $('.pagination a').attr('data-remote', 'true')
+});

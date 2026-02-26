@@ -1,0 +1,30 @@
+<%=  javascript_include_tag :defaults %>
+<div class="page-header">
+    <h2>Personas <%= link_to 'Regresar', personas_path, :class=>"btn btn-success" %></h2>
+</div>
+<div align="center">
+  <strong>Nro Total de Registro : <%=@personas.count%></strong>
+</div>
+<br/>
+<table class="table table-bordered table-striped table-hover">
+  <tr>
+    <th>Identificacion</th>
+    <th>Nombre</th>
+    <th>Email</th>
+    <th>Email alterno</th>
+    <th></th>
+  </tr>
+<% @personas.each do |persona| %>
+  <tr>
+    <td><%=h persona.identificacion %></td>
+    <td><%=h persona.nombres %></td>
+    <td><%=h persona.email %></td>
+    <td><%=h persona.email_secundario %></td>
+    <td><%= link_to 'Editar', edit_persona_path(persona), :class=>"btn btn-success btn-small"%></td>
+  </tr>
+<% end %>
+</table>
+<div align="center">
+  <strong>Nro Total de Registro : <%=@personas.count%></strong>
+</div>
+<br/>

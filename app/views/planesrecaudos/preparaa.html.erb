@@ -1,0 +1,71 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <legend>
+      <%= link_to edit_persona_path(@personasobligacion.persona_id), data: { toggle: 'tooltip' }, title: 'Regresar a la obligacion' do %>
+        <i class="fa fa-arrow-left fa-fw" aria-hidden="true"></i>
+      <% end %>
+      Anulación de recaudos (<%=@personasobligacion.persona.autobuscar rescue nil%>)
+    </legend>
+  </div>
+  <div class="box-body">
+    <%= form_tag anulacion_planesrecaudos_path, :method => 'get' do %>
+        <%= hidden_field_tag :personasobligacion_id, @personasobligacion.id,{ :class => "span1" } %>
+        <%= hidden_field_tag :planesrecaudo_id, @planesrecaudo.id,{ :class => "span1" } %>
+        <div align="center">
+        <table class="table table-bordered table-condensed table-striped">
+          <tr>
+            <td width="27%"><strong>Observación para la anulación * </strong></td>
+            <td><%=text_area(:observaciones, params[:observaciones], :rows=>"4",cols: 25, class: 'form-control', :maxlength => 3900, :onChange=> "javascript:this.value=this.value.toUpperCase();") %>
+            </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td><%= submit_tag "Procesar",:confirm=>"Seguro que desea realizar esta operación en el Recaudo???",:class=>"btn btn-primary" %></td>
+          </tr>
+        </table>
+        <table class="table table-bordered table-striped table-hover">
+          <tr>
+            <th width="12%">Fecha recaudo</th>
+            <th width="63%">Aplicación de Pagos</th>
+            <th width="10%">Tipo pago</th>
+            <th width="15%">Tipo de Afectacion</th>
+          </tr>
+          <tr>
+            <td><%=h @planesrecaudo.fecha_recaudo rescue nil %>
+            <% if @planesrecaudo.estado.to_s == 'ANULADO' %>
+                <br/><br/><div class="alert-danger" align="left" style="font-size: 11px;"><strong>ANULADO
+                <br/><%=User.find(@planesrecaudo.useranula_id).username rescue nil%>
+                <br/><%=@planesrecaudo.updated_at.strftime("%Y-%m-%d %X") rescue nil%>
+                </strong></div>
+            <% end %>
+                  </td>
+            <td>
+              <table class="table table-bordered table-striped table-hover">
+                <tr>
+                  <th width="60%">Tipo</th>
+                  <th width="40%"><div align="center" style="font-size: 12px;">Valor aplicado</strong></div></th>
+                </tr>
+              <% for @planesrecaudosdetalle in @planesrecaudo.planesrecaudosdetalles.where("valor_aplicado > 0").order('id asc') %>
+                <tr>
+                  <td><%=h @planesrecaudosdetalle.tipo %></td>
+                  <td><div align="right"><%=camponumerico(@planesrecaudosdetalle.valor_aplicado) rescue nil %></div></td>
+                </tr>
+              <% end %>
+                <tr>
+                  <th>VALOR TOTAL DEL PAGO</th>
+                  <th><div align="right"><%=camponumerico(@planesrecaudo.valor) rescue nil %></div></th>
+                </tr>
+              </table>
+              <% if @planesrecaudo.observaciones %>
+                 <div style="color:red; font-size:9px; font-family: Tahoma;" align="justify"><strong>OBSERVACION: </strong><%=@planesrecaudo.observaciones rescue nil%></div>
+              <% end %>
+              <div style="color:red; font-size:9px; font-family: Tahoma;" align="justify"><strong>TRANSACCIÓN REALIZADA POR: </strong><%=@planesrecaudo.user.nombre rescue nil%></div>
+            </td>
+            <td><%=h @planesrecaudo.tipo_pago %></td>
+            <td><%=h @planesrecaudo.tipo_afecta %></td>
+          </tr>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+$("#cambio .modal-content").html('<%= j render "cambiovalores" %>');
+$("#cambio").modal();
+
+$(".tooltip").tooltip("hide");
+$('[data-toggle="tooltip"]').tooltip();
+$(".select2").select2();
+<% if [10031,10029].include?(@personasobligacion.portafolio_id) %>
+<% f1 = Date.today %>
+<% f2 = @personasobligacion.created_at.to_date %>
+<% dias = (f1 - f2).to_i %>
+$('.datepicker').datepicker({
+    dayNamesMin: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb"],
+    monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    dateFormat: "yy-mm-dd",
+
+    yearRange: '<%= @personasobligacion.created_at.year %>:<%= @personasobligacion.created_at.year + 6 %>',
+    minDate: -<%= dias %>, maxDate: "+38M +15D",
+    changeMonth: true,
+    changeYear: true
+});
+<% else  %>
+$('.datepicker').datepicker({
+    dayNamesMin: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb"],
+    monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    dateFormat: "yy-mm-dd",
+    yearRange: '1920:' + (new Date).getFullYear(),
+    changeMonth: true,
+    changeYear: true,
+});
+<% end %>

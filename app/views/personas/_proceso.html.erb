@@ -1,0 +1,65 @@
+<legend>Vigilancia Judicial</legend>
+  <% for personasproceso in @persona.personasprocesos.find(:all, :order => 'created_at DESC') %>
+    <table class="table table-bordered table-striped table-hover">
+      <tr>
+        <td width="5%"><strong></strong></td>
+        <td width="10%"><strong>Obligación</strong></td>
+        <td width="15%"><strong>Saldo total deuda</strong></td>
+        <td width="15%"><strong>Radicado</strong></td>
+        <td width="15%"><strong>Tipo de proceso</strong></td>
+        <td width="10%"><strong>Nro de Juzgado</strong></td>
+        <td width="15%"><strong>Ciudad Juzgado</strong></td>
+        <td width="15%"><strong>Tipo de Juzgado</strong></td>
+
+       </tr>
+       <tr>
+        <td rowspan="4"><div align="center"><%= link_to image_tag("editar.png", :title => "Editar"), {:controller=>"personasprocesos", :action=>"edit", :id=>personasproceso.id}%></div></td>
+        <td><%=personasproceso.personasobligacion.nro_obligacion rescue nil%></td>
+        <td>$ <%=camponumerico(personasproceso.personasobligacion.saldototaldeuda) rescue nil%></td>
+        <td><%=personasproceso.radicado rescue nil%></td>
+        <td><%=personasproceso.tipo_proceso rescue nil%></td>
+        <td><%=personasproceso.nro_juzgado rescue nil%></td>
+        <td><%=personasproceso.municipio.descripcion rescue nil%></td>
+        <td><%=personasproceso.tipo_juzgado rescue nil%></td>
+       </tr>
+       <tr>
+          <td colspan="3"><strong>Abogado Asignado</strong></td>
+          <td colspan="4"><strong>Estado</strong></td>
+       </tr>
+       <tr>          
+          <td colspan="3"><%=personasproceso.useraboagadonombre rescue nil%></td>
+          <td colspan="4"><%=personasproceso.estado rescue nil%></td>
+       </tr>
+       <tr>
+         <td colspan="7">
+            <table class="table table-bordered table-striped">
+               <tr valign="middle">
+                 <th>Etapa actual del proceso</th>
+                 <th>Fecha</th>
+                 <th>Soporte Digital</th>
+               </tr>
+               <tr valign="middle">
+                 <td>PRESENTACION DEMANDA</td>
+                 <td>2015-12-14</td>
+                 <td>
+                    <% if  personasproceso.personasproimagenes.exists? %>
+                        <table class="table table-bordered table-striped">
+                        <% for personasproimagen in personasproceso.personasproimagenes.find(:all,:order => 'created_at DESC') %>
+                           <tr  valign="middle">
+                             <td width="10%"><div align="center">
+                                  <%= link_to image_tag("buscar.png", :title => "Ver"), personasproimagen.proceso.url(:original, false),{ :popup => ['new_window','height=450,width=600,scrollbars=yes']}%>
+                             </div></td>
+                             <td width="45%"><%=personasproimagen.proceso_file_name rescue nil%></td>
+                           </tr>
+                        <% end %>
+                        </table>
+                    <% end %>
+                 </td>
+               </tr>
+            </table>
+
+          </td>
+       </tr>
+    </table>
+  <% end %>
+<%# end %>

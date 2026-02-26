@@ -1,0 +1,92 @@
+
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+    <tr class="thcolor">
+      <th class="text-center">Nro Obligacion</th>
+      <th class="text-center">Fecha Creación</th>
+      <th class="text-center">Tasa Interes PAC</th>
+      <th class="text-center">Valor Credito</th>
+      <th class="text-center">Valor Otros</th>
+      <th class="text-center">Total Financiado</th>
+      <th class="text-center">Fch Ult. Pago</th>
+      <th class="text-center">Vlr Ult. Pago</th>
+    </tr>
+    <tr>
+      <td class="text-center text-blue" data-toggle="tooltip" data-original-title="Fondo: <%=personasobligacion.fondo rescue nil%> - PAC: <%=personasobligacion.pac rescue nil%>"><%= personasobligacion.nro_obligacion rescue nil %></td>
+      <td class="text-center"><%=personasobligacion.created_at.strftime("%Y-%m-%d %X") rescue nil %></td>
+      <td class="text-center text-blue" data-toggle="tooltip" data-original-title="IPC <%=personasobligacion.tasa_ipc rescue nil%> + <%=personasobligacion.tasa_puntos rescue nil%> - Tasa Mora: <%=personasobligacion.tasa_mora rescue nil %>"><%=personasobligacion.tasa_final rescue nil%> E.A.</td>
+      <td class="text-center"><%=camponumerico(personasobligacion.valor) rescue nil%></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.reestruc_vlr_otros_ori.to_f) rescue nil%></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.totalfinanciado) rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.fch_ult_pago.strftime("%Y-%m-%d") rescue nil %></td>
+      <td class="text-center"><%= camponumerico personasobligacion.vlrultimorecaudo %></td>
+    </tr>
+  </table>
+  <table class="table table-bordered table-condensed table-striped">
+    <tr>
+      <th colspan="5" class="text-center thcolorred"><%= t :personasobligaciones_p2_vencidos %></th>
+      <th colspan="4" class="text-center thcolororange"><%= t :personasobligaciones_p2_vigentes %></th>
+      <th colspan="3" class="text-center thcolorgreen"><%= t :personasobligaciones_p2_valor_pagar %></th>
+      <th rowspan="2" class="text-center thcolor"><%= t :personasobligaciones_p2_saldo_total %><br/><%= t :personasobligaciones_p2_deuda %></th>
+    </tr>
+    <tr class="thcolor">
+      <th class="text-center">Capital</th>
+      <th class="text-center">Corriente</th>
+      <th class="text-center">Otros</th>
+      <th class="text-center">Mora</th>
+      <th class="text-center">Total</th>
+      <th class="text-center">Capital</th>
+      <th class="text-center">Corriente</th>
+      <th class="text-center">Otros</th>
+      <th class="text-center">Total</th>
+      <th class="text-center">Capital</th>
+      <th class="text-center">Otros</th>
+      <th class="text-center">Total</th>
+    </tr>
+    <tr>
+      <td class="text-center"><%=camponumerico(personasobligacion.saldocapitalvencido) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.saldointerescorriente) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.saldootros) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.saldointeresmora) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.totalvencido) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.vlrcuotacapital) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.vlrcuotacorriente) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.vlrcuotaotros) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.vlrcuota) rescue nil %></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.capitalporpagar) rescue nil%></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.otrosporpagar) rescue nil%></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.totalporpagar) rescue nil%></td>
+      <td class="text-center"><%=camponumerico(personasobligacion.saldototaldeuda) rescue nil%></td>
+    </tr>
+  </table>
+  <table class="table table-bordered table-condensed table-striped">
+    <tr class="thcolor">
+      <th class="text-center">Analista de Cartera</th>
+      <th colspan="5" class="text-center">Contadores</th>
+      <th colspan="3" class="text-center">Estado del Credito</th>              
+    </tr>
+    <tr>
+      <td rowspan="2" class="text-center">
+        <div style="color:red; font-size:14px; font-family: Tahoma;" align="center"><%=User.find(personasobligacion.userresponsable_id).nombre rescue nil%>
+        <% if personasobligacion.insolvencia.to_s == 'SI' %><br/>( INSOLVENCIA )<% end %></div></td>
+      <th class="text-center thcolor">Plazo</th>
+      <th class="text-center thcolor">Altura</th>
+      <th class="text-center thcolor">Pagadas</th>
+      <th class="text-center thcolor">En Mora</th>
+      <th class="text-center thcolor">Por Facturar</th>
+      <th class="text-center thcolor">Dias Vencidos</th>
+      <th class="text-center thcolor">Calificación Cartera</th>
+      <th class="text-center thcolor">Estado Obligacion</th>
+    </tr>
+    <tr>
+      <td class="text-center"><%=personasobligacion.obplazo rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.obaltura rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.obcuotaspagadas rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.obcuotasmora rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.obcuotasporpagar rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.diasvencoblig rescue nil%></td>
+      <td class="text-center"><%=personasobligacion.calificacion rescue nil%></td>
+      <td><div style="color:red; font-size:16px; font-family: Tahoma;" align="center"><strong><%=personasobligacion.estadoobli rescue nil%></strong></div></td>
+    </tr>
+  </table>
+  </div>

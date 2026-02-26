@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  identificacion_becario: MyString
+  nombre_becario: MyString
+  identificacion_acudiente: MyString
+  nombre_acudiente: MyString
+
+two:
+  identificacion_becario: MyString
+  nombre_becario: MyString
+  identificacion_acudiente: MyString
+  nombre_acudiente: MyString

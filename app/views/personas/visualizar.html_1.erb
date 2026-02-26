@@ -1,0 +1,158 @@
+<%
+   #for indicadoresficha in @indicador.indicadoresfichas.find(:all, :order => 'anno,mes')
+      #@valores = @valores + (indicadoresficha.resultado.to_i).to_s + ','
+      #@meses   = @meses + '"' + descmesmin(indicadoresficha.mes).to_s + '-' + indicadoresficha.anno.to_s + '",'
+      #@limite  = @limite + @indicador.limite.to_s+ ','
+      #@meta  = @meta + @indicador.meta.to_s+ ','
+   #end
+
+   @valores = "11,12,13,50"
+   @meses = ""
+   @a10_2014 = ""
+   @a11_2014 = ""
+   @a12_2014 = ""
+   @a01_2015 = ""
+   @a02_2015 = ""
+   @a03_2015 = ""
+   @a04_2015 = ""
+   @a05_2015 = ""
+   @a06_2015 = ""
+   @a07_2015 = ""
+   @a08_2015 = ""
+   @a09_2015 = ""
+   @a10_2015 = ""
+   @a11_2015 = ""
+   @a12_2015 = ""
+   objetos = Objeto.find_by_sql(["select * from informesrecaudo"])
+   objetos.each do |objeto|
+     @meses = @meses + "'" + objeto.dia.to_s + "',"
+     @a10_2014 = @a10_2014 + objeto.a10_2014.to_s + ','
+     @a11_2014 = @a11_2014 + objeto.a11_2014.to_s + ','
+     @a12_2014 = @a12_2014 + objeto.a12_2014.to_s + ','
+     @a01_2015 = @a01_2015 + objeto.a01_2015.to_s + ','
+     @a02_2015 = @a02_2015 + objeto.a02_2015.to_s + ','
+     @a03_2015 = @a03_2015 + objeto.a03_2015.to_s + ','
+     @a04_2015 = @a04_2015 + objeto.a04_2015.to_s + ','
+     @a05_2015 = @a05_2015 + objeto.a05_2015.to_s + ','
+     @a06_2015 = @a06_2015 + objeto.a06_2015.to_s + ','
+     @a07_2015 = @a07_2015 + objeto.a07_2015.to_s + ','
+     @a08_2015 = @a08_2015 + objeto.a08_2015.to_s + ','
+     @a09_2015 = @a09_2015 + objeto.a09_2015.to_s + ','
+     @a10_2015 = @a10_2015 + objeto.a10_2015.to_s + ','
+     @a11_2015 = @a11_2015 + objeto.a11_2015.to_s + ','
+     @a12_2015 = @a12_2015 + objeto.a12_2015.to_s + ','
+   end
+%>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+   <title>..:: ---- ::..</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+   <%= javascript_include_tag '/hc_js/highcharts' %>
+   <%= javascript_include_tag '/hc_js/modules/exporting' %>
+<script type="text/javascript">
+$(function () {
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line',
+                marginRight: 130,
+                marginBottom: 25
+            },
+            title: {
+                text: 'Indicador Pruebas',
+                x: -20 //center
+            },
+            <%#*subtitle: {%>
+                <%#*text: 'Source: WorldClimate.com',%>
+                <%#*x: -20%>
+            <%#*},%>
+            xAxis: {
+                categories: [<%=@meses%>]
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y ;
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: [{
+                name: 'Mes 10-2014',
+                data: [<%=@a10_2014%>]
+            },{
+                name: 'Mes 11-2014',
+                data: [<%=@a11_2014%>]
+            },{
+                name: 'Mes 12-2014',
+                data: [<%=@a12_2014%>]
+            },{
+                name: 'Mes 01-2015',
+                data: [<%=@a01_2015%>]
+            },{
+                name: 'Mes 02-2015',
+                data: [<%=@a02_2015%>]
+            },{
+                name: 'Mes 03-2015',
+                data: [<%=@a03_2015%>]
+            },{
+                name: 'Mes 04-2015',
+                data: [<%=@a04_2015%>]
+            },{
+                name: 'Mes 05-2015',
+                data: [<%=@a05_2015%>]
+            },{
+                name: 'Mes 06-2015',
+                data: [<%=@a06_2015%>]
+            },{
+                name: 'Mes 07-2015',
+                data: [<%=@a07_2015%>]
+            },{
+                name: 'Mes 08-2015',
+                data: [<%=@a08_2015%>]
+            },{
+                name: 'Mes 09-2015',
+                data: [<%=@a09_2015%>]
+            },{
+                name: 'Mes 10-2015',
+                data: [<%=@a10_2015%>]
+            },{
+                name: 'Mes 11-2015',
+                data: [<%=@a11_2015%>]
+            },{
+                name: 'Mes 12-2015',
+                data: [<%=@a12_2015%>]
+            }]
+        });
+    });
+
+});
+		</script>
+	</head>
+	<body>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>

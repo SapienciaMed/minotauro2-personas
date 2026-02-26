@@ -1,0 +1,85 @@
+<%
+  actresol = is_auth_a("actresolucion")
+  opcResol = false
+  if actresol
+    opcResol = true
+  end
+%>
+<legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+<div class="box box-primary">
+  <%= simple_form_for(@persona) do |f| %>
+    <div class="box-body">
+      <legend>Datos básicos de la persona</legend>
+      <% tipo_prejuridico = @persona.personasimagenes.where(["tipo = ?", 'COBRO PREJURIDICO']) 
+         unless tipo_prejuridico.blank? 
+           prejuridico = @persona.personasimagenes.where(["descripcion = ?", 'COBRO PREJURIDICO BENEFICIARIO']) 
+           juridico = @persona.personasimagenes.where(["descripcion = ?", 'ALISTAMIENTO']) 
+           if juridico.blank? && !prejuridico.blank? %>
+          <div class="alert alert-success">Persona en proceso de cobro <strong>prejurídico</strong></div>
+        <% else %>
+          <div class="alert alert-danger">Persona en proceso de cobro <strong>jurídico</strong></div>
+        <% end %>
+      <% end %>
+      <% if @persona.observacion_creacion.to_s != "" %>
+        <div class="alert alert-danger">Inconsistencia en el proceso de pagos <%=@persona.observacion_creacion.to_s rescue nil %></div>
+      <% end %>
+      <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <%= f.input :tipodocumento, collection: select_tipodoc, as: :select, input_html: { class: 'select2' }, label: 'Tipo de Documento' %>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <%= f.input :identificacion, as: :string, input_html: { :rows => 1 }, label: "Identificación" %>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4">
+            <%= f.input :primer_nombre, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: "Primer Nombre" %>
+          </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :segundo_nombre, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" } %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+          <%= f.input :primer_apellido, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" } %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :segundo_apellido, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" } %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :radicado, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: 'Radicado Beneficiario' %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :radicado_solidario, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: 'Radicado Deudor Solidario' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
+          <%= f.input :resolucion_2017, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();", disabled: opcResol }, label: 'Nro Resolucion' %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+          <%= f.input :fecha_resolucion, as: :string, label: 'Fecha de Nacimiento', input_html: { class: 'datepicker', data: { date_options: { format: 'YYYY-MM-DD', ignoreReadonly: true } }, readonly: true, disabled: opcResol }, label: 'Fecha Resolucion' %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
+          <%= f.input :valortotal, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: 'Valor Total' %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :nro_envio, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();", disabled: true }, label: 'Nro Envio' %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :identificacion_ori, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();", disabled: true }, label: 'Identificacion Original' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <%= f.input :proceso, collection: select_procesopersona, as: :select, input_html: { class: 'select2', disabled: opcResol }, label: 'Proceso' %>
+        </div>
+      </div>
+      <div class="box-footer">
+        <div class="box-tools pull-right">
+          <% if is_auth_a("persona") %>
+            <%= f.button :submit, "#{t :guardar}", class: "btn btn-success pull-right" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

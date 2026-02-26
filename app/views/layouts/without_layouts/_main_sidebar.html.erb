@@ -1,0 +1,39 @@
+<% est_fallecido = Personasrenovacion.where(["persona_id = #{@a} and estado_final = 'FALLECIDO'"]).exists? rescue nil %>
+
+<% usr = User.find(is_admin) %>
+<aside class="main-sidebar" style="position: fixed;">
+  <section class="sidebar">
+    <div align="center"><%= image_tag usr.avatar.url(:medium), alt: 'User Image', width: '128px', style: "border-radius: 15px; margin-top: 15px;" %></div>
+    <div class="user-panel">
+      <h4 class="text-center"><%= usr.nombre rescue nil %></h4>
+    </div>
+    <ul class="sidebar-menu" data-widget="tree" style="white-space: normal;">
+      <% if est_fallecido == false and [10100, 10101].include?(is_portafolio) %>
+        <li>
+          <%= link_to new_personasprograma_path(persona_id: @a, user_id: @b, tipo_programa: 'FORMAL') do %>
+            <i class="fa fa-plus-square"></i> <span>Nuevo Programa Formal</span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to new_personasprograma_path(persona_id: @a, user_id: @b, tipo_programa: 'NO FORMAL') do %>
+            <i class="fa fa-plus-square"></i> <span>Nuevo Programa No Formal</span>
+          <% end %>
+        </li>
+      <% end %>
+      <% if [10040].include?(is_portafolio) %>
+        <li class="<%= active_class(edit_persona_path(etapa: "A", id: current_user.persona_id)) %>">
+          <%= link_to edit_persona_path(etapa: "A", id: current_user.persona_id) do %>
+            <i class="fa fa-address-card-o"></i> <span><%= t :personas_menu_demografico %></span>
+          <% end %>
+        </li>
+      <% end %>
+      <% if [10040].exclude?(is_portafolio) %>
+        <li>
+          <%= link_to verconsolestudiante_personas_path(persona_id: @a), remote: true do %>
+            <i class="fa fa-bars"></i> <span>Ver Estado de Cuenta</span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+</aside>

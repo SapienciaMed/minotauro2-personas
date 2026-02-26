@@ -1,0 +1,19 @@
+<% if @personas.blank? %>
+  $(document).ready( function() {
+      url = "<%= personas_path %>"
+      $(location).attr("href", url);
+  });
+
+<% elsif @personas.count.to_i == 1 %>
+  $(document).ready( function() {
+      url = "<%= edit_persona_path(id: @personas.first.id, etapa: 'A') %>"
+      $(location).attr("href", url);
+  });
+<% else %>
+  $('#idSearch').html('<%= j render "tabla" %>');
+  $('#notContent').hide();
+  $('#ocultarTabla').hide();
+  $(".alert_flash").fadeOut(1000, function() {
+      $(this).remove();
+  });
+<% end %>

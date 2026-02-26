@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+  <h4 class="modal-title">Reversión Avanzada (<%=@personasobligacion.persona.autobuscar rescue nil%>)</h4>
+</div>
+<%= form_tag reversion_planesrecaudos_path, method: :post do %>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= hidden_field_tag :id, @planesrecaudo.id %>
+        <%= hidden_field_tag :idrecaudoult_teseo, params[:idrecaudoult_teseo].to_i %>
+        <%= hidden_field_tag :consecutivo, params[:consecutivo].to_i %>
+        <label for="observaciones">Observación de la Reversión:</label>
+        <%= text_area_tag :observaciones, params[:observaciones], { rows: 4, cols: 25, class: 'form-control' } %>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="pull-left btn btn-flat btn-default" data-dismiss="modal"><%=t :cancelar%></button>
+    <%= submit_tag "Reversar", data: { confirm: "Estas Seguro?" }, class: "btn btn-flat btn-danger" %>
+  </div>
+<% end %>

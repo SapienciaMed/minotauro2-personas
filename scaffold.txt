@@ -1,0 +1,191 @@
+Alter Table Users Add encrypted_password  VARCHAR2(255 CHAR) default '12345678' not Null;
+Alter Table Users Add reset_password_token   VARCHAR2(255 CHAR);
+Alter Table Users Add reset_password_sent_at TIMESTAMP(6);
+Alter Table Users Add remember_created_at    TIMESTAMP(6);
+Alter Table Users Add sign_in_count          NUMBER(38) default 0 not Null;
+Alter Table Users Add current_sign_in_at     TIMESTAMP(6);
+Alter Table Users Add last_sign_in_at        TIMESTAMP(6);
+Alter Table Users Add current_sign_in_ip     VARCHAR2(255 CHAR);
+Alter Table Users Add last_sign_in_ip        VARCHAR2(255 CHAR);
+Alter Table Users Add unique_session_id      VARCHAR2(20 CHAR);
+Alter Table Users Add otp_required_for_login NUMBER(1);
+Alter Table Users Add locked_at              TIMESTAMP(6);
+Alter Table Users Add avatar_file_name       VARCHAR2(255 CHAR);
+Alter Table Users Add avatar_content_type    VARCHAR2(255 CHAR);
+Alter Table Users Add avatar_file_size       NUMBER(38);
+Alter Table Users Add avatar_updated_at      TIMESTAMP(6);
+Alter Table Users Add etapa                  VARCHAR2(10 CHAR);
+Alter Table Users Add persona_id             NUMBER(38);
+
+
+create or replace function fch_minotauro_tokenpaymentez(vcAppcode Varchar, vcTimestamp varchar, vcUniqToken varchar) return varchar is
+  cadena varchar2(4000);
+begin
+  Select vcAppcode||';'||vcTimestamp||';'||vcUniqToken Into cadena From dual;
+  return cadena;
+end;
+
+
+
+
+-- Tabla paymentez
+create table PAYMENTEZ
+(
+  id                             NUMBER(38) not null,
+  transaction_status             VARCHAR2(255 CHAR),
+  transaction_order_description  VARCHAR2(255 CHAR),
+  transaction_authorization_code VARCHAR2(255 CHAR),
+  transaction_status_detail      VARCHAR2(255 CHAR),
+  transaction_date               VARCHAR2(255 CHAR),
+  transaction_message            VARCHAR2(255 CHAR),
+  transaction_id                 VARCHAR2(255 CHAR),
+  transaction_dev_reference      VARCHAR2(255 CHAR),
+  transaction_carrier_code       VARCHAR2(255 CHAR),
+  transaction_amount             VARCHAR2(255 CHAR),
+  transaction_paid_date          VARCHAR2(255 CHAR),
+  transaction_installments       VARCHAR2(255 CHAR),
+  transaction_ltp_id             VARCHAR2(255 CHAR),
+  transaction_stoken             VARCHAR2(255 CHAR),
+  transaction_application_code   VARCHAR2(255 CHAR),
+  user_id                        VARCHAR2(255 CHAR),
+  user_email                     VARCHAR2(255 CHAR),
+  card_bin                       VARCHAR2(255 CHAR),
+  card_holder_name               VARCHAR2(255 CHAR),
+  card_type                      VARCHAR2(255 CHAR),
+  card_number                    VARCHAR2(255 CHAR),
+  card_origin                    VARCHAR2(255 CHAR),
+  created_at                     TIMESTAMP(6) not null,
+  updated_at                     TIMESTAMP(6) not null
+);
+
+
+create sequence PAYMENTEZ_SEQ
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+create index MINO_IDX_202512001 on PLANESSIMULACIONES (personasobligacion_id);
+create index MINO_IDX_202512002 on SOLICITUDES (personasobligacion_id);
+create index MINO_IDX_202512003 on tabla (campo);
+create index MINO_IDX_202512004 on tabla (campo);
+create index MINO_IDX_202512005 on tabla (campo);
+create index MINO_IDX_202512006 on tabla (campo);
+create index MINO_IDX_202512007 on tabla (campo);
+create index MINO_IDX_202512008 on tabla (campo);
+create index MINO_IDX_202512009 on tabla (campo);
+create index MINO_IDX_202512010 on tabla (campo);
+
+create index MINO_IDX_202512011 on tabla (campo);
+create index MINO_IDX_202512012 on tabla (campo);
+create index MINO_IDX_202512013 on tabla (campo);
+create index MINO_IDX_202512014 on tabla (campo);
+create index MINO_IDX_202512015 on tabla (campo);
+create index MINO_IDX_202512016 on tabla (campo);
+create index MINO_IDX_202512017 on tabla (campo);
+create index MINO_IDX_202512018 on tabla (campo);
+create index MINO_IDX_202512019 on tabla (campo);
+create index MINO_IDX_202512010 on tabla (campo);
+
+
+rails g scaffold infgrupo nombre:string{100} nombre_archivo:string{50} estado:string{50} clase:string{100} consulta:string{4000}
+
+insert into infgrupos values (infgrupos_seq.nextval,','Informe de prueba','Prueba','ACTIVO',sysdate,sysdate,null,null);
+
+rails g scaffold infgruposcampo infgrupo:references orden:integer nombre:string{500} campo:string{50} estilo:string{50} tipo:string{50} tamano:string{20} estilo_encabezado:string{50}
+
+rails g scaffold migracioneslink consecutivo:integer user:references archivo_id:integer identificacion:string{30} nro_obligacion:string{30} valor:integer mensaje:string{500} persona_id:integer personasobligacion_id:integer estado:string{30} error:string
+rails g scaffold moduloscampo modulo:references orden:integer encabezado:string campo:string{100} tipo:string detalle:string
+rails g scaffold archivo user:references proceso:string estado:string{100} upload:attachment mensaje:string{2000}
+
+----------------------------------------- -------- ----------------------------
+ ID					   NOT NULL NUMBER(38)
+ PROCESO					    VARCHAR2(255 CHAR)
+ PORTAFOLIO_ID					    NUMBER(38)
+ USER_ID					    NUMBER(38)
+ ESTADO 					    VARCHAR2(255 CHAR)
+ UPLOAD_FILE_NAME				    VARCHAR2(255 CHAR)
+ UPLOAD_CONTENT_TYPE				    VARCHAR2(255 CHAR)
+ UPLOAD_FILE_SIZE				    NUMBER(38)
+ UPLOAD_UPDATED_AT				    TIMESTAMP(6)
+ CREATED_AT				   NOT NULL TIMESTAMP(6)
+ UPDATED_AT				   NOT NULL TIMESTAMP(6)
+ MENSAJE					    VARCHAR2(2000)
+ VALIDACIONRUTA 				    VARCHAR2(10)
+
+
+
+
+
+select distinct o.observacion, count(*) cantidad,
+        (select sum(amortiza) from planeshobligaciones r, personasobligaciones d
+        where d.portafolio_id = 10038 and r.personasobligacion_id = d.id and d.observacion = o.observacion) SaldoKmigrado,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id  and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2024-10'),0) rec_2024_10,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2024-11'),0) rec_2024_11,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2024-12'),0) rec_2024_12,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-01'),0) rec_2025_01,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-02'),0) rec_2025_02,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-03'),0) rec_2025_03,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-04'),0) rec_2025_04,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-05'),0) rec_2025_05,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-06'),0) rec_2025_06,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-07'),0) rec_2025_07,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-08'),0) rec_2025_08,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-09'),0) rec_2025_09,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-10'),0) rec_2025_10,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-11'),0) rec_2025_11,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2025-12'),0) rec_2025_12,
+       nvl((select sum(r.valor) from planesrecaudos r, personasobligaciones d
+        where r.portafolio_id = 10038 and r.personasobligacion_id = d.id and r.tipo_pago != 'AJUSTE CREDITO'
+        and   d.portafolio_id = r.portafolio_id and d.observacion = o.observacion
+        and  to_char(r.fecha_recaudo,'YYYY-MM') = '2026-01'),0) rec_2026_01
+from  personasobligaciones o
+where o.portafolio_id = 10038
+group by o.observacion

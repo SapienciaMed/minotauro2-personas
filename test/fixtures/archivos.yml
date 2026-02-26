@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  proceso: MyString
+  estado: MyString
+  upload: 
+  mensaje: MyString
+
+two:
+  user: two
+  proceso: MyString
+  estado: MyString
+  upload: 
+  mensaje: MyString

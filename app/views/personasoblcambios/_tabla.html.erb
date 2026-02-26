@@ -1,0 +1,21 @@
+<div class="table-responsive">
+	<table class="table table-bordered table-condensed">
+	  <thead class="thcolor">
+		<tr>
+			<th width="5%"></th>
+			<th width="10%"><div align="center">Fecha Matricula</div></th>
+			<th width="10%"><div align="center">Analista</div></th>
+			<th width="7%"><div align="center">Plazo</div></th>
+			<th width="7%"><div align="center">TasaFinal</div></th>
+			<th width="10%"><div align="center">Valor</div></th>
+			<th width="10%"><div align="center">Estado</div></th>
+			<th><div align="center">Observacion</div></th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personasoblcambios">
+		<% @personasobligacion.personasoblcambios.order('updated_at DESC, id DESC').each do |personasoblcambio| %>
+	       <%= render 'personasoblcambios/tr', personasoblcambio: personasoblcambio %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

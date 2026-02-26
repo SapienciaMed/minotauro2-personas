@@ -1,0 +1,72 @@
+<%= form_for(migracioneslink) do |f| %>
+  <% if migracioneslink.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(migracioneslink.errors.count, "error") %> prohibited this migracioneslink from being saved:</h2>
+
+      <ul>
+      <% migracioneslink.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :consecutivo %>
+    <%= f.number_field :consecutivo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :user_id %>
+    <%= f.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :archivo_id %>
+    <%= f.number_field :archivo_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :identificacion %>
+    <%= f.text_field :identificacion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nro_obligacion %>
+    <%= f.text_field :nro_obligacion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :valor %>
+    <%= f.number_field :valor %>
+  </div>
+
+  <div class="field">
+    <%= f.label :mensaje %>
+    <%= f.text_field :mensaje %>
+  </div>
+
+  <div class="field">
+    <%= f.label :persona_id %>
+    <%= f.number_field :persona_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :personasobligacion_id %>
+    <%= f.number_field :personasobligacion_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estado %>
+    <%= f.text_field :estado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :error %>
+    <%= f.text_field :error %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

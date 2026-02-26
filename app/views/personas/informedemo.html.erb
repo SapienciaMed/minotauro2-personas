@@ -1,0 +1,62 @@
+<div class="page-header">
+  <h3>Informe Demograficos</h3>
+</div>
+<table border="1">
+  <tr valign="middle" bgcolor="#CCCCCC">
+    <th><div align="left"><strong>Identificacion</strong></div></th>
+    <th><div align="left"><strong>Nombre</strong></div></th>
+    <th><div align="left"><strong>Nro Obligacion</strong></div></th>
+    <th><div align="left"><strong>Direccion 1</strong></div></th>
+    <th><div align="left"><strong>Ciudad - Barrio 1</strong></div></th>
+    <th><div align="left"><strong>Direccion 2</strong></div></th>
+    <th><div align="left"><strong>Ciudad - Barrio 2</strong></div></th>
+    <th><div align="left"><strong>Direccion 3</strong></div></th>
+    <th><div align="left"><strong>Ciudad - Barrio 3</strong></div></th>
+    <th><div align="left"><strong>Direccion 4</strong></div></th>
+    <th><div align="left"><strong>Ciudad - Barrio 4</strong></div></th>
+    <th><div align="left"><strong>Direccion 5</strong></div></th>
+    <th><div align="left"><strong>Ciudad - Barrio 5</strong></div></th>
+
+    <th><div align="left"><strong>Telefono 1</strong></div></th>
+    <th><div align="left"><strong>Telefono 2</strong></div></th>
+    <th><div align="left"><strong>Telefono 3</strong></div></th>
+    <th><div align="left"><strong>Telefono 4</strong></div></th>
+    <th><div align="left"><strong>Telefono 5</strong></div></th>
+
+    <th><div align="left"><strong>Correo 1</strong></div></th>
+    <th><div align="left"><strong>Correo 2</strong></div></th>
+    <th><div align="left"><strong>Correo 3</strong></div></th>
+    <th><div align="left"><strong>Correo 4</strong></div></th>
+    <th><div align="left"><strong>Correo 5</strong></div></th>
+  </tr>
+<% @personasdemograficos.each do |p|
+    obl = Personasobligacion.find(:first,:conditions=>["persona_id = #{p.persona_id}"])
+    %>
+  <tr>
+     <td><div align="left"><%=p.persona.identificacion rescue nil%>  </div></td>
+     <td><div align="left"><%=p.persona.nombres rescue nil%>  </div></td>
+     <td><div align="right"><%=obl.nro_obligacion rescue nil%></div></td>
+
+     <td><div align="left"><%=p.dir_1 rescue nil%></div></td>
+     <td><div align="left"><%=p.dmun_1 rescue nil%></div></td>
+     <td><div align="left"><%=p.dir_2 rescue nil%></div></td>
+     <td><div align="left"><%=p.dmun_2 rescue nil%></div></td>
+     <td><div align="left"><%=p.dir_3 rescue nil%></div></td>
+     <td><div align="left"><%=p.dmun_3 rescue nil%></div></td>
+     <td><div align="left"><%=p.dir_4 rescue nil%></div></td>
+     <td><div align="left"><%=p.dmun_4 rescue nil%></div></td>
+     <td><div align="left"><%=p.dir_5 rescue nil%></div></td>
+     <td><div align="left"><%=p.dmun_5 rescue nil%></div></td>
+     <td><div align="left"><%=p.tel_1 rescue nil%></div></td>
+     <td><div align="left"><%=p.tel_2 rescue nil%></div></td>
+     <td><div align="left"><%=p.tel_3 rescue nil%></div></td>
+     <td><div align="left"><%=p.tel_4 rescue nil%></div></td>
+     <td><div align="left"><%=p.tel_5 rescue nil%></div></td>
+     <td><div align="left"><%=p.cor_1 rescue nil%></div></td>
+     <td><div align="left"><%=p.cor_2 rescue nil%></div></td>
+     <td><div align="left"><%=p.cor_3 rescue nil%></div></td>
+     <td><div align="left"><%=p.cor_4 rescue nil%></div></td>
+     <td><div align="left"><%=p.cor_5 rescue nil%></div></td>
+  </tr>
+<% end %>
+</table>

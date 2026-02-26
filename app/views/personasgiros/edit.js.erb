@@ -1,0 +1,138 @@
+$("#personasgiro_form").collapse("hide");
+
+$("#personasgiro_form").empty();
+
+<% if @active_record.present? %>
+	$("#personasgiro_<%= @active_record.id %>").replaceWith("<%= j render 'tr', personasgiro: @active_record %>");
+<% end %>
+
+$("#personasgiro_<%= @personasgiro.id %>").html("<td colspan='8'><%= j render 'personasgiros_form' %></td>");
+
+$("#personasgiro_<%= @personasgiro.id %>").addClass("active_personasgiro");
+
+$(".select2").select2();
+
+$(".tooltip").tooltip("hide");
+
+$('[data-toggle="tooltip"]').tooltip();
+
+$(function() {
+    return $('.select2Ciudad').select2({
+        minimumInputLength: 3,
+        maximumInputLength: 20,
+        placeholder: "[ Seleccionar Municipio ]",
+        ajax: {
+            url: '/personas/search.json',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        };
+                    })
+                };
+            }
+        }
+    });
+});
+
+
+
+
+$(function() {
+    return $('.select3Ciudad').select2({
+        minimumInputLength: 3,
+        maximumInputLength: 20,
+        placeholder: "[ Seleccionar Municipio ]",
+        ajax: {
+            url: '/personas/search.json',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        };
+                    })
+                };
+            }
+        }
+    });
+});
+
+
+$(function() {
+    return $('.select4Ciudad').select2({
+        minimumInputLength: 3,
+        maximumInputLength: 20,
+        placeholder: "[ Seleccionar Municipio ]",
+        ajax: {
+            url: '/personas/search.json',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        };
+                    })
+                };
+            }
+        }
+    });
+});
+
+
+$(function() {
+    return $('.select5Ciudad').select2({
+        minimumInputLength: 3,
+        maximumInputLength: 20,
+        placeholder: "[ Seleccionar Municipio ]",
+        ajax: {
+            url: '/personas/search.json',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        };
+                    })
+                };
+            }
+        }
+    });
+});

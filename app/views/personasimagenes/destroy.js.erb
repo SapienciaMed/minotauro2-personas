@@ -1,0 +1,18 @@
+<% if @personassolcredito.present? %>
+$(".alert_flash").fadeOut(1000, function() {
+	$(this).remove();
+});
+
+
+$("#personasimagen_<%= @personasimagen.id %>").remove();
+
+$(".flash_messages").html("<%= j render 'layouts/flash_messages' %>");
+
+setTimeout(function() {
+	$(".alert_flash").fadeOut(1000, function() {
+		$(this).remove();
+	});
+}, 5000);
+
+$('.tooltip').tooltip('hide');
+<% end %>

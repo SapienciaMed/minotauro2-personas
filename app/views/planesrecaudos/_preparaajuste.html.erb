@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+  <h4 class="modal-title">Obligación (<%=@personasobligacion.persona.autobuscar rescue nil%>)</h4>
+</div>
+
+<div class="modal-body">
+  <% if @ajustes.to_i > 0 %>
+    <%= form_tag ajustar_planesrecaudos_path, :method => 'get' do %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= hidden_field_tag :personasobligacion_id, @personasobligacion.id,{ :class => "span1" } %>
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Valor Devolución SFC</strong></td>
+                <td><%=camponumerico @ajustes rescue 0%></td>
+              </tr>
+              <tr>
+                <td><strong>Fecha de Devolución</strong></td>
+                <td><%= text_field_tag :fecha, params[:fecha], { readonly: true, class: 'datepicker2 form-control', data: {date_options: {format: 'DD/MM/YYYY', ignoreReadonly: true} } } %></td>
+              </tr>
+              <tr>
+                <td><strong>Observaciones</strong></td>
+                <td><%= text_area_tag :observaciones, params[:observaciones], { rows: 5, cols: 25, class: 'form-control' } %></td>
+              </tr>
+              <% if @personasobligacion.portafolio_id == 10031%>
+                <tr>
+                  <td><strong>Tipo de Ajuste</strong></td>
+                  <td><%= select_tag 'ubicacion[origenid]', options_from_collection_for_select(select_parorigenespagos_ajuste, :id, :descripcion), prompt: '--Seleccionar--', data: { width: '100%' }, class: 'form-control select2' %></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= submit_tag "Marcar Devolucion SFC", data: { confirm: "Seguro que desea realizar la marcación  ?" }, class: "btn btn-flat btn-danger" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-warning"><h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4>No hay datos para realizar la Devolución de SFC</div>
+  <% end %>
+</div>

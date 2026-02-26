@@ -1,0 +1,31 @@
+
+<%= simple_form_for [@persona, @personastelefono], remote: true do |f|   %>
+    <div class="bs-callout">
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.input :telefono, input_html: { class: 'clean' } %>
+        </div>
+        <div class="col-md-3">
+          <%= f.input :ciudad, label: 'Ciudad', input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean'} %>
+        </div>
+        <div class="col-md-2">
+          <%= f.input :tipo, as: :select, collection: select_tipo, input_html: { data: { width: '100%' }, class: 'select2 clean' } %>
+        </div>
+        <div class="col-md-5">
+          <%= f.input :observacion, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean', maxlength: 2000}, label: 'Observaciones' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <% if @personastelefono.new_record? %>
+            <%= button_tag "#{t :cancelar}", type: 'button', data: { target: '#personastelefono_form' }, class: 'cancel_button btn btn-flat btn-default  pull-left', aria_hidden: true %>
+          <% else %>
+            <%= link_to "#{t :cancelar}", persona_personastelefono_path(@persona, @personastelefono), class: 'btn btn-flat btn-default pull-left', aria_hidden: true, remote: true %>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <%= f.button :submit, "#{t :guardar}", data: { disable_with: "#{t :procesando}" }, class: 'btn btn-flat btn-danger pull-right' %>
+        </div>
+      </div>
+    </div>
+<% end %>

@@ -1,0 +1,36 @@
+<tr id="personascorreo_<%=personascorreo.id%>">
+  <td class="text-center">
+    <%= link_to activo_persona_personascorreo_path(@persona, personascorreo), remote: true, data: { toggle: 'tooltip' }, title: 'Activo' do %>
+      <button class="btn btn-xs btn-success"><i class="fa fa-check-circle"></i></button>
+    <% end %>
+    <%= link_to inactivo_persona_personascorreo_path(@persona, personascorreo), remote: true, data: { toggle: 'tooltip' }, title: 'Inactivo' do %>
+      <button class="btn btn-xs btn-danger"><i class="fa fa-ban"></i></button>
+    <% end %>
+    <% if is_auth_e('personascorreo') %>
+      <%= link_to persona_personascorreo_path(@persona, personascorreo), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+ <td class="<%=personascorreo.estadoa.to_s rescue nil%>">
+   <strong><%= personascorreo.updated_at.strftime("%Y-%m-%d %X") rescue nil%></strong>
+   <% if personascorreo.user_id.to_s != "" %>
+      <br/>Creado por : <%= personascorreo.user.username rescue nil%>
+    <% end%>
+    <% if personascorreo.user_actualiza.to_s != "" %>
+      <br/>Ult. Act.: <%=User.find(personascorreo.user_actualiza).username rescue nil%>
+    <% end%>
+ </td>
+ <td><%= personascorreo.email %>
+    <% if personascorreo.persona.observacion_creacion.to_s != "" %>
+      <% if User.where("upper(email) = '#{personascorreo.email.to_s.upcase}'").present? %>
+        <div style="color:red; font-size:10px; font-family: Tahoma;" align="left">Este correo aparece asociado a la identificacion ... <%=User.where("upper(email) = '#{personascorreo.email.to_s.upcase}'").first.identificacion rescue nil%></div>
+      <% end %>
+    <% end %>
+    <% if is_auth_c("actualizacionacceso") and User.where("persona_id = #{personascorreo.persona_id}").present? %>
+      <% if User.where("persona_id = #{personascorreo.persona_id} and upper(email) != '#{personascorreo.email.to_s.upcase}'").present? and User.where("upper(email) = '#{personascorreo.email.to_s.upcase}'").present? == false %>
+        <%#= link_to image_tag("correo.png", :title => "Realizar Actualizacion"), {:controller => "personas", :action => "actaccesopasarela", :personascorreo_id => personascorreo.id}, :confirm => 'Esta seguro?' %>
+      <% end %>
+    <% end %>
+ </td>
+</tr>

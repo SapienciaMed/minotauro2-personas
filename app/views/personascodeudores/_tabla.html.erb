@@ -1,0 +1,17 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+	  <thead>
+		<tr class="thcolor">
+			<th width="8%"></th>
+			<th>Identificacion - Nombres</th>
+			<th width="35%">Telefonos</th>
+			<th width="20%">Email</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personascodeudores">
+	    <% @persona.personascodeudores.order('updated_at DESC, id DESC').each do |personascodeudor| %>
+	       <%= render 'personascodeudores/tr', personascodeudor: personascodeudor %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

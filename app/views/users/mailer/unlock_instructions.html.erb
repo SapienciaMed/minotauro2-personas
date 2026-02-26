@@ -1,0 +1,14 @@
+<div class="box">
+  <div class="box-header">
+    <h3>¡Hola <%= @resource.nombre %>!</h3>
+  </div>
+  <div class="box-body">
+    <p>Tu cuenta de Teseo ha sido bloqueada debido a un número excesivo de intentos fallidos de inicio de sesión.</p>
+
+    <p>Haz clic en el siguiente botón para desbloquear tu cuenta:</p>
+
+    <p><%= link_to 'Desbloquear', unlock_url(@resource, unlock_token: @token), class: 'btn btn-warning' %></p>
+
+    <p>Lamentamos los inconvenientes</p>
+  </div>
+</div>

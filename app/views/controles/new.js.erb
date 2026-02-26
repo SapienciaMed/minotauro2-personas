@@ -1,0 +1,17 @@
+<% if @active_record.present? %>
+	$("#control_<%= @active_record.id %>").replaceWith("<%= j render 'tr', control: @active_record %>");
+<% end %>
+$("#control_form").html("<%= j render 'controles_form' %>");
+$(".tooltip").tooltip("hide");
+$('[data-toggle="tooltip"]').tooltip();
+$("#control_form").collapse("show");
+$(".select2").select2();
+
+$('.datepicker').datepicker({
+	dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb" ],
+	monthNamesShort: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+	dateFormat: "yy-mm-dd",
+	yearRange: '1920:'+(new Date).getFullYear(),
+	changeMonth: true,
+	changeYear: true,
+});

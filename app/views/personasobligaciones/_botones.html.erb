@@ -1,0 +1,63 @@
+<div class="box-tools">
+  <%
+    array1 = ['ACUERDO DE PAGO - EFECTIVO','ACUERDO DE PAGO - PLAZO','REESTRUCTURACION','REESTRUCTURACION COVID','REMATE','CONGELAMIENTO OBLIGACION','OTRAS SOLICITUDES']
+    array2 = ['AMPLIACION DE PLAZO','DISMINUCION DE PLAZO','ACUERDO DE PAGO - EFECTIVO','ACUERDO DE PAGO - PLAZO','REESTRUCTURACION','REESTRUCTURACION COVID','REMATE','CONGELAMIENTO OBLIGACION','OTRAS SOLICITUDES']
+  %>
+  <% if is_auth_e('personasobligacion1') %>
+    <%= link_to persona_personasobligacion_path(@persona, personasobligacion), remote: true, method: :delete, data: { confirm: 'Esta seguro?', toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+      <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+    <% end %>
+  <% end %>
+  <%= link_to personasobligacion_planesrecaudos_path(personasobligacion.id), data: { toggle: 'tooltip' }, title: 'Recaudos y mas' do %>
+      <button class="btn btn-xs btn-success"><i class="fa fa-dollar"></i></button>
+    <% end %>
+  <% if personasobligacion.created_at.strftime("%Y-%m-%d").to_s == Time.now.strftime("%Y-%m-%d") and personasobligacion.pagare.to_s == "" %>
+    <%= link_to plan_personasobligaciones_path(id: personasobligacion.id), data: { toggle: 'tooltip' }, title: 'Plan de pagos Flexible' do %>
+      <button class="btn btn-xs btn-success"><i class="fa fa-money"></i></button>
+    <% end %>
+  <% end %>
+  <% if is_auth_c('solicitud') %>
+    <% if personasobligacion.saldocapital.to_i > 0 %>
+      <div class="btn-group">
+        <button type="button" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <span class="caret" data-toggle="tooltip" data-original-title="Simulacion"><i class="fa fa-gavel" style="position: absolute;left: 4px;top: 4px; "></i></span>
+        </button>
+        <ul class="dropdown-menu" style="z-index:999" role="menu">
+          <li style="font-size: 12px; padding: 10px;">
+            <i class="fa fa-gavel"></i> Tipo de propuesta
+          </li>
+          <% if personasobligacion.obaltura.to_i > 0
+               array1.each do |a|
+          %>
+              <li style="font-size: 12px;">
+                <%= link_to new_solicitud_path(id: personasobligacion.id, propuesta: a.to_s) do %>
+                  <%=a.to_s %>
+                <% end %>
+              </li>
+            <% end %>
+          <% else
+               array2.each do |a|
+          %>
+              <li style="font-size: 12px;">
+                <%= link_to new_solicitud_path(id: personasobligacion.id, propuesta: a.to_s) do %>
+                  <%=a.to_s %>
+                <% end %>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= link_to carta_personasobligaciones_path(id: personasobligacion.id, :format => :pdf), class: 'popup', data: { toggle: 'tooltip' }, title: "Cartas" do %>
+      <button class="btn btn-xs btn-info"><i class="fa fa-copy"></i></button>
+    <% end %>
+  <% end %>
+
+</div>
+
+<div class="modal fade" id="abriraprobacion<%= personasobligacion.id %>">
+  <div class="modal-dialog" style="width: 98% !important; margin-left: 10px !important;">
+    <div class="modal-content" style="width: 98% !important; margin-left: 10px !important;">
+    </div>
+  </div>
+</div>

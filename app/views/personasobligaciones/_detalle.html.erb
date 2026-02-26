@@ -1,0 +1,88 @@
+<%
+   usr = current_user
+   isadmin = usr.id
+   @datoid = ""#usr.portafolio_id
+   @issygma = ""#usr.geintac.to_s == 'S' ? true : false
+   @isuvrdia = ""#is_uvrdia
+   @isuvrdiaoriginal = ""#is_uvrdia_dia('19-11-2017'.to_date)
+   @auth_planesrecaudo = is_auth_a('planesrecaudo')
+
+   cadper = Userspermiso.joins(:objeto).select("objetos.descripcion").where(["userspermisos.user_id = ? and objetos.descripcion in ('personasotrosrecaudo','prorrataobligacion','marcacionobligacion','judicializarobligacion','veracuerdoobligacion','estadodeudaobligacion','detalleplanobligacion','morafecha','personasautoriza','declaracionrentaobligacion','personapazysalvo','imagenpersonapazysalvo','autorizarpersonapazysalvo','verpersonapazysalvo','historicoasignaciones','cesionobligacion','planesrecaudo','personasautorizaventa','personasnoautorizaventa','personasobligacioncontrol','personasobligacionpazysalvo','cambioiniciocuotas','cambiovaloresmanual') and userspermisos.crea = 'S'", isadmin]).map(&:descripcion)
+
+   @auth_personasotrosrecaudo = cadper.include?('personasotrosrecaudo') ? true : false
+   @is_auth_c_prorrataobligacion = cadper.include?('prorrataobligacion') ? true : false
+   @is_auth_c_marcacionobligacion = cadper.include?('marcacionobligacion') ? true : false
+   @is_auth_c_judicializarobligacion = cadper.include?('judicializarobligacion') ? true : false
+   @is_auth_c_veracuerdoobligacion = cadper.include?('veracuerdoobligacion') ? true : false
+   @is_auth_c_estadodeudaobligacion = cadper.include?('estadodeudaobligacion') ? true : false
+   @is_auth_c_detalleplanobligacion = cadper.include?('detalleplanobligacion') ? true : false
+   @is_auth_c_morafecha = cadper.include?('morafecha') ? true : false
+   @is_auth_c_personasautoriza = cadper.include?('personasautoriza') ? true : false
+   @is_auth_c_declaracionrentaobligacion = cadper.include?('declaracionrentaobligacion') ? true : false
+   @is_auth_c_personapazysalvo = cadper.include?('personapazysalvo') ? true : false
+   @is_auth_c_imagenpersonapazysalvo = cadper.include?('imagenpersonapazysalvo') ? true : false
+   @is_auth_c_autorizarpersonapazysalvo = cadper.include?('autorizarpersonapazysalvo') ? true : false
+   @is_auth_c_verpersonapazysalvo = cadper.include?('verpersonapazysalvo') ? true : false
+   @is_auth_c_historicoasignaciones = cadper.include?('historicoasignaciones') ? true : false
+   @is_auth_c_cesionobligacion = cadper.include?('cesionobligacion') ? true : false
+   @is_auth_c_planesrecaudo = cadper.include?('planesrecaudo') ? true : false
+   @is_auth_c_personasautorizaventa = cadper.include?('personasautorizaventa') ? true : false
+   @is_auth_c_personasnoautorizaventa = cadper.include?('personasnoautorizaventa') ? true : false
+   @is_auth_c_personasobligacioncontrol = cadper.include?('personasobligacioncontrol') ? true : false
+   @is_auth_c_personasobligacionpazysalvo = cadper.include?('personasobligacionpazysalvo') ? true : false
+   @is_auth_c_cambioiniciocuotas = cadper.include?('cambioiniciocuotas') ? true : false
+   @is_auth_c_cambiovaloresmanual = cadper.include?('cambiovaloresmanual') ? true : false
+
+   @is_auth_e_personasoblnota = is_auth_e('personasoblnota')
+   @is_auth_e_personasobligacion = is_auth_e('personasobligacion')
+   @is_cargoconsulta = ""#is_cargoconsulta
+
+   if @issygma
+     @personasoblcalculados = Personasoblcalculado.where(persona_id: @personasobligacion.persona_id) rescue nil
+   end
+
+   datoid = @datoid
+   isuvrdia = @isuvrdia
+   isuvrdiaoriginal = @isuvrdiaoriginal
+   is_cargoconsultadentix = true
+%>
+<div class="box-header">
+  <legend>
+    <% if usr.etapa.to_s == 'GE' %>
+      <%= link_to edit_persona_path(etapa: "A", id: @personasobligacion.persona_id), data: { toggle: 'tooltip' }, title: "#{t :regresar}" do %>
+        <i class="fa fa-arrow-left fa-fw text-success" aria-hidden="true"></i>
+      <% end %>
+    <% else %>
+      <%= link_to edit_persona_path(etapa: "F", id: @personasobligacion.persona_id), data: { toggle: 'tooltip' }, title: "#{t :regresar_obligacion}" do %>
+        <i class="fa fa-arrow-left fa-fw text-success" aria-hidden="true"></i>
+      <% end %>
+    <% end %>
+    Obligación (<%= @personasobligacion.persona.autobuscar rescue nil %>)
+  </legend>
+  <div class="box-body" style="padding-top: 0px; padding-bottom: 0px;">
+    <div class="pull-right">
+      <span class="label label-danger"><strong>Valor Minimo de pago <%= camponumerico (@personasobligacion.totalvencido.to_f + @personasobligacion.vlrcuota.to_f) rescue 0 %></strong></span>
+    </div>
+  </div>
+
+</div><!-- /.box-header -->
+<div class="box-body">
+  <%= render "/personasobligaciones/parte1", personasobligacion: @personasobligacion %>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="moramanual">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="simuladorpago">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="vercomisiones">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content"></div>
+  </div>
+</div>

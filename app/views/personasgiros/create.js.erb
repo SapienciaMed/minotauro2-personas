@@ -1,0 +1,26 @@
+$(".alert_flash").fadeOut(1000, function() {
+	$(this).remove();
+});
+
+<% if @persona.personasgiros.count == 1 %>
+	$("#personasgiros").html("<%= j render 'tabla' %>");
+<% else %>
+	$("#personasgiros").html("<%= j render 'tabla' %>");
+<% end %>
+
+$(".clean_personasgiro").val("").trigger('change');
+
+$('[data-toggle="tooltip"]').tooltip();
+
+$(".flash_messages").html("<%= j render 'layouts/flash_messages' %>");
+
+$(".form-group").removeClass("has-error");
+$(".form-group > .help-block.help-block-error").remove();
+
+$("#personasgiro_form").collapse("hide");
+
+setTimeout(function() {
+	$(".alert_flash").fadeOut(1000, function() {
+		$(this).remove();
+	});
+}, 5000);

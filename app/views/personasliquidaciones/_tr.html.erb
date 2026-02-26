@@ -1,0 +1,67 @@
+<tr id="personasliquidacion_<%= personasliquidacion.id %>">
+  <td>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr class="thcolor">
+        <td colspan="4"><strong><div align="center"><small>ACUMULADOS GIROS</small></div></strong></td>
+        <td colspan="4"><strong><div align="center"><small>RECAUDOS</small></div></strong></td>
+        <td colspan="4"><strong><div align="center"><small>TOTAL CONDONACION</small></div></strong></td>
+        <td rowspan="2"><strong><div align="center"><small>TOTAL DEUDA</small></div></strong></td>
+      </tr>
+      <tr class="thcolor">
+        <td width="10%"><strong><div align="center"><small>Matrícula</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Sostenimiento</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Bilinguismo</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>TOTAL</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Matrícula</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Sostenimiento</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Bilinguismo</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>TOTAL</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Por Semestres</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Fin Programa</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Labor Social</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>TOTAL</small></div></strong></td>
+      </tr>
+      <tr>
+        <td><div align="center"><%=camponumerico(personasliquidacion.acumulado_giro_matricula) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.acumulado_giro_sostenimiento) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.acumulado_giro_bilinguismo) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_giros) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.recaudo_matricula) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.recaudo_sostenimiento) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.recaudo_bilinguismo) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_recaudo) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_cond_por_semestres) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_cond_fin_programa) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_cond_labor_social) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_condonacion) rescue nil %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.total_deuda) rescue nil %></div></td>
+      </tr>
+    </table>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr class="thcolor">
+        <td width="10%"><strong><div align="center"><small>Giros reales</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Giros Pactados</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Año fin PG</small></div></strong></td>
+        <td width="5%"><strong><div align="center"><small>Año PAC</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Ipc año anterior</small></div></strong></td>
+        <td width="5%"><strong><div align="center"><small>Spread</small></div></strong></td>
+        <td width="5%"><strong><div align="center"><small>Tea</small></div></strong></td>
+        <td width="5%"><strong><div align="center"><small>Nominal</small></div></strong></td>
+        <td width="5%"><strong><div align="center"><small>Plazo</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Cuota</small></div></strong></td>
+      </tr>
+      <tr>
+        <td><div align="center"><%=h personasliquidacion.giros_reales %></div></td>
+        <td><div align="center"><%=h personasliquidacion.giros_pactados %></div></td>
+        <td><div align="center"><%=h personasliquidacion.ano_fin_pg %></div></td>
+        <td><div align="center"><%=h personasliquidacion.ano_pac %></div></td>
+        <td><div align="center"><%=h personasliquidacion.ipc_ano_anterior %></div></td>
+        <td><div align="center"><%=h personasliquidacion.spread %></div></td>
+        <td><div align="center"><%=h personasliquidacion.tea %></div></td>
+        <td><div align="center"><%=h personasliquidacion.nominal %></div></td>
+        <td><div align="center"><%=h personasliquidacion.plazo %></div></td>
+        <td><div align="center"><%=camponumerico(personasliquidacion.cuota) rescue nil %></div></td>
+      </tr>
+    </table>
+  </td>
+</tr>

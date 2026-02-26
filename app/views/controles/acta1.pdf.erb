@@ -1,0 +1,43 @@
+<div align="center">
+<br/>
+<table width="700" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+        <tr>
+          <td rowspan="2" width="25%"  height="100" style="border:1px solid #000000; font-size: 12px; font-family: Tahoma; line-height: 150%; "><div align="center"><img src="../../images/logomin.png"/></div></td>
+          <td rowspan="2" width="50%" style="border:1px solid #000000; font-size: 16px; font-family: Tahoma; line-height: 150%; "><div align="center">FORMATO</div></td>
+          <td width="25%" style="border:1px solid #000000; font-size: 16px; font-family: Tahoma; line-height: 150%; ">Código: F-AP-GJ-061</td>
+        </tr> 
+        <tr>
+          <td style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; ">Versión: 01</td>
+        </tr>
+        <tr>
+          <td colspan="2" height="30" style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; "><div align="center">NOTIFICACION POR AVISO</div></td>
+          <td style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; ">Página:  1 de 1</td>
+        </tr>
+      </table><br/><br/>
+      <div align="center" style="font-family: Tahoma; font-size: 18px; line-height: 150%;"><strong> NOTIFICACIÓN POR AVISO</strong></div><br/><br/>
+      <div align="justify" style="font-family: Tahoma; font-size: 16px; line-height: 150%;">La <strong>AGENCIA DE EDUCACIÓN SUPERIOR DE MEDELLIN- SAPIENCIA</strong>, de conformidad con lo dispuesto en el inciso 2° del artículo 69 del Código de Procedimiento Administrativo y de lo Contencioso Administrativo (ley 1437 de 2011), se procedió a notificar por aviso, el contenido de la Resolución <strong><%=@control.persona.resolucion_2017 rescue nil%></strong>
+      <br/><br/>
+      La presente notificación se publicó en la página electrónica de la Agencia y en un lugar de acceso al público de la entidad por un término de cinco (5) días hábiles, dejando constancia que contra la misma procede recurso de reposición dentro de los 10 días siguientes a la notificación se considera surtida al finalizar el día siguiente del termino de publicación del presente aviso.
+      <br/><br/>
+      <strong>Fecha de fijación:</strong> <%=namedate(@control.fecha) rescue nil%>
+      <br/><br/>
+      <strong>Fecha de desfijación:</strong> <%=namedate(@control.fecha_vencimiento) rescue nil%>
+      <br/><br/>
+      Se le advierte que esta notificación se considerará surtida al finalizar el día siguiente al retiro del presente aviso.
+      <br/><br/>
+      <br/>
+      </div>
+      <br/>
+      <table width="100%" border="0" cellpadding="2" cellspacing="2"  align="center">
+        <tr><td height="0" style="font-family: Tahoma; font-size: 10px;"> S I I S  - Sistema de Informacion Integrado SAPIENCIA - <%=User.find(is_admin).nombre rescue nil%></td></tr>
+      </table>
+            </td>
+        </tr>
+      </table>
+<br/>
+<br/>
+</div>

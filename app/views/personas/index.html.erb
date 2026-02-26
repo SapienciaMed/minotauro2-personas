@@ -1,0 +1,32 @@
+<legend style="margin-top: -40px;">Información Personas</legend>
+<%
+  usr = @user
+%>
+<div class="box box-primary">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-tabs-custom">
+        <div class="tab-content">
+          <% if usr.etapa.to_s == 'BUSCADOR' %>
+            <div class="tab-pane active" id="<%= usr.etapa.to_s %>">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <%= render 'buscarfm' %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="box-body" id="idSearch"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% elsif usr.etapa.to_s == 'REPORTES' %>
+            
+          <%end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

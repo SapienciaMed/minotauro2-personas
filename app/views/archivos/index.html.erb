@@ -1,0 +1,53 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <legend>Cargue de Archivos</legend>
+    <div class="box-tools pull-right">
+      <%= search_form_for @q do |f| %>
+        <div class="input-group input-group-sm" style="width: 180px;">
+          <%= f.search_field :proceso_or_upload_file_name_or_mensaje_or_id_cont, class: 'form-control pull-right', placeholder: 'Buscar...' %>
+          <div class="input-group-btn">
+            <%= button_tag(type: "submit", class: "btn btn-default") do %>
+              <i class="fa fa-search"></i>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="box-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead class="thcolor">
+          <tr>
+            <th width="5%"></th>
+            <th width="5%" style='font-size: 11px;'><div align="center">ID</div></th>
+            <th width="18%" style='font-size: 11px;'>Fecha</th>
+            <th width="20%" style='font-size: 11px;'>Proceso</th>
+            <th width="25%" style='font-size: 11px;'>Nombre del Archivo</th>
+            <th style='font-size: 11px;'>Observacion</th>
+          </tr>
+          </thead>
+          <tbody>
+            <% @archivos.includes([:user]).each do |archivo| %>
+              <tr>
+                <td><div align="center">
+                  <%= link_to download_ctl_archivos_path(id: archivo.id), data: { toggle: 'tooltip' }, title: 'Archivo xlsx' do %>
+                    <button class="btn btn-xs btn-success"><i class="fa fa-file-excel-o"></i></button>
+                  <% end %>
+                </div>
+                </td>
+                <td class="text-center" style='font-size: 11px;'><%= archivo.id rescue nil%></td>
+                <td style='font-size: 11px;'><%=archivo.created_at.strftime("%Y-%m-%d %X")%> - <%=archivo.user.username rescue nil%></td>
+                <td style='font-size: 11px;'><%= archivo.proceso rescue nil%></td>
+                <td style='font-size: 11px;'><%= archivo.upload_file_name rescue nil%></td>
+                <td style='font-size: 9px;'><%= archivo.mensaje rescue nil%></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="box-tools pull-right">
+      <%= will_paginate @archivos, renderer: BootstrapPagination::Rails %>
+    </div>
+  </div>
+</div>
