@@ -114,6 +114,13 @@ COPY --chown=sapiencia:sapiencia Gemfile Gemfile.lock ./
 RUN bundle install -j4
 
 # ─────────────────────────────────────────────────────────────────
+# PATCH DEVISE 4.0.0 — fix sintaxis Ruby 2.5
+# ─────────────────────────────────────────────────────────────────
+RUN sed -i 's/prepend_before_action only: \[:create, :destroy\] { request.env\["devise.skip_timeout"\] = true }/prepend_before_action only: [:create, :destroy] do\n    request.env["devise.skip_timeout"] = true\n  end/' \
+    /usr/local/bundle/gems/devise-4.0.0/app/controllers/devise/sessions_controller.rb
+
+
+# ─────────────────────────────────────────────────────────────────
 # APLICACIÓN
 # ─────────────────────────────────────────────────────────────────
 COPY --chown=sapiencia:sapiencia . .
