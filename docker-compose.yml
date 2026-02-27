@@ -1,5 +1,5 @@
 volumes:
-  bundle_path_store_web_sapiencia5:
+  bundle_path_store_web_sapiencia:
 
 services:
   store_web:
@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/home/sapiencia5/app:cached
-      - ./entrypoint.sh:/home/sapiencia5/app/entrypoint.sh:ro
-      - bundle_path_store_web_sapiencia5:/usr/local/bundle
+      - .:/home/sapiencia/app:cached
+      - ./entrypoint.sh:/home/sapiencia/app/entrypoint.sh:ro
+      - bundle_path_store_web_sapiencia:/usr/local/bundle
     command: bundle exec rails server -b 0.0.0.0

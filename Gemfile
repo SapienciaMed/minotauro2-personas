@@ -67,7 +67,7 @@ gem 'ajax-datatables-rails'
 
 #GEMAS DATEPICKER
 gem 'momentjs-rails'
-gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+#gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 
 gem 'jquery-ui-rails'
 gem 'ionicons-rails' # Iconos ionicons
