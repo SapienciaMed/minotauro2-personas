@@ -1,3 +1,4 @@
+
 development:
   adapter: oracle_enhanced
   database: //104.198.246.56:1521/sid
