@@ -20,7 +20,6 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-/config/database.yml
 /config/environments/production.rb
 public/
 app/assets/images/codes/
