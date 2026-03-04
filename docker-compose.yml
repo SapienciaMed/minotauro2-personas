@@ -7,10 +7,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=development
+      - DB_USER=minotauro
+      - DB_PASSWORD=.Sapiencia2019#
+      - DB_HOST=104.198.246.56
+      - DB_PORT=1521
+      - DB_SERVICE=sid
     ports:
       - "3000:3000"
     volumes:
       - .:/home/sapiencia/app:cached
       - ./entrypoint.sh:/home/sapiencia/app/entrypoint.sh:ro
       - bundle_path_store_web_sapiencia:/usr/local/bundle
-    command: bundle exec rails server -b 0.0.0.0
+    command: bundle exec rails server -b 0.0.0.0 -p 3000

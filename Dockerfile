@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # ─────────────────────────────────────────────────────────────────
-# NODE.JS 16 + YARN — usando binarios directos (sin nodesource)
+# NODE.JS 16 + YARN
 # ─────────────────────────────────────────────────────────────────
 RUN curl -fsSL https://nodejs.org/dist/v16.20.2/node-v16.20.2-linux-x64.tar.gz \
     | tar -xz -C /usr/local --strip-components=1 \
@@ -82,7 +82,6 @@ WORKDIR /home/oracle/instantclient_19_3
 RUN ln -sf libclntsh.so.19.1 libclntsh.so && \
     ln -sf libocci.so.19.1   libocci.so
 
-# Variables de entorno Oracle 19c
 ENV ORACLE_HOME=/home/oracle/instantclient_19_3
 ENV LD_LIBRARY_PATH=/home/oracle/instantclient_19_3
 ENV DYLD_LIBRARY_PATH=/home/oracle/instantclient_19_3
@@ -119,15 +118,25 @@ RUN bundle install -j4
 RUN sed -i 's/prepend_before_action only: \[:create, :destroy\] { request.env\["devise.skip_timeout"\] = true }/prepend_before_action only: [:create, :destroy] do\n    request.env["devise.skip_timeout"] = true\n  end/' \
     /usr/local/bundle/gems/devise-4.0.0/app/controllers/devise/sessions_controller.rb
 
-
 # ─────────────────────────────────────────────────────────────────
 # APLICACIÓN
 # ─────────────────────────────────────────────────────────────────
 COPY --chown=sapiencia:sapiencia . .
 
+# ─────────────────────────────────────────────────────────────────
+# CONFIGURACIÓN PRODUCCIÓN
+# ─────────────────────────────────────────────────────────────────
+ENV RAILS_LOG_TO_STDOUT=true
+ENV RAILS_SERVE_STATIC_FILES=true
+
+# Precompilar assets solo en producción
+RUN if [ "${RAILS_ENV}" = "production" ]; then \
+      SECRET_KEY_BASE=dummy_for_assets_precompile bundle exec rake assets:precompile; \
+    fi
+
 COPY --chown=sapiencia:sapiencia entrypoint.sh /home/sapiencia/app/entrypoint.sh
 RUN chmod +x /home/sapiencia/app/entrypoint.sh
 
 ENTRYPOINT ["bash", "/home/sapiencia/app/entrypoint.sh"]
-EXPOSE 3000
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+EXPOSE 8080
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8080"]
