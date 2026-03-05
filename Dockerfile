@@ -138,5 +138,5 @@ COPY --chown=sapiencia:sapiencia entrypoint.sh /home/sapiencia/app/entrypoint.sh
 RUN chmod +x /home/sapiencia/app/entrypoint.sh
 
 ENTRYPOINT ["bash", "/home/sapiencia/app/entrypoint.sh"]
-EXPOSE 9800
+EXPOSE 3000
 CMD ["bash","-c","bundle exec rails server -b 0.0.0.0 -p $PORT"]
