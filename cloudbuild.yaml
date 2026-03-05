@@ -9,7 +9,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - us-central1-docker.pkg.dev/$PROJECT_ID/$_REPOSITORY_NAME/$_IMAGE_NAME
+      - us-central1-docker.pkg.dev/$PROJECT_ID_DEVOPS/$_REPOSITORY_NAME/$_IMAGE_NAME
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
       - run
