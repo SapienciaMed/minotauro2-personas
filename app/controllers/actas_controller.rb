@@ -1,6 +1,6 @@
 class ActasController < ApplicationController
   # GET /actas
-  # GET /actas.xml
+
   def index
     @actas = Acta.all
 
