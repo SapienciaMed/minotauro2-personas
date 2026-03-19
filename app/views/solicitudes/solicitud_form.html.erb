@@ -1,0 +1,312 @@
+<legend style="margin-top: -25px;"><strong><%=@solicitud.propuesta %></strong> (<%=Persona.find(@solicitud.persona_id).autobuscar rescue nil%>) <%= link_to 'Regresar', edit_persona_path(id: @solicitud.persona_id, etapa: 'F'), :class=>"btn btn-xs btn-success" %></legend>
+<%
+  @auth_solicitud = is_auth_c("solicitud")
+  @auth_solicitudjuridico = is_auth_c("solicitudjuridico")
+  if @auth_solicitud
+    opcResol = false
+  else
+    opcResol = true
+  end
+  if @solicitud.estado.to_s == 'APROBADO'
+    opcResol = true
+  end
+%>
+<%= simple_form_for(@solicitud) do |f| %>
+  <%= f.hidden_field :persona_id %>
+  <%= f.hidden_field :personasobligacion_id %>
+  <%= f.hidden_field :propuesta %>
+  <div class="box box-primary">
+    <div class="box-body">
+    <% if ['AMPLIACION DE PLAZO','DISMINUCION DE PLAZO','REESTRUCTURACION','CONGELAMIENTO OBLIGACION'].include?(@solicitud.propuesta.to_s) %>
+      <% if ['AMPLIACION DE PLAZO','DISMINUCION DE PLAZO'].include?(@solicitud.propuesta.to_s) %>
+         <% unless @solicitud.new_record? %>
+            <legend>Escenario actual</legend>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Nro Obligacion</div></th>
+                <th><div align="center">Fecha Creación</div></th>
+                <th><div align="center">Tasa Interes PAC</div></th>
+                <th><div align="center">Dias Vencidos Credito</div></th>
+                <th><div align="center">Calificación Cartera</div></th>
+                <th><div align="center">Valor Credito</div></th>
+                <th><div align="center">Fch Ult. Pago</div></th>
+                <th><div align="center">Vlr Ult. Pago</div></th>
+              </tr>
+              <tr>
+                <td><div align="center"><%=@personasobligacion.nro_obligacion rescue nil %></div></td>
+                <td><div align="center"><%=@personasobligacion.created_at.strftime("%Y-%m-%d %X") rescue nil %></div></td>
+                <td><div align="center"><a title="Año <%=@personasobligacion.tasa_anno rescue nil%> - IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+                <td><div align="center"><%=@solicitud.ori_diasvencoblig rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.ori_calificacion rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_valor) rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.ori_fch_ult_pago.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_valortotalrecaudo) rescue nil%></div></td>
+              </tr>
+            </table>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Saldo Capital Vencido</div></th>
+                <th><div align="center">Saldo Int. Corriente Vencido</div></th>
+                <th><div align="center">Saldo Otros</div></th>
+                <th><div align="center">Saldo Int. de Mora</div></th>
+                <th><div align="center">Total Vencido</div></th>
+                <th><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+                <th><div align="center">Vlr Minimo Pagar</div></th>
+                <th><div align="center">Capital por Pagar</div></th>
+                <th><div align="center">Saldo Total Deuda</div></th>
+              </tr>
+              <tr>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldocapitalvencido) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldointerescorriente) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldootros) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldointeresmora) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_totalvencido) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuota) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuotaminimo) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_capitalporpagar) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldototaldeuda) rescue nil%></div></td>
+              </tr>
+            </table>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr>
+                <th width="8%" class="thcolor"><div align="center">Plazo</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obplazo rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Altura del Credito</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obaltura rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas Pagadas</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotaspagadas rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas en Mora</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasmora rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas por Facturar</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasporpagar rescue nil%></div></td>
+                <td width="15%"><div style="color:red; font-size:16px; font-family: Tahoma;" align="center"><strong><%=@solicitud.ori_estadoobli  rescue nil%></strong></div></td>
+              </tr>
+            </table>
+            <br/>
+            <legend>Escenario SIMULACIÓN</legend>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Tasa Interes PAC</div></th>
+                <th><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+                <th><div align="center">Saldo Capital</div></th>
+                <th><div align="center">Total Intereses</div></th>
+                <th><div align="center">Total Otros</div></th>
+                <th><div align="center">Total a pagar</div></th>
+                <th><div align="center">Plazo Simulación</div></th>
+              </tr>
+              <tr>
+                <td><div align="center"><a title="IPC <%=@solicitud.tasa_ipc rescue nil%> + <%=@solicitud.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@solicitud.tasa_final rescue nil%> E.A.</a></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_cuota) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_saldocapital) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_totalinteres) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_otros) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_totalpagar) rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.sim_plazo rescue nil%></div></td>
+              </tr>
+            </table>
+         <% else %>
+           <IFRAME SRC=<%="/planessimulaciones?id=#{@solicitud.personasobligacion_id}"%> WIDTH="100%" HEIGHT="320" MARGINWIDTH=0 MARGINHEIGHT=0 FRAMEBORDER="NO" SCROLLING="YES" STYLE="border-width:0px; "></IFRAME>
+           <strong><%#= error_message_on :solicitud, :simulacion, :css_class =>"cerror"%></strong>
+         <% end %>
+
+      <% elsif ['REESTRUCTURACION','CONGELAMIENTO OBLIGACION'].include?(@solicitud.propuesta.to_s) %>
+
+        <% unless @solicitud.new_record? %>
+            <legend>Escenario actual</legend>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Nro Obligacion</div></th>
+                <th><div align="center">Fecha Creación</div></th>
+                <th><div align="center">Tasa Interes PAC</div></th>
+                <th><div align="center">Dias Vencidos Credito</div></th>
+                <th><div align="center">Calificación Cartera</div></th>
+                <th><div align="center">Valor Credito</div></th>
+                <th><div align="center">Fch Ult. Pago</div></th>
+                <th><div align="center">Vlr Ult. Pago</div></th>
+              </tr>
+              <tr>
+                <td><div align="center"><%=@personasobligacion.nro_obligacion rescue nil %></div></td>
+                <td><div align="center"><%=@personasobligacion.created_at.strftime("%Y-%m-%d %X") rescue nil %></div></td>
+                <td><div align="center"><a title="Año <%=@personasobligacion.tasa_anno rescue nil%> - IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+                <td><div align="center"><%=@solicitud.ori_diasvencoblig rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.ori_calificacion rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_valor) rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.ori_fch_ult_pago.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_valortotalrecaudo) rescue nil%></div></td>
+              </tr>
+            </table>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Saldo Capital Vencido</div></th>
+                <th><div align="center">Saldo Int. Corriente Vencido</div></th>
+                <th><div align="center">Saldo Otros</div></th>
+                <th><div align="center">Saldo Int. de Mora</div></th>
+                <th><div align="center">Total Vencido</div></th>
+                <th><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+                <th><div align="center">Vlr Minimo Pagar</div></th>
+                <th><div align="center">Capital por Pagar</div></th>
+                <th><div align="center">Saldo Total Deuda</div></th>
+              </tr>
+              <tr>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldocapitalvencido) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldointerescorriente) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldootros) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldointeresmora) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_totalvencido) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuota) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_vlrcuotaminimo) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_capitalporpagar) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.ori_saldototaldeuda) rescue nil%></div></td>
+              </tr>
+            </table>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr>
+                <th width="8%" class="thcolor"><div align="center">Plazo</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obplazo rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Altura del Credito</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obaltura rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas Pagadas</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotaspagadas rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas en Mora</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasmora rescue nil%></div></td>
+                <th width="12%" class="thcolor"><div align="center">Cuotas por Facturar</div></th>
+                <td width="5%"><div align="center"><%=@solicitud.ori_obcuotasporpagar rescue nil%></div></td>
+                <td width="15%"><div style="color:red; font-size:16px; font-family: Tahoma;" align="center"><strong><%=@solicitud.ori_estadoobli  rescue nil%></strong></div></td>
+              </tr>
+            </table>
+            <br/>
+            <legend>Escenario SIMULACIÓN</legend>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th><div align="center">Tasa Interes PAC</div></th>
+                <th><div align="center">Cuota <%=@solicitud.mescuota rescue nil%></div></th>
+                <th><div align="center">Saldo Capital</div></th>
+                <th><div align="center">Total Intereses</div></th>
+                <th><div align="center">Total Otros</div></th>
+                <th><div align="center">Total a pagar</div></th>
+                <th><div align="center">Plazo Simulación</div></th>
+              </tr>
+              <tr>
+                <td><div align="center"><a title="IPC <%=@solicitud.tasa_ipc rescue nil%> + <%=@solicitud.tasa_puntos rescue nil%>" style="color:red; font-family: Tahoma;"><%=@solicitud.tasa_final rescue nil%> E.A.</a></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_cuota) rescue nil %></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_saldocapital) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_totalinteres) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_otros) rescue nil%></div></td>
+                <td><div align="center">$ <%=camponumerico(@solicitud.sim_totalpagar) rescue nil%></div></td>
+                <td><div align="center"><%=@solicitud.sim_plazo rescue nil%></div></td>
+              </tr>
+            </table>
+        <% else %>
+          <IFRAME SRC=<%="/planessimulaciones?id=#{@solicitud.personasobligacion_id}&reestructuacion=SI"%> WIDTH="100%" HEIGHT="320" MARGINWIDTH=0 MARGINHEIGHT=0 FRAMEBORDER="NO" SCROLLING="YES" STYLE="border-width:0px; "></IFRAME>
+        <% end %>
+      <% end %>
+    <% else %>
+      <legend>Escenario actual</legend>
+      <%= render "/personasobligaciones/parte1", personasobligacion: @personasobligacion %>
+    <% end %>
+    </div>
+  </div>
+  <div class="box box-primary">
+    <div class="box-body">
+      <legend>Datos Complementarios</legend>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+          <%= f.input :fecha_solicitud, as: :string, input_html: { class: 'datepicker', data: { date_options: { format: 'YYYY-MM-DD', ignoreReadonly: true } }, readonly: true }, disabled: opcResol %>
+        </div>
+        <% if ['CONGELAMIENTO OBLIGACION'].include?(@solicitud.propuesta.to_s) %>
+          <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <%= f.input :fecha_inicio_proceso, as: :string, input_html: { class: 'datepicker', data: { date_options: { format: 'YYYY-MM-DD', ignoreReadonly: true } }, readonly: true }, disabled: opcResol %>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+            <%= f.input :termino, collection: select_termino, as: :select, input_html: { class: 'select2' }, label: 'Termino del proceso', disabled: opcResol %>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <%= f.input :situacion_bene, collection: select_situacion_bene, as: :select, input_html: { class: 'select2' }, label: 'Situación del beneficiario frente a educación superior', disabled: opcResol %>
+          </div>
+        <% else %>
+          <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+            <%= f.input :situacion_bene, collection: select_situacion_bene, as: :select, input_html: { class: 'select2' }, label: 'Situación del beneficiario frente a educación superior', disabled: opcResol %>
+          </div>
+        <% end %>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :situacion_econo, collection: select_situacion_econo, as: :select, input_html: { class: 'select2' }, label: 'Situación economica del beneficiario', disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <%= f.input :ind_economica, collection: select_sino, as: :select, input_html: { class: 'select2' }, label: 'Beneficiario Tiene Independencia Economica', disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+          <%= f.input :actividad_economica, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: "Actividad Economica", disabled: opcResol %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :ingresos, as: :moneda, input_html: { :rows => 1 }, label: "Ingresos informados por el deudor", disabled: opcResol%>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <%= f.input :egresos, as: :moneda,  input_html: { :rows => 1 }, label: "Egresos informados por el deudor", disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <%= f.input :nombre_empresa, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: "Nombre empresa donde labora", disabled: opcResol %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <%= f.input :direccion_empresa, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: "Dirección empresa", disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+          <%= f.input :telefono_empresa, as: :string, input_html: { :rows => 1 }, label: "Telefono empresa", disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+          <%= f.input :ds_labora, collection: select_sino, as: :select, input_html: { class: 'select2' }, label: 'El deudor solidario labora?', disabled: opcResol %>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <%= f.input :nombre_empresads, as: :string, input_html: {onchange: "javascript:this.value=this.value.toUpperCase();" }, label: "Donde labora el deudor solidario?", disabled: opcResol %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <%= f.input :antecedentes, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean', maxlength: 3999, :rows => "6" }, label: 'Antecedentes', disabled: opcResol %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <%= f.input :concepto_auxiliar, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean', maxlength: 3999, :rows => "6" }, label: 'Concepto Analista', disabled: opcResol %>
+        </div>
+      </div>
+      <% if @solicitud.estado.to_s == 'APROBADO' %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <%= f.input :concepto_juridico, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean', maxlength: 3999, :rows => "3" }, label: 'Concepto Juridico', disabled: true  %>
+          </div>
+        </div>
+      <% elsif @auth_solicitudjuridico and @solicitud.estado.to_s == 'RADICADA' %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <%= f.input :concepto_juridico, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase clean', maxlength: 3999, :rows => "3" }, label: 'Concepto Juridico' %>
+          </div>
+        </div>
+      <% end %>
+      <div class="box-footer">
+        <div class="box-tools pull-right">
+          <% if is_auth_a("solicitud") %>
+            <%= f.button :submit, "#{t :guardar}", class: "btn btn-success pull-right" %>
+          <% end %>
+        </div>
+      </div>
+      <table class="table table-bordered table-condensed table-striped">
+        <tr class="thcolor">
+          <th><div align="center">Estado de la Solicitud</div></th>
+          <th><div align="center">Creación</div></th>
+          <th><div align="center">Revision Juridica</div></th>
+        </tr>
+        <tr>
+          <td><div style="color:red; font-size:16px; font-family: Tahoma;" align="center"><strong><%=@solicitud.estado rescue nil%></strong></div></td>
+          <td><%=@solicitud.created_at.strftime("%Y-%m-%d %X") rescue nil%> - <%=User.find(@solicitud.user_id).nombre rescue nil%></td>
+          <td><%=@solicitud.fecha_juridico.strftime("%Y-%m-%d %X") rescue nil%> - <%=User.find(@solicitud.user_juridico).nombre rescue nil%></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+<% end %>

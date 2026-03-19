@@ -1,0 +1,10 @@
+I, [2019-02-04T17:52:46.343701 #2728]  INFO -- : (70007131500040): Http connection created. host:ipdialbox.com,  port:80,  ssl:false, mode:, proxy_host: , proxy_port:  
+I, [2019-02-04T17:52:46.344433 #2728]  INFO -- : (70007131500040): Http connection: http://ipdialbox.com:80
+get REQUEST: 
+path= /api-agentbox.php/
+headers= Cookie:, 
+data= 
+
+I, [2019-02-04T17:52:46.511906 #2728]  INFO -- : 
+RESPONSE: 
+200:OK

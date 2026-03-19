@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  identificacion: MyString
+  nro_obligacion: MyString
+  contado1: MyString
+  contado2: MyString
+  contado3: MyString
+  armada1: MyString
+  armada2: MyString
+  armada3: MyString
+  fraccionamiento1: MyString
+  fraccionamiento2: MyString
+  fraccionamiento3: MyString
+
+two:
+  identificacion: MyString
+  nro_obligacion: MyString
+  contado1: MyString
+  contado2: MyString
+  contado3: MyString
+  armada1: MyString
+  armada2: MyString
+  armada3: MyString
+  fraccionamiento1: MyString
+  fraccionamiento2: MyString
+  fraccionamiento3: MyString

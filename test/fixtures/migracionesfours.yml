@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  portafolio_id: 1
+  persona_id: 1
+  personasobligacion_id: 1
+  consecutivo: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  contador1: MyString
+  contador2: MyString
+  contador3: MyString
+  armada1: MyString
+  armada2: MyString
+  armada3: MyString
+  fraccionamiento1: MyString
+  fraccionamiento2: MyString
+  fraccionamiento3: MyString
+  fondo: MyString
+  rango: MyString
+  aplicado: MyString
+  error: MyString
+
+two:
+  user_id: 1
+  portafolio_id: 1
+  persona_id: 1
+  personasobligacion_id: 1
+  consecutivo: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  contador1: MyString
+  contador2: MyString
+  contador3: MyString
+  armada1: MyString
+  armada2: MyString
+  armada3: MyString
+  fraccionamiento1: MyString
+  fraccionamiento2: MyString
+  fraccionamiento3: MyString
+  fondo: MyString
+  rango: MyString
+  aplicado: MyString
+  error: MyString

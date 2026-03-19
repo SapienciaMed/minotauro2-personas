@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesrecaudo: one
+  user: one
+  planesrecaudosdoc: 
+
+two:
+  planesrecaudo: two
+  user: two
+  planesrecaudosdoc: 

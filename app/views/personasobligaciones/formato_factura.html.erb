@@ -1,0 +1,556 @@
+<div align="center">
+  <table width="1000" border="0">
+    <tr valign="top">
+      <td>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style=" font-size: 12px; font-family: Tahoma;">
+                <tr>
+                  <td class="cab" width="15%" style="border: 1px solid; padding: 5px;">
+                    <table width="500" class="bordemorado" border="0" cellspacing="0" cellpadding="0" style=" font-size: 14px; font-family: Tahoma;">
+                      <tr class="">
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>Titular(es)</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.titular rescue nil %></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>No. de la obligación</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.personasobligacion.nro_obligacion rescue nil %></div>
+                        </td>
+                      </tr>
+                      <tr class="">
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>Teléfono</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.telefono rescue nil %></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>Dirección</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.direccion rescue nil %></div>
+                        </td>
+                      </tr>
+                      <tr class="">
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>Ciudad</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.ciudad rescue nil%></div>
+                        </td>
+                      </tr>
+                      <tr class="">
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><b>Periodo Facturado</b></div>
+                        </td>
+                        <td class="">
+                          <div align="left" style="padding: 0px 0px 5px 10px"><%= planesfactura.periodo rescue nil%></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="cab" valign="top">
+                    <%= wicked_pdf_image_tag ("logosapiencia.png"), size: "100x60" %>
+                  </td>
+                  <td valign="bottom">
+                    <div align="right" style=" font-size: 16px;font-family: Tahoma;">
+                      <b>REFERENCIA</b> <%= facturacero planesfactura.personasobligacion.nro_obligacion rescue nil%></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 16px; font-family: Tahoma; line-height: 150%;">
+                <tr>
+                  <td style="background-color: #E3E3E3; color: #000000; padding: 10px">
+                    <div align="center"><b>INFORMACIÓN PAGO</b></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma; line-height: 150%;">
+                <tr>
+                  <td>
+                    <table width="1000" border="0">
+                      <tr valign="top">
+                        <td style="padding: 25px 25px 5px 25px">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma; line-height: 150%;">
+                            <tr>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <b>Saldo Vencido</b>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="25%">
+                                <b>Intereses de Mora del Mes</b>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <b>Cuota Actual</b>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <b>Pago Mínimo</b>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="15%">
+                                <b>Días Mora</b>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <table width="1000" border="0">
+                      <tr valign="top">
+                        <td style="padding: 0px 25px 25px 25px">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma; line-height: 150%;">
+                            <tr>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <%= camponumerico_nologin planesfactura.s_vencido.to_i rescue 0%>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="25%">
+                                <%= camponumerico_nologin planesfactura.i_mora.to_i rescue 0%>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <%= camponumerico_nologin planesfactura.c_actual.to_i rescue 0%>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="20%">
+                                <%= camponumerico_nologin planesfactura.p_minimo.to_i rescue 0%>
+                              </td>
+                              <td style="padding: 5px; text-align: center" width="15%">
+                                <%= camponumerico_nologin planesfactura.d_mora.to_i rescue 0%>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 16px; font-family: Tahoma; line-height: 150%;">
+                <tr>
+                  <td style="background-color: #E3E3E3; color: #000000; padding: 10px">
+                    <div align="center"><b>INFORMACIÓN CREDITO</b></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma; line-height: 150%;">
+                <tr>
+                  <td>
+                    <table width="1000" border="0">
+                      <tr valign="top">
+                        <td style="padding: 25px 25px 5px 25px">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma; line-height: 150%;">
+                            <tr>
+                              <td style="padding: 10px; text-align: center" width="20%">
+                                <b>Saldos Totales Crédito</b>
+                              </td>
+                              <td style="padding: 10px; text-align: center" width="25%">
+                                <b>Valores Cuota Actual</b>
+                              </td>
+                              <td style="padding: 10px; text-align: center" width="20%">
+                                <b>Estado Cuotas</b>
+                              </td>
+                              <td style="padding: 10px; text-align: center" width="20%">
+                                <b>Tasas de Interés</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style=" text-align: center" width="20%">
+                                <table width="100%" style="border-collapse: collapse; font-size: 14px; font-family: Tahoma;">
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Capital</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= %>
+                                      <%= camponumerico_nologin planesfactura.s_capital.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Int Corrientes</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.s_i_corriente.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Otros</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.s_otros.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Intereses Mora</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.s_i_mora.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 5px; text-align: left; background-color: #E3E3E3; color: #000000; font-size: 12px;">
+                                      <b>SALDO TOTAL</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right; background-color: #E3E3E3; color: #000000; font-size: 12px;">
+                                      <b><%= camponumerico_nologin planesfactura.s_i_mora.to_i + planesfactura.s_otros.to_i + planesfactura.s_i_corriente.to_i + planesfactura.s_capital.to_i rescue 0 %></b>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td style="padding: 2px; text-align: center" width="25%">
+                                <table width="100%" style="border-collapse: collapse; font-size: 12px; font-family: Tahoma;">
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Capital</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.v_capital.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Intereses Corrientes</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.v_i_corriente.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Otros</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.v_otros.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      &nbsp;
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      &nbsp;
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 5px; text-align: left; background-color: #E3E3E3; color: #000000; font-size: 12px;">
+                                      <b>Valor cuota actual</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right; background-color: #E3E3E3; color: #000000; font-size: 12px;">
+                                      <b><%= camponumerico_nologin planesfactura.v_otros.to_i + planesfactura.v_i_corriente.to_i + planesfactura.v_capital.to_i rescue 0 %></b>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td style="padding: 2px; text-align: center" width="20%">
+                                <table width="100%" style="border-collapse: collapse; font-size: 12px; font-family: Tahoma;">
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Cuotas Pactadas</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.c_pactadas.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Cuotas Pagadas</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.c_pagadas.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Cuotas Mora</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.c_mora.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Cuotas Facturadas</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.c_facturadas.to_i rescue 0 %>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      &nbsp;
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      &nbsp;
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td style="padding: 2px; text-align: center" width="20%">
+                                <table width="100%" style="border-collapse: collapse; font-size: 12px; font-family: Tahoma;">
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Int. Corriente E.A.</b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.int_corriente_ea rescue nil %>%
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      <b>Int. Mora E.A </b>
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      <%= camponumerico_nologin planesfactura.int_mora_ea rescue 0 %>%
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      &nbsp;
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      &nbsp;
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      &nbsp;
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      &nbsp;
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding: 8px; text-align: left;">
+                                      &nbsp;
+                                    </td>
+                                    <td style="padding: 5px; text-align: right;">
+                                      &nbsp;
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                          <br/><br/>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <div align="right" style="font-size: 12px; font-family: Tahoma; padding: 30px 0px 30px 0px;">
+          * SALDOS CON CORTE AL <%= planesfactura.fecha_corte rescue nil %> PREVIO AL PAGO
+        </div>
+        <br/><br/>
+        <hr>
+        <div align="center" style="font-size: 16px; font-family: Tahoma; padding: 8px 0px 8px 0px;">
+          <b>- ORIGINAL -</b>
+        </div>
+        <hr style="border:1px dashed;">
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="50%">
+                    <%= wicked_pdf_image_tag ("logosapiencia.png"), size: "140x100" %>
+                  </td>
+                  <td width="50%" style="font-size: 12px; font-family: Tahoma;">
+                    <div align="center">
+                      <img src="<%= "#{::Rails.root}/public/barcodes/#{nameextrado}.png" %>" alt="Barcode">
+                      <br/>
+                      <%= group %>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="1000" border="0">
+          <tr valign="top">
+            <td>
+              <table width="100%" class="bordemorado" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="48%">
+                    <table width="100%" class="bordemorado" cellspacing="0" cellpadding="0" style="font-size: 12px; font-family: Tahoma;">
+                      <tr>
+                        <td width="50%" style="padding: 5px">
+                          <b>Número de la obligación:</b>
+                        </td>
+                        <td width="50%" style="padding: 5px">
+                          <%= planesfactura.obligacion rescue nil %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" style="padding: 5px">
+                          <b>Titular:</b>
+                        </td>
+                        <td width="50%" style="padding: 5px">
+                          <%= planesfactura.titular rescue nil %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" style="padding: 5px">
+                          <b>Dirección:</b>
+                        </td>
+                        <td width="50%" style="padding: 5px">
+                          <%= planesfactura.direccion rescue nil %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" style="padding: 5px">
+                          <b>Teléfono:</b>
+                        </td>
+                        <td width="50%" style="padding: 5px">
+                          <%= planesfactura.telefono rescue nil %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" style="padding: 5px">
+                          <b>Ciudad:</b>
+                        </td>
+                        <td width="50%" style="padding: 5px">
+                          <%= planesfactura.ciudad rescue nil %>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" style="padding: 10px; background-color: #E3E3E3; color: #000000">
+                          <b>TOTAL EFECTIVO:</b>
+                        </td>
+                        <td width="50%" style="padding: 10px; background-color: #D5D5D5; color: #000000">
+                          &nbsp;
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="100%" style="padding: 5px; text-align: center" colspan="2">
+                          <b>FECHA LIMITE DE PAGO: <%= planesfactura.fecha_corte rescue nil %></b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="100%" style="padding: 15px 5px 5px 5px; text-align: center;border-collapse: collapse; border: 1px solid;" colspan="2">
+                          .PAGA TU CREDITO EN LINEA EN WWW.SAPIENCIA.GOV.CO
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="100%" style="padding: 5px; text-align: center" colspan="2">
+                          <b>- PAGUE UNICAMENTE EN EFECTIVO -</b>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="4%"></td>
+                  <td width="48%" valign="top">
+                    <table width="100%" class="bordemorado" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="50%">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 12px; font-family: Tahoma; line-height: 150%;">
+                            <tr>
+                              <td width="100%" colspan="2" align="center" style="padding: 5px">
+                                <b>INFORMACIÓN PAGO</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="25%" style="padding: 5px; text-align: left">
+                                <b>NOMBRE</b>
+                              </td>
+                              <td width="75%" style="padding: 5px; background-color: #E3E3E3; color: #000000">
+                                &nbsp;
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="25%" style="padding: 5px; text-align: left">
+                                <b>FECHA:</b>
+                              </td>
+                              <td width="75%" style="padding: 5px; background-color: #E3E3E3; color: #000000">
+                                &nbsp;
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <br/>
+                    <table width="100%" class="bordemorado" cellspacing="0" cellpadding="0" style="font-size: 12px; font-family: Tahoma;">
+                      <tr>
+                        <td width="50%">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; font-size: 12px; font-family: Tahoma; line-height: 150%;">
+                            <tr>
+                              <td width="25%" style="padding: 5px; background-color: #E3E3E3; color: #000000">
+                                <b>REFERENCIA 1:</b>
+                              </td>
+                              <td width="75%" style="padding: 5px; text-align: center">
+                                <%= planesfactura.obligacion.to_s.rjust(10, '0')  rescue nil %>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" colspan="2" style="padding: 5px; background-color: #E3E3E3; color: #000000; text-align: center">
+                                <b>REFERENCIA 2</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" colspan="2" style="padding: 5px;">
+                                <b>- AJUSTE CUOTA 001</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" colspan="2" style="padding: 5px;">
+                                <b>- AJUSTE CUOTA 002</b>
+                              </td>
+                            </tr>
+                          </table>
+                          <div style="padding: 5px; font-family: Tahoma;">EN CASO DE ABONO EXTRAORDINARIO MARQUE CON UNA
+                            X
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <hr>
+              <div align="center" style="font-size: 15px; font-family: Tahoma; padding: 5px 0px 5px 0px;">
+                <b>- BANCO. -</b>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

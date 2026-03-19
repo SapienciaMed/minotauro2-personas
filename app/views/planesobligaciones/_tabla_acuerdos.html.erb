@@ -1,0 +1,99 @@
+<% isportafolio = is_portafolio
+   @is_auth_c_alivioscuota = is_auth_c('alivioscuota')
+   @auth_factucionsae = is_auth_c('facturacionsae')
+   @controlcupones = is_auth_c('controlcupones')
+%>
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <%
+        idcontrato = Personasobligacion.find(@planesobligaciones[0].personasobligacion_id).personascontrato_id
+        if Personascontrato.where(id: idcontrato, tipo_proceso: 'ARRENDAMIENTO').exists?
+          planesobligaciones = Planesobligacion.where("personasobligacion_id = #{@planesobligaciones[0].personasobligacion_id}").order("nro_cuota asc")
+      %>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" width="8%"></th>
+              <th class="text-center">#</th>
+              <% if @planesobligaciones.exists?(["fechadepago is not null"]) %>
+                <th class="text-center">Fecha<br/>Pago</th>
+              <% end %>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-right" width="15%" style='font-size: 12px;'>Inicial</th>
+              <th class="text-right" width="15%" style='font-size: 12px;'>Cuota</th>
+              <th class="text-right" width="15%" style='font-size: 12px;'>Pendiente Amortizacion</th>
+              <th class="text-right" width="15%" style='font-size: 12px;'>Corriente</th>
+              <th class="text-right" width="15%" style='font-size: 12px;'>Final</th>
+              <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <% end %>
+              <th class="text-center">#</th>
+            </tr>
+            <% planesobligaciones.each do |planesobligacion| %>
+              <tr>
+                <td class="text-center">
+                  <% if Personasoblfactura.where("personasobligacion_id = #{planesobligacion.personasobligacion_id} and nro_cuota = #{planesobligacion.nro_cuota}").present? %>
+                    <%= link_to modelo_factura_botonessae_index_path(id: planesobligacion.personasobligacion_id, planesobligacion_id: planesobligacion.id, nro_cuota: planesobligacion.nro_cuota, :format => :pdf), data: { toggle: 'tooltip' }, title: "Comprobante de Pago", onclick: 'window.open(this.href,"new_window","height=600,width=900,scrollbars=yes");return false;' do %>
+                      <button class="btn btn-xs btn-primary"><i class="fa fa-file-pdf-o"></i></button>
+                    <% end %>
+                    <% if @controlcupones %>
+                      <%= link_to cupon_personasconcupones_path(nro_cuota: planesobligacion.nro_cuota, personascontrato_id: @personasobligacion.personascontrato_id, planesobligacion_id: planesobligacion.id), data: { toggle: 'tooltip' }, remote: true, data: { toggle: 'tooltip' }, title: 'Cupones' do %>
+                        <button class="btn btn-xs btn-danger"><i class="fa fa-cc-mastercard"></i></button>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td class="text-table">
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right text-table" style='font-size: 12px;'>
+                  <strong><%= camponumerico2(planesobligacion.inicial) %></strong></td>
+                <td class="text-right text-table" style='font-size: 12px;'>
+                  <strong><%= camponumerico2(planesobligacion.cuota) %></strong></td>
+                <td class="text-right text-table" style='font-size: 12px;'>
+                  <strong><%= camponumerico2(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right text-table" style='font-size: 12px;'>
+                  <strong><%= camponumerico2(planesobligacion.corriente) %></strong></td>
+                <td class="text-right text-table" style='font-size: 12px;'>
+                  <% if planesobligacion.final != planesobligacion.final_ori and planesobligacion.fecha_vence <= is_fechahoy %>
+                    <div class="text-red">
+                      <strong><a title="Extraordinario"><%= camponumerico2(planesobligacion.final) %></a></strong>
+                    </div>
+                  <% else %>
+                    <strong><%= camponumerico2(planesobligacion.final) %></strong>
+                  <% end %>
+                </td>
+                <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                  <td class="text-table">
+                    <div align="right" style="font-size: 12px;"><%= camponumerico2(planesobligacion.otros) %></div>
+                  </td>
+                <% end %>
+                <td style='font-size: 12px;' class="text-table">
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+              <div class="modal fade" id="cupon<%=planesobligacion.id %>">
+                <div class="modal-dialog modal-lg" style="width: 1000px">
+                  <div class="modal-content">
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="personasoblfestados">
+  <div class="modal-dialog modal-lg" style="width: 1200px !important;">
+    <div class="modal-content" style="width: 1200px;"></div>
+  </div>
+</div>
+

@@ -1,0 +1,8 @@
+$("#elemento_tabla").html("<%= j render "archivos/cargues/#{@proceso.downcase.gsub(' ', '_')}" rescue nil %>");
+<% if @tipoarchivo == 'CSV' %>
+  $("#elemento_tipo").html("<%= j render "archivos/tipos/csv" rescue nil %>");
+<% elsif @tipoarchivo == 'TXT' %>
+  $("#elemento_tipo").html("<%= j render "archivos/tipos/txt" rescue nil %>");
+<% else %>
+  $("#elemento_tipo").html("<%= j render "archivos/tipos/excel" rescue nil %>");
+<% end %>

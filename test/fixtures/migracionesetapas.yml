@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  personasproceso_id: 1
+  procesosetapa: 1
+  procesosactuacion: 1
+  fecha: 2018-11-27
+  observacion: MyString
+
+two:
+  personasproceso_id: 1
+  procesosetapa: 1
+  procesosactuacion: 1
+  fecha: 2018-11-27
+  observacion: MyString

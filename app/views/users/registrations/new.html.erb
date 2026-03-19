@@ -1,0 +1,68 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title"><strong><%= user.new_record? ? 'Agregar nuevo' : 'Editar' %> Usuario</strong></h3>
+      </div><!-- /.box-header -->
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.input :avatar, as: :file %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :identificacion, label: 'Identificación' %></div>
+          <div class="col-md-4"><%= f.input :nombre %></div>
+          <div class="col-md-4"><%= f.input :email %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :activo, as: :select, collection: select_sinocorto %></div>
+          <div class="col-md-4"><%= f.input :directivo, as: :select, collection: select_sinocorto %></div>
+          <div class="col-md-4"><%= f.input :geintac, as: :select, collection: select_sinocorto, label: 'G-intac' %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :username, label: 'Usuario' %></div>
+          <div class="col-md-4"><%= f.input :password, label: 'Clave' %></div>
+          <div class="col-md-4"><%= f.input :password_confirmation, label: 'Confirmar Clave' %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :acceso_remoto, as: :select, collection: select_sinocorto %></div>
+          <div class="col-md-4"><label>Cargo</label><%= f.collection_select :cargo_id, Cargo.all, :id, :descripcion, {prompt: "Seleccione"}, {class: "form-control"} %></div>
+          <div class="col-md-4"><label>Compañia Contratante</label><%= f.collection_select :portafolio_id, Portafolio.all, :id, :nombre, {prompt: "Seleccione"}, {class: "form-control"} %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :tipoconsulta, as: :select, collection: select_tipoconsulta, label: 'Tipo Consulta' %></div>
+          <div class="col-md-4"><label>Sucursal</label><%= f.collection_select :portafoliossucursal_id, Portafoliossucursal.all, :id, :descripcion, {prompt: "Seleccione"}, {class: "form-control"} %></div>
+          <div class="col-md-4"><%= f.input :direccion, label: 'Dirección' %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><%= f.input :ciudad %></div>
+          <div class="col-md-4"><%= f.input :telefonos %></div>
+          <div class="col-md-4"><%= f.input :celular %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"><label>Fecha de Nacimiento</label><%= f.date_field :fecha_nacimiento, class: 'form-control' %></div>
+          <div class="col-md-4"><label>Fecha de Ingreso</label><%= f.date_field :fecha_ingreso, class: 'form-control' %></div>
+          <div class="col-md-4"><label>Fecha de Retiro</label><%= f.date_field :fecha_salida, class: 'form-control' %></div>
+       </div>
+       <div class="row">
+         <div class="col-md-4"><%= f.input :genero, as: :select, collection: select_genero %></div>
+         <div class="col-md-4"><%= f.input :observaciones, as: :text %></div>
+         <div class="col-md-4"><%= f.input :extension, label: 'Extensión' %></div>
+       </div>
+       <div class="row">
+         <div class="col-md-4"><%= f.input :tarjeta_profesional %></div>
+         <div class="col-md-4"><%= f.input :nro_cuenta %></div>
+      </div>
+      </div>
+      <div class="box-footer">
+        <%= link_to "#{t :cancelar}", root_path, class: 'btn btn-flat btn-default' %>
+        <div class="box-tools pull-right">
+          <%= f.button :submit, 'Aceptar', class: 'btn-flat btn-primary' %>
+        </div><!-- /.box-tools -->
+      </div><!-- box-footer -->
+    </div><!-- /.box -->
+  </div>
+</div>
+<% end %>

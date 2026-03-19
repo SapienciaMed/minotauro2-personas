@@ -1,0 +1,1162 @@
+<% isportafolio = is_portafolio
+   @is_auth_c_alivioscuota = is_auth_c('alivioscuota')
+   @auth_factucionsae = is_auth_c('facturacionsae')
+   @is_permiso_libranza = is_permiso('libranza')
+   @controlcupones = is_auth_c('controlcupones')
+   parspreadoperador = 0
+   if isportafolio == 10037
+     parspreadoperador = Parametro.find(11020).valor_numerico.to_f / 100.to_f rescue nil
+     puts "Valor del operador...." + parspreadoperador.to_s
+   end
+%>
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <% if isportafolio == 10052
+           idcontrato = Personasobligacion.find(@planesobligaciones[0].personasobligacion_id).personascontrato_id
+           if Personascontrato.where(id: idcontrato, tipo_proceso: 'ARRENDAMIENTO').exists?
+      %>
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th class="text-center thcolor" width="10%"></th>
+                <th class="text-center thcolor" width="3%">#</th>
+                <th class="text-center thcolor" style='font-size: 11px;' width="8%">Nro Fact.</th>
+                <th class="text-center thcolor" style='font-size: 11px;' width="7%">Fecha Corte</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="7%">Canon</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="7%">Iva</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="7%">Otros Imp.</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="7%">Admon</th>
+                <th class="text-right thcolororange" style='font-size: 11px;' width="7%">Inv. Auto.</th>
+                <th class="text-right thcolorred" style='font-size: 11px;' width="7%">Mora</th>
+                <th class="text-right thcolorred" style='font-size: 11px;' width="7%">ND</th>
+                <th class="text-right thcolorred" style='font-size: 11px;' width="7%">NC</th>
+                <th class="text-right thcolorred" style='font-size: 11px;' width="10%">Valor a Pagar</th>
+              </tr>
+              <% @planesobligaciones.includes([:personasobligacion]).each do |planesobligacion|
+                personasoblfactura = Personasoblfactura.find(planesobligacion.idfactura) rescue nil
+                stEspecial = ""
+                if planesobligacion.alivio.to_s == 'SI'
+                  stEspecial = "border-collapse: collapse; border: 1px dotted red; border-color: red; border-top-color: red;"
+                end
+              %>
+                <tr id="planesobligacion_<%= planesobligacion.id %>">
+                  <td style='<%= stEspecial %>'>
+                    <%= render 'planesobligaciones/botones_planes', planesobligacion: planesobligacion, personasoblfactura: personasoblfactura %>
+                  </td>
+                  <td style='<%= stEspecial %>'>
+                    <div align="center" style='font-size: 12px;'><%= planesobligacion.nro_cuota %></div>
+                  </td>
+                  <td style='<%= stEspecial %>'>
+                    <div align="center" style='font-size: 12px;'>
+                      <strong>
+                        <% if personasoblfactura.present? or planesobligacion.valor_costas.to_i > 0
+                             notas = personasoblfactura.personasoblfnotas.present? rescue nil
+                        %>
+                          <% if notas or planesobligacion.valor_costas.to_i > 0 %>
+                            <div id="abrir<%= planesobligacion.id rescue nil %>">
+                              <%= link_to show_historico_personasoblfacturas_path(personascontrato_id: @personascontrato.id, existeestado: planesobligacion.existeestado, existefac: planesobligacion.existefac, id: planesobligacion.id, factura: planesobligacion.idfactura, ruta: 'ABRIR', cantidad_tr: planesobligacion.existend.to_i), input_html: { style: "color: black; text-decoration: none" }, remote: true do %>
+                                <i class="fa fa fa-plus" data-toggle="tooltip" style="color:green;" data-original-title="Pulsa aqui para ver detalle"></i> <%= personasoblfactura.factura_dian rescue nil %>
+                              <% end %>
+                            </div>
+                            <div class="hide" id="cerrar<%= planesobligacion.id rescue nil %>">
+                              <%= link_to show_historico_personasoblfacturas_path(personascontrato_id: @personascontrato.id, existeestado: planesobligacion.existeestado, existefac: planesobligacion.existefac, id: planesobligacion.id, factura: planesobligacion.idfactura, ruta: 'CERRAR', cantidad_tr: planesobligacion.existend.to_i), input_html: { style: "color: black; text-decoration: none" }, remote: true do %>
+                                <i class="fa fa fa-minus" data-toggle="tooltip" style="color:red;" data-original-title="Pulsa aqui para cerrar detalle"></i> <%= personasoblfactura.factura_dian rescue nil %>
+                              <% end %>
+                            </div>
+                          <% else %>
+                            <%= personasoblfactura.factura_dian rescue nil %>
+                          <% end %>
+                        <% else %>
+                          <%= personasoblfactura.factura_dian rescue nil %>
+                        <% end %>
+                        <div>
+                        <% if personasoblfactura.present? and @auth_factucionsae %>
+                          <% if planesobligacion.valor_pagar > 0 and personasoblfactura.factura_dian.present? %>
+                             <%= link_to anular_factura_obs_personasoblfacturas_path(personascontrato_id: @personascontrato.id, id: personasoblfactura.id, opc: 1), remote: true do %>
+                                <i class="fa fa fa-close" data-toggle="tooltip" style="color:red;" data-original-title="Anular Factura"></i>
+                             <% end %>&nbsp;
+                             <%= link_to anular_factura_obs_personasoblfacturas_path(personascontrato_id: @personascontrato.id, id: personasoblfactura.id, opc: 2), remote: true do %>
+                              <i class="fa fa fa-close" data-toggle="tooltip" style="color:blue;" data-original-title="Anular Factura2"></i>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                        </div>
+                      </strong>
+                    </div>
+                  </td>
+                  <td style='<%= stEspecial %>'>
+                    <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                  </td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.amortiza) %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.corriente) %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.valor_seguro.to_i + planesobligacion.valor_seguro2.to_i + planesobligacion.valor_seguro3.to_i) %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.valor_comisiones.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2 0 %> <%#= camponumerico2(planesobligacion.valor_comisiones.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.mora.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.otros.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'><%= camponumerico2(planesobligacion.nc.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px; <%= stEspecial %>'>
+                    <strong><%= camponumerico2(planesobligacion.valor_pagar) rescue 0 %></strong>
+                  </td>
+                </tr>
+                <% if planesobligacion.existend.to_i > 0 or planesobligacion.valor_costas.to_i > 0 %>
+                  <tr id="tr_show<%= planesobligacion.id %>" class="hidden" style="padding: 0px !important;">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td colspan="11" style="padding: 0px !important;">
+                      <div id="abrir_detalle<%= planesobligacion.id %>"></div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </table>
+          </div>
+        <% else %>
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th class="text-center thcolor" width="5%"></th>
+                <th class="text-center thcolor" width="5%">#</th>
+                <th class="text-center thcolor" style='font-size: 11px;' width="15%">Fecha Corte</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="15%">Amortizacion</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="15%">Corriente</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="15%">Mora</th>
+                <th class="text-right thcolor" style='font-size: 11px;' width="15%">Otros</th>
+                <th class="text-right thcolorred" style='font-size: 11px;' width="15%">Valor a Pagar</th>
+              </tr>
+              <% @planesobligaciones.each do |planesobligacion| %>
+                <tr id="planesobligacion_<%= planesobligacion.id %>">
+                  <td>.</td>
+                  <td>
+                    <div align="center" style='font-size: 12px;'>
+                      <% if planesobligacion.fecha_limitei.present?
+                           if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                          <i class="fa fa-chrome text-red"></i>
+                        <% end
+                           end %>
+                      <%= planesobligacion.nro_cuota %></div>
+                  </td>
+                  <td>
+                    <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                  </td>
+                  <td class="text-right" style='font-size: 11px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                  <td class="text-right" style='font-size: 11px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                  <td class="text-right" style='font-size: 11px;'><%= camponumerico(planesobligacion.mora.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px;'><%= camponumerico(planesobligacion.otros.to_i) rescue 0 %></td>
+                  <td class="text-right" style='font-size: 11px;'>
+                    <strong><%= camponumerico(planesobligacion.valorpagarfit) rescue 0 %></strong></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        <% end %>
+      <% elsif isportafolio == 10038 %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center thcolor" width="3%">#</th>
+              <th class="text-center thcolor" width="11%" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-right thcolor" width="11%" style='font-size: 12px;'>Capital</th>
+              <th class="text-right thcolor" width="11%" style='font-size: 12px;'>Interes</th>
+              <th class="text-right thcolor" width="11%" style='font-size: 12px;'>Comision</th>
+              <th class="text-right thcolor" width="11%" style='font-size: 12px;'>Iva Comision</th>
+              <th class="text-right thcolor" width="11%" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center thcolor" width="3%">#</th>
+              <th class="text-right thcolorred" width="11%" style='font-size: 12px;'>Mora Migrada</th>
+              <th class="text-right thcolorred" width="11%" style='font-size: 12px;'>Mora Teseo</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion| %>
+              <tr id="planesobligacion_<%= planesobligacion.id %>">
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td><div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza.to_i) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente.to_i) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_comisiones.to_i) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_costas.to_i) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro.to_i) rescue 0%></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.personasobligacion.valor_mora.to_i) rescue 0 %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.mora.to_i) rescue 0 %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+
+      <% elsif isportafolio == 10053 %>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center thcolor" width="3%">#</th>
+              <th class="text-center thcolor" width="11%" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Inicial</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Cuota</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Capital</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Interes</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Seguro</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Fianza</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>IVA Fianza</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>FirmaE</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>IVA FirmaE</th>
+              <th class="text-right thcolor" width="10%" style='font-size: 12px;'>Final</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion| %>
+              <tr id="planesobligacion_<%= planesobligacion.id %>">
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td><div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.comp.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.igv_comp.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_costas.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_cxc.to_f) rescue 0%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final.to_f) rescue 0%></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+
+      <% elsif isportafolio == 10063 
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Int. Diferidos</th>
+              <th class="text-center" style='font-size: 12px;'>GPS</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center" style='font-size: 12px;'>Mora</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion|
+              i = i +1
+              if i == 1 and planesobligacion.cuota.to_i > 0
+                muestra = 'SI'
+              end
+              if planesobligacion.cuota.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Int. Diferidos</th>
+                  <th class="text-center" style='font-size: 12px;'>GPS</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center" style='font-size: 12px;'>Mora</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>CP</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.corriente) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.valor_seguro.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.valor_comisiones.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.valor_costas.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.otros.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.mora.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) rescue 0 %></td>
+                <td style='font-size: 12px;'><div align="center"><%= planesobligacion.nro_cuota %></div></td>
+                <td style='font-size: 12px;'><div align="center"><%= planesobligacion.cp rescue nil %></div></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+
+      <% elsif isportafolio == 10240
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Mora</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <%
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Mora</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td><div align="center" style='font-size: 12px;'>
+                  <% if planesobligacion.fecha_limitei.present?
+                       if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                      <i class="fa fa-chrome text-red"></i>
+                    <% end
+                       end %>
+                  <%= planesobligacion.nro_cuota %></div></td>
+                <td><div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.mora.to_i) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif @is_permiso_libranza
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>Flujo</th>
+              <th class="text-center thcolorgreen" style='font-size: 12px;'>Cuota Fondeo</th>
+              <th class="text-center thcolorgreen" style='font-size: 12px;'>Spread Oper.</th>
+              <th class="text-center thcolorgreen" style='font-size: 12px;'>Spreed Compr.</th>
+            </tr>
+            <%
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.comodin.to_s == 'BANCOOMEVA'
+                  spreadoper = planesobligacion.corriente * parspreadoperador
+                  spreadven = planesobligacion.corriente - spreadoper
+                  cuotafondeo = planesobligacion.amortiza + planesobligacion.corriente - spreadoper
+                else
+                  spreadoper = 0
+                  spreadven = 0
+                  cuotafondeo = 0
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>Flujo</th>
+                  <th class="text-center thcolorgreen" style='font-size: 12px;'>Cuota Fondeo</th>
+                  <th class="text-center thcolorgreen" style='font-size: 12px;'>Spread Oper.</th>
+                  <th class="text-center thcolorgreen" style='font-size: 12px;'>Spreed Compr.</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td><div align="center" style='font-size: 12px;'>
+                  <% if planesobligacion.fecha_limitei.present?
+                       if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                      <i class="fa fa-chrome text-red"></i>
+                    <% end
+                     end %>
+                  <%= planesobligacion.nro_cuota %></div></td>
+                <td><div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.otros.to_i) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'><div align="center"><%= planesobligacion.comodin.to_s rescue nil %></div></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(cuotafondeo)%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(spreadoper)%></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(spreadven)%></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif isportafolio == 10142 %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center thcolor">#</th>
+              <th class="text-center thcolor" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Inicial</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Cuota</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Amortiza</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Interes</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>IGV</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Seguro</th>
+              <th class="text-right thcolor" style='font-size: 12px;'>Final</th>
+              <th class="text-center thcolor">#</th>
+              <th class="text-right thcolorred" style='font-size: 12px;'>Comp</th>
+              <th class="text-right thcolorred" style='font-size: 12px;'>Igv Comp</th>
+              <th class="text-right thcolorred" style='font-size: 12px;'>Mora</th>
+              <th class="text-right thcolorred" style='font-size: 12px;'>Valor a Pagar</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion| %>
+              <tr id="planesobligacion_<%= planesobligacion.id %>">
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.cuota) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.igv) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro2) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.comp) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.igv_comp) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.mora) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.valorpagarfit) rescue 0 %></strong></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif isportafolio == 10341
+           i = 0
+           muestra = 'NO'
+           if @personasobligacion.unidad_denominacion.to_s == 'UVR'
+             isuvrdia = is_uvrdia
+           else
+             isuvrdia = 1
+           end
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>Seg.Riesgo</th>
+              <th class="text-center" style='font-size: 12px;'>Seg.Vida</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center thcolorred" style='font-size: 12px;'>Mora Migrada</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <%
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>Seg.Riesgo</th>
+                  <th class="text-center" style='font-size: 12px;'>Seg.Vida</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center thcolorred" style='font-size: 12px;'>Mora Migrada</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial.to_f * isuvrdia.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <% if @personasobligacion.unidad_denominacion.to_s == 'UVR' %><%= camponumerico(planesobligacion.cuotaespecialuvr.to_f) %>
+                  <% else %><%= camponumerico(planesobligacion.cuotaespecial.to_f) %>
+                  <% end %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza.to_f * isuvrdia.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente.to_f * isuvrdia.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final.to_f * isuvrdia.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_segterremoto.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_segvida.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.otros.to_f) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_cxc.to_f * isuvrdia.to_f) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif [10140, 10145, 10146, 10147, 10148, 10144].include?(isportafolio)
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Porte</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center thcolorred" style='font-size: 12px;'>Comp</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <%
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Porte</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center thcolorred" style='font-size: 12px;'>Comp</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_porte) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.comp) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif [10029, 10031, 10047].include?(isportafolio)
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Aval</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center" style='font-size: 12px;'>Honorarios</th>
+              <th class="text-center" style='font-size: 12px;'>Mora</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>Alivio</th>
+            </tr>
+            <%
+              nrocuotamaxalivio = @planesobligaciones.where("alivio = 'SI'").select("max(to_number(nro_cuota)) nrocuota")[0].nrocuota rescue 0
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Aval</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center" style='font-size: 12px;'>Honorarios</th>
+                  <th class="text-center" style='font-size: 12px;'>Mora</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>Alivio</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if @is_auth_c_alivioscuota %>
+                      <% if nrocuotamaxalivio.to_i > 0
+                           #puts "Ingreso 1 -...." + nrocuotamaxalivio.to_s + ' --- ' + planesobligacion.nro_cuota.to_s
+                           if planesobligacion.nro_cuota.to_i >= nrocuotamaxalivio
+                      %>
+                          <% if planesobligacion.amortiza.to_i > 0 %>
+                            <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "EXTENSION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Ampliación' do %>
+                              <i class="fa fa-plus"></i>
+                            <% end %>
+                            <% if planesobligacion.alivio.to_s == 'SI' and nrocuotamaxalivio == planesobligacion.nro_cuota.to_i %>
+                              <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "CONTRACCION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Reducción' do %>
+                                <i class="fa fa-minus-circle"></i>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <% if planesobligacion.amortiza.to_i > 0 %>
+                          <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "EXTENSION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Ampliación' do %>
+                            <i class="fa fa-plus"></i>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_aval) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.otros) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_honorarios) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.mora) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.alivio %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif [10028, 10101].include?(isportafolio)
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Aval</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <%
+              nrocuotamaxalivio = @planesobligaciones.where("alivio = 'SI'").select("max(to_number(nro_cuota)) nrocuota")[0].nrocuota rescue 0
+              @planesobligaciones.each do |planesobligacion|
+                i = i +1
+                if i == 1 and planesobligacion.amortiza.to_i > 0
+                  muestra = 'SI'
+                end
+                if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Aval</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if @is_auth_c_alivioscuota %>
+                      <% if nrocuotamaxalivio.to_i > 0
+                           #puts "Ingreso 1 -...." + nrocuotamaxalivio.to_s + ' --- ' + planesobligacion.nro_cuota.to_s
+                           if planesobligacion.nro_cuota.to_i >= nrocuotamaxalivio
+                      %>
+                          <% if planesobligacion.amortiza.to_i > 0 %>
+                            <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "EXTENSION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Ampliación' do %>
+                              <i class="fa fa-plus"></i>
+                            <% end %>
+                            <% if planesobligacion.alivio.to_s == 'SI' and nrocuotamaxalivio == planesobligacion.nro_cuota.to_i %>
+                              <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "CONTRACCION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Reducción' do %>
+                                <i class="fa fa-minus-circle"></i>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <% if planesobligacion.amortiza.to_i > 0 %>
+                          <%= link_to cambioplan_planesobligaciones_path(id: planesobligacion.id, metodo: "EXTENSION", fchcuota: planesobligacion.fecha_vence), data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: 'Ampliación' do %>
+                            <i class="fa fa-plus"></i>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_seguro) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.valor_aval) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.otros) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif [10341, 10331, 10342, 10343, 10344, 10345, 10018,10118, 10346, 10347, 10348, 10360].include?(isportafolio)
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seguro</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion|
+              i = i +1
+              if i == 1 and planesobligacion.amortiza.to_i > 0
+                muestra = 'SI'
+              end
+              if planesobligacion.amortiza.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seguro</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.corriente) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.valor_seguro) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) %></td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif [10102,10056,10064,10065].include?(isportafolio)
+           i = 0
+           muestra = 'NO'
+      %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Capital</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Seg. Vida</th>
+              <th class="text-center" style='font-size: 12px;'>Seg. Incap</th>
+              <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <th class="text-center" style='font-size: 12px;'>Mora</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>#</th>
+              <th class="text-center" style='font-size: 12px;'>CP</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion|
+              i = i +1
+              if i == 1 and planesobligacion.cuota.to_i > 0
+                muestra = 'SI'
+              end
+              if planesobligacion.cuota.to_i > 0 and i != 1 and muestra == 'NO'
+            %>
+                <tr class="thcolor">
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+                  <th class="text-center" style='font-size: 12px;'>Inicial</th>
+                  <th class="text-center" style='font-size: 12px;'>Cuota</th>
+                  <th class="text-center" style='font-size: 12px;'>Capital</th>
+                  <th class="text-center" style='font-size: 12px;'>Corriente</th>
+                  <th class="text-center" style='font-size: 12px;'>Seg. Vida</th>
+                  <th class="text-center" style='font-size: 12px;'>Seg. Incap</th>
+                  <th class="text-center" style='font-size: 12px;'>Otros</th>
+                  <th class="text-center" style='font-size: 12px;'>Mora</th>
+                  <th class="text-center" style='font-size: 12px;'>Final</th>
+                  <th class="text-center" style='font-size: 12px;'>#</th>
+                  <th class="text-center" style='font-size: 12px;'>CP</th>
+                </tr>
+              <% muestra = 'SI'
+                 end %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.inicial) %></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota) %></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.corriente) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.valor_seguro.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.valor_seguro2.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.otros.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><strong><%= camponumerico(planesobligacion.mora.to_f) rescue 0 %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.final) rescue 0 %></td>
+                <td style='font-size: 12px;'><div align="center"><%= planesobligacion.nro_cuota %></div></td>
+                <td style='font-size: 12px;'><div align="center"><%= planesobligacion.cp rescue nil %></div></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% elsif isportafolio == 10040 %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center">#</th>
+              <% if @planesobligaciones.exists?(["fechadepago is not null"]) %>
+                <th class="text-center">Fecha<br/>Pago</th>
+              <% end %>
+              <th class="text-center" style='font-size: 12px;'>Fecha Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Pendiente Amortización</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <% end %>
+              <th class="text-center" style='font-size: 12px;'>Valores Pend. Cuota</th>
+              <th>#</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion| %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.inicial) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.cuota) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.corriente) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <% if planesobligacion.final != planesobligacion.final_ori and planesobligacion.fecha_vence <= is_fechahoy %>
+                    <div class="text-red">
+                      <strong><a title="Extraordinario"><%= camponumerico(planesobligacion.final) %></a></strong>
+                    </div>
+                  <% else %>
+                    <strong><%= camponumerico(planesobligacion.final) %></strong>
+                  <% end %>
+                </td>
+                <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                  <td>
+                    <div align="right" style="font-size: 12px;"><%= camponumerico(planesobligacion.otros) %></div>
+                  </td>
+                <% end %>
+                <td>
+                  <div align="right" style="font-size: 12px;"><%= camponumerico(planesobligacion.valor_pagar) %></div>
+                </td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% else %>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th class="text-center">#</th>
+              <% if @planesobligaciones.exists?(["fechadepago is not null"]) %>
+                <th class="text-center">Fecha<br/>Pago</th>
+              <% end %>
+              <th class="text-center" style='font-size: 12px;'>Fecha<br/>Corte</th>
+              <th class="text-center" style='font-size: 12px;'>Inicial</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota</th>
+              <th class="text-center" style='font-size: 12px;'>Cuota<br/>Ori</th>
+              <th class="text-center" style='font-size: 12px;'>Pendiente<br/>Amortizacion</th>
+              <th class="text-center" style='font-size: 12px;'>Amortiza<br/>Ori</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente</th>
+              <th class="text-center" style='font-size: 12px;'>Corriente<br/>Ori</th>
+              <th class="text-center" style='font-size: 12px;'>Final</th>
+              <th class="text-center" style='font-size: 12px;'>Final<br/>Ori</th>
+              <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                <th class="text-center" style='font-size: 12px;'>Otros</th>
+              <% end %>
+              <th class="text-center" style='font-size: 12px;'>Valores<br/>Pend. Cuota</th>
+              <th>#</th>
+            </tr>
+            <% @planesobligaciones.each do |planesobligacion| %>
+              <tr>
+                <td>
+                  <div align="center" style='font-size: 12px;'>
+                    <% if planesobligacion.fecha_limitei.present?
+                         if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                        <i class="fa fa-chrome text-red"></i>
+                      <% end
+                         end %>
+                    <%= planesobligacion.nro_cuota %></div>
+                </td>
+                <td>
+                  <div align="center" style='font-size: 12px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div>
+                </td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.inicial) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.cuota) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.cuota_ori) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.amortiza) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.amortiza_ori) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <strong><%= camponumerico(planesobligacion.corriente) %></strong></td>
+                <td class="text-right" style='font-size: 12px;'><%= camponumerico(planesobligacion.corriente_ori) %></td>
+                <td class="text-right" style='font-size: 12px;'>
+                  <% if planesobligacion.final != planesobligacion.final_ori and planesobligacion.fecha_vence <= is_fechahoy %>
+                    <div class="text-red">
+                      <strong><a title="Extraordinario"><%= camponumerico(planesobligacion.final) %></a></strong>
+                    </div>
+                  <% else %>
+                    <strong><%= camponumerico(planesobligacion.final) %></strong>
+                  <% end %>
+                </td>
+                <td>
+                  <div align="right" style="font-size: 12px;"><%= camponumerico(planesobligacion.final_ori) %></div>
+                </td>
+                <% if Planesobligacion.exists?(["personasobligacion_id = #{@personasobligacion.id} and otros > 0"]) == true %>
+                  <td>
+                    <div align="right" style="font-size: 12px;"><%= camponumerico(planesobligacion.otros) %></div>
+                  </td>
+                <% end %>
+                <td>
+                  <div align="right" style="font-size: 12px;"><%= camponumerico(planesobligacion.valor_pagar) %></div>
+                </td>
+                <td style='font-size: 12px;'>
+                  <div align="center"><%= planesobligacion.nro_cuota %></div>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="personasoblfestados">
+  <div class="modal-dialog modal-lg" style="width: 1200px !important;">
+    <div class="modal-content" style="width: 1200px;"></div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="facturas">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="anular_opc1">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content"></div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  portafolio: one
+  personasobligacion: one
+  valor: 1
+  fecha_recaudo: 2021-04-23
+  estado: MyString
+  tipo_pago: MyString
+  unidad_denominacion: MyString
+  observacion: MyString
+  user_aprobacion: 1
+  fecha_aprobacion: 2021-04-23
+  observacion_aprobacion: MyString
+  tanque: one
+
+two:
+  portafolio: two
+  personasobligacion: two
+  valor: 1
+  fecha_recaudo: 2021-04-23
+  estado: MyString
+  tipo_pago: MyString
+  unidad_denominacion: MyString
+  observacion: MyString
+  user_aprobacion: 1
+  fecha_aprobacion: 2021-04-23
+  observacion_aprobacion: MyString
+  tanque: two

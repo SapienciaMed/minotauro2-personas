@@ -1,0 +1,22 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+	  <thead>
+		<tr class="thcolor">
+			<th width="5%"></th>
+			<th width="15%">Fecha</th>
+			<th width="10%">Tipo</th>
+			<th width="55%">Observacion</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personascontroles">
+	<% 
+		@is_auth_a_personascontrol = is_auth_a('personascontrol')
+		@is_auth_e_personascontrol = is_auth_e('personascontrol')		
+		@persona.personascontroles.joins(:user)
+									  .select("personascontroles.*, users.username")
+								   	  .order('personascontroles.updated_at DESC').each do |personascontrol| %>
+	       <%= render 'personascontroles/tr', personascontrol: personascontrol %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

@@ -1,0 +1,23 @@
+<tr id="personasobservacion_<%= personasobservacion.id %>">
+  <td class="text-center">
+    <% if @is_auth_a_personasobservacion %>
+      <%= link_to edit_persona_personasobservacion_path(@persona, personasobservacion), remote: true, data: { toggle: 'tooltip' }, class: 'edit_personasobservacion_button', title: "#{t :title_editar}" do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+    <% end %>
+    <% if @is_auth_e_personasobservacion %>
+      <%= link_to persona_personasobservacion_path(@persona, personasobservacion), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td><%=personasobservacion.updated_at.strftime("%Y-%m-%d %X")%><br/>
+      <%=personasobservacion.username rescue nil%></td>
+  <td><%=personasobservacion.tipo %></td>
+  <td><%=personasobservacion.desestado rescue nil %></td>
+  <td><div align="justify"><%=personasobservacion.observacion %><br/>
+    <div style="color:red; font-size:12px; font-family: Tahoma;" align="justify"><strong>SITUACION ECONOMICA:</strong> <%=personasobservacion.situacion_econo rescue nil%><br/>
+    <strong> SITUACION EDUCACIÓN:</strong> <%=personasobservacion.situacion_bene rescue nil%></div></div></td>
+</tr>
+
+

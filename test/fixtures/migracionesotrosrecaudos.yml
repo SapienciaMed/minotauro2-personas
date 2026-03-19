@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  userreg_id: 1
+  consecutivo: 1
+  namefile: MyString
+  archivo_id: 1
+  portafolio_id: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  tipo_pago: MyString
+  valor: 1
+  tipo_afecta: MyString
+  unidad_denominacion: MyString
+  portafolioscuenta_id: 1
+  observaciones: MyString
+  error: MyString
+  aplicado: MyString
+  personasobligacion_id: 1
+  persona_id: 1
+
+two:
+  userreg_id: 1
+  consecutivo: 1
+  namefile: MyString
+  archivo_id: 1
+  portafolio_id: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  tipo_pago: MyString
+  valor: 1
+  tipo_afecta: MyString
+  unidad_denominacion: MyString
+  portafolioscuenta_id: 1
+  observaciones: MyString
+  error: MyString
+  aplicado: MyString
+  personasobligacion_id: 1
+  persona_id: 1

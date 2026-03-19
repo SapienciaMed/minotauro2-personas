@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nro_obligacion: MyString
+  cedula: MyString
+  nombre: MyString
+  interes_corriente: 1
+  interes_mora: 1
+  interes_contigente: 1
+  interes_mora_contingente: 1
+  cuota_vence: 1
+  seguro_vence: 1
+  mora_vence: 1
+  saldo_vencido: 1
+  saldo_deuda: 1
+  saldo_k: 1
+
+two:
+  nro_obligacion: MyString
+  cedula: MyString
+  nombre: MyString
+  interes_corriente: 1
+  interes_mora: 1
+  interes_contigente: 1
+  interes_mora_contingente: 1
+  cuota_vence: 1
+  seguro_vence: 1
+  mora_vence: 1
+  saldo_vencido: 1
+  saldo_deuda: 1
+  saldo_k: 1

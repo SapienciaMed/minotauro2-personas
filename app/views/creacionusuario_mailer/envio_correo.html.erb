@@ -1,0 +1,14 @@
+
+	<div align="justify" style="font-size: 14px; font-family: Verdana, Geneva, sans-serif; line-height:20px;">
+		  Bienvenido(a) <strong><%=@user.nombre rescue nil %> </strong>
+		  <br/><br/>
+		  Estos son tus datos de acceso a la Plataforma de pago para <strong>SAPIENCIA</strong>
+		  <br/><br/>
+		<strong>Usuario:</strong>&nbsp;<%=@user.username rescue nil%><br/>
+		<strong>Contraseña:</strong>&nbsp;'12345678'
+	  <br/><br/>  
+	</div>
+	<div align="justify" style="color:red; font-size: 12px; font-family: Verdana, Geneva, sans-serif;">
+	  <strong>Para ingresar al sistema haz click en el siguiente enlace <%= link_to 'Ir a Pagos en Linea', 'localhost:3000' %></strong>
+	</div>
+	<br/>

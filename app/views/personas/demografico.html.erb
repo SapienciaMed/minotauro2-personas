@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h3>Informe Cartera Direcciones</h3>
+</div>
+<table border="1">
+  <tr valign="middle" bgcolor="#00FF00">
+    <td><strong>Obligacion</strong></td>
+    <td><strong>Identificacion Titular</strong></td>
+    <td><strong>Titular</strong></td>
+    <td><strong>Telefono</strong></td>
+    <td><strong>Direccion</strong></td>
+    <td><strong>Ciudad</strong></td>
+    <td><strong>Deudor Solidario Identificacion</strong></td>
+    <td><strong>Deudor Solidario Nombre</strong></td>
+    <td><strong>Deudor Solidario Direccion</strong></td>
+    <td><strong>Deudor Solidario Ciudad</strong></td>
+    <td><strong>Deudor Solidario Telefono</strong></td>
+    <td><strong>---</strong></td>
+    <td><strong>Saldo Inicial</strong></td>
+    <td><strong>Plazo</strong></td>
+    <td><strong>Tasa de Interés Efectiva Anual</strong></td>
+    <td><strong>Cuota Mensual</strong></td>
+    <td><strong>Fechas de Pago</strong></td>
+    <td><strong>Radicado</strong></td>
+    <td><strong>Radicado Deudor Solidario</strong></td>
+  </tr>
+<% @personasobligaciones.each do |personasobligacion|%>
+  <tr valign="middle">
+     <td><div align="right"><%=personasobligacion.nro_obligacion rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.persona.identificacion rescue nil%>  </div></td>
+     <td><div align="left"><%=personasobligacion.persona.nombres rescue nil%>  </div></td>
+     <td><div align="left"><%=personasobligacion.persona.pertelefono rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.persona.perdireccion rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.persona.perciudad rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.identificacioncodeudor rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.nombrecodeudor rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.dircodeudor rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.ciucodeudor rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.telcodeudor rescue nil%></div></td>
+     <td><div align="left">---</div></td>
+     <td><div align="left"><%=camponumerico(personasobligacion.valor) rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.plazo rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.tasa_final rescue nil%>%</div></td>
+     <td><div align="left"><%=camponumerico(personasobligacion.vlrcuota) rescue nil%></div></td>
+     <td><div align="left"><%=descmesmin(personasobligacion.fchiniciocredito.strftime("%m").to_i) rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.persona.radicadon rescue nil%></div></td>
+     <td><div align="left"><%=personasobligacion.persona.radicado2n rescue nil%></div></td>
+  </tr>
+<% end %>
+</table>

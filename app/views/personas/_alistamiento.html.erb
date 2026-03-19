@@ -1,0 +1,176 @@
+<legend>Alistamiento Juridicial</legend>
+  <% for personasalistamiento in @persona.personasalistamientos.find(:all, :order => 'created_at DESC') %>
+    <table class="table table-bordered table-striped table-hover">
+      <tr>
+        <td width="5%"><strong></strong></td>
+        <td width="10%"><strong>Obligación</strong></td>
+        <td width="10%"><strong>Saldo total deuda</strong></td>
+        <td width="5%"><strong>Garantia<br/>Real</strong></td>
+        <td width="5%"><strong>Viabilidad Pagaré</strong></td>
+        <td width="15%"><strong>Investigación Bienes</strong></td>
+        <td width="15%"><strong>Viabilidad Embargo Bienes</strong></td>
+        <td width="15%"><strong>Investigación Laboral</strong></td>
+        <td width="15%"><strong>Viabilidad Embargo Salario</strong></td>
+        <td width="15%"><strong>Abogado<br/>Responsable</strong></td>
+       </tr>
+       <tr>
+        <td rowspan="2"><div align="center"><%= link_to image_tag("editar.png", :title => "Editar"), {:controller=>"personasalistamientos", :action=>"edit", :id=>personasalistamiento.id}%></div></td>
+        <td><%=personasalistamiento.personasobligacion.nro_obligacion rescue nil%></td>
+        <td>$ <%=camponumerico(personasalistamiento.personasobligacion.saldototaldeuda) rescue nil%></td>
+        <td><%=personasalistamiento.garantia%></td>
+        <td><%=personasalistamiento.viabilidad%></td>
+        <td><strong>Deudor solidario: </strong><br/><div style="color:#33FF33; font-size:12px; font-family: Tahoma;"><strong>POSITIVA</strong></div>
+            <strong>Deudor principal: </strong><br/><div style="color:red; font-size:12px; font-family: Tahoma;"><strong>NEGATIVA</strong></div></td>
+        <td><strong>Deudor solidario: </strong><br/><div style="color:red; font-size:12px; font-family: Tahoma;"><strong>NO VIABLE</strong></div>
+            <strong>Deudor principal: </strong><br/><div style="color:red; font-size:12px; font-family: Tahoma;"><strong>NO VIABLE</strong></div></td>
+        <td><strong>Deudor solidario: </strong><br/><div style="color:red; font-size:12px; font-family: Tahoma;"><strong>NEGATIVA</strong></div>
+            <strong>Deudor principal: </strong><br/><div style="color:#33FF33; font-size:12px; font-family: Tahoma;"><strong>POSITIVA</strong></div></td>
+        <td><strong>Deudor solidario: </strong><br/><div style="color:red; font-size:12px; font-family: Tahoma;"><strong>NEGATIVA</strong></div>
+            <strong>Deudor principal: </strong><br/><div style="color:#33FF33; font-size:12px; font-family: Tahoma;"><strong>POSITIVA</strong></div></td>
+        <td>MARCELA LOMBANA</td>
+       </tr>
+       <tr>
+         <td colspan="9">
+              <% if personasalistamiento.personasalisbienes.exists? %>
+              <legend><a href="javascript:void(0);" onclick="SINO('demo1')">Investigación de Bienes</a></legend>
+              <div id="demo1" style="display:none;">
+                  <table class="table table-bordered table-striped table-hover">
+                    <tr valign="middle">
+                      <th width="15%">Fecha</th>
+                      <th width="10%">Clase</th>
+                      <th width="70%">Datos</th>
+                    </tr>
+                  <% for personasalisbien in personasalistamiento.personasalisbienes.find(:all, :order => 'created_at DESC') %>
+                     <tr id="personasalisbien_<%=personasalisbien.id%>">
+                       <td><%=h personasalisbien.updated_at.strftime("%Y-%m-%d %X")%><br/>
+                           <%=h personasalisbien.user.username rescue nil%></td>
+                       <td><%=h personasalisbien.clase %></td>
+                       <td>
+                         <table class="table table-bordered table-striped table-hover">
+                            <tr valign="middle">
+                              <td width="30%"><strong>Fecha investigación : </strong></td>
+                              <td width="70%"><%=h personasalisbien.fecha_inv.strftime("%Y-%m-%d") rescue nil%></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td width="30%"><strong>Oficina Registro : </strong></td>
+                              <td width="70%"><%=h personasalisbien.oficina.munic rescue nil%></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td><strong>Matricula Inmobiliaria : </strong></td>
+                              <td><%=h personasalisbien.matricula rescue nil%></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td><strong>Direccion : </strong></td>
+                              <td><%=h personasalisbien.direccion rescue nil%></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td><strong>Municipio - Departamento : </strong></td>
+                              <td><%=h personasalisbien.municipio.descripcion rescue nil%></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td><strong>Suceptible a embargo : </strong></td>
+                              <td><div align="justify"><%=h personasalisbien.analisis rescue nil%></div></td>
+                            </tr>
+                            <tr valign="middle">
+                              <td><strong>Viable : </strong></td>
+                              <td><%=h personasalisbien.valida rescue nil%></td>
+                            </tr>
+                         </table>
+                          <% if  personasalisbien.personasalisbimagenes.exists? %>
+                              <table class="table table-bordered table-striped">
+                                <tr valign="middle">
+                                  <td colspan="3"><strong>Soporte Digital</strong></td>
+                                </tr>
+                              <% for personasalisbimagen in personasalisbien.personasalisbimagenes.find(:all,:order => 'created_at DESC') %>
+                                 <tr  valign="middle" class="personasalisbimagen_<%=personasalisbimagen.id%>">
+                                   <td width="10%"><div align="center">
+                                        <%= link_to image_tag("buscar.png", :title => "Ver"), personasalisbimagen.peralisbien.url(:original, false),{ :popup => ['new_window','height=450,width=600,scrollbars=yes']}%>
+                                   </div></td>
+                                   <td width="45%"><%=personasalisbimagen.descripcion rescue nil%></td>
+                                   <td width="45%"><%=personasalisbimagen.peralisbien_file_name rescue nil%></td>
+                                 </tr>
+                              <% end %>
+                              </table>
+                          <% end %>
+                       </td>
+                     </tr>
+                  <% end %>
+                  </table>
+              </div>
+              <% end %>
+              <% if personasalistamiento.personasalislaborales.exists? %>
+              <legend><a href="javascript:void(0);" onclick="SINO('demo2')">Investigación Laboral</a></legend>
+              <div id="demo2" style="display:none;">
+                 <table class="table table-bordered table-striped table-hover">
+                    <tr valign="middle">
+                      <th width="15%">Fecha</th>
+                      <th width="10%">Clase</th>
+                      <th width="70%">Datos</th>
+                    </tr>
+                  <% for personasalislaboral in personasalistamiento.personasalislaborales.find(:all, :order => 'created_at DESC') %>
+                     <tr id="personasalisbien_<%=personasalisbien.id%>">
+                        <td><%=h personasalislaboral.updated_at.strftime("%Y-%m-%d %X")%><br/>
+                                 <%=h personasalislaboral.user.username rescue nil%></td>
+                             <td><%=h personasalislaboral.clase %></td>
+                             <td>
+                               <table class="table table-bordered table-striped table-hover">
+                                  <tr valign="middle">
+                                    <td width="30%"><strong>Nombre Empresa : </strong></td>
+                                    <td width="70%"><%=h personasalislaboral.nombre rescue nil%></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Direccion : </strong></td>
+                                    <td><%=h personasalislaboral.direccion rescue nil%></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Municipio - Departamento : </strong></td>
+                                    <td><%=h personasalislaboral.municipio.descripcion rescue nil%></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Contacto : </strong></td>
+                                    <td><div align="justify"><%=h personasalislaboral.contacto rescue nil%></div></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Cargo Contacto : </strong></td>
+                                    <td><div align="justify">VICEPRESIDENTE DE GESTION HUMANA</div></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Salario : </strong></td>
+                                    <td><div align="justify"><%=camponumerico(personasalislaboral.salario) rescue nil%></div></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Suceptible a embargo : </strong></td>
+                                    <td><div align="justify"><%=h personasalislaboral.analisis rescue nil%></div></td>
+                                  </tr>
+                                  <tr valign="middle">
+                                    <td><strong>Viable : </strong></td>
+                                    <td><%=h personasalislaboral.valida rescue nil%></td>
+                                  </tr>
+                               </table>
+                                <% if  personasalislaboral.personasalislimagenes.exists? %>
+                                    <table class="table table-bordered table-striped">
+                                      <tr valign="middle">
+                                        <td colspan="3"><strong>Soporte Digital</strong></td>
+                                      </tr>
+                                    <% for personasalislimagen in personasalislaboral.personasalislimagenes.find(:all,:order => 'created_at DESC') %>
+                                       <tr  valign="middle" class="personasalislimagen_<%=personasalislimagen.id%>">
+                                         <td width="10%"><div align="center">
+                                              <%= link_to image_tag("buscar.png", :title => "Ver"), personasalislimagen.peralislaboral.url(:original, false),{ :popup => ['new_window','height=450,width=600,scrollbars=yes']}%>
+                                         </div></td>
+                                         <td width="45%"><%=personasalislimagen.descripcion rescue nil%></td>
+                                         <td width="45%"><%=personasalislimagen.peralislaboral_file_name rescue nil%></td>
+                                       </tr>
+                                    <% end %>
+                                    </table>
+                                <% end %>
+                             </td>
+                           </tr>
+                  <% end %>
+                  </table>
+              </div>
+              <% end %>
+         </td>
+       </tr>
+    </table>
+  <% end %>
+<%# end %>

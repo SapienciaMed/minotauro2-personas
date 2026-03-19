@@ -1,0 +1,23 @@
+<%= simple_form_for([@personasobligacion, @planesrecaudo], remote: true) do |f| %>
+  <div class="bs-callout">
+      <div class="row">
+        <div class="col-md-2"><%= f.input :fecha_recaudo, as: :datetime_picker, input_html: { data: { date_options: { format: 'DD/MM/YYYY', ignoreReadonly: true } }, readonly: true, class: 'clean' }, label: 'Fecha Recaudo' %></div>
+        <div class="col-md-2"><%= f.input :valor, as: :moneda, input_html: { class: 'clean' } %></div>
+        <div class="col-md-2"><%= f.input :tipo_pago, as: :select, collection: select_tipopago, input_html: { class: 'clean select2' }, label: 'Tipo de pago' %></div>
+        <div class="col-md-2"><%= f.input :tipo_afecta, as: :select, collection: select_tipo_afecta, input_html: { class: 'clean select2' }, label: 'Afecta Aplicación' %></div>
+        <div class="col-md-4"><%= f.input :observaciones, as: :text, input_html: { class: 'clean', size: 20 } %></div>
+      </div>
+    <div class="row">
+      <div class="col-md-6">
+        <% if @planesrecaudo.new_record? %>
+          <%= button_tag "#{t :cancelar}", type: 'button', data: { target: '#planesrecaudo_form' }, class: 'cancel_button btn btn-flat btn-default  pull-left', aria_hidden: true %>
+        <% else %>
+          <%= link_to "#{t :cancelar}", persona_planesrecaudo_path(@persona, @planesrecaudo), class: 'btn btn-flat btn-default pull-left', aria_hidden: true, remote: true %>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <%= f.button :submit, "#{t :guardar}", data: { disable_with: "#{t :procesando}" }, class: 'btn btn-danger pull-right' %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "9c217dfc-d090-407b-a5ed-73d2c9955f6c",
+		"name": "Autenticacion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticacion de Usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"user\": {\n  \"username\": \"usuario_de_teseo\",\n  \"password\": \"contraseña_de_usuario\"\n  }\n}"
+				},
+				"url": {
+					"raw": "testing-sygma.com/autenticacion_token",
+					"host": [
+						"testing-sygma",
+						"com"
+					],
+					"path": [
+						"autenticacion_token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

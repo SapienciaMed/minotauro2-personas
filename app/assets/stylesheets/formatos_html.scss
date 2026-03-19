@@ -1,0 +1,108 @@
+.spacing{
+  width: 100%;
+  margin-top: 15px;
+}
+
+.banriza1{
+  width: 50%;
+  float: left;
+
+}
+
+.banriza2{
+  width: 50%;
+  float: right;
+}
+
+.banriza2 img{
+  float: left;
+}
+
+.banriza2 img{
+  float: right;
+}
+
+
+.text {
+  font-size: 11px;
+  font-family: Tahoma;
+}
+
+.texto-page {
+  width: 100%;
+  font-size: 11px;
+  font-family: Tahoma;
+}
+
+.alinear-derecha {
+  text-align: right;
+}
+
+.alinear-izquierda {
+  text-align: justify;
+}
+
+.text-aprobacion {
+  width: 100%;
+  font-size: 18px;
+  font-family: Tahoma;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px auto;
+  margin-top: 20px;
+}
+
+.encabezado {
+  text-align: left;
+  padding-top: 5px;
+}
+
+.encabezado-margen {
+  margin-top: 25px;
+}
+
+.alinear-izquierda > p {
+  margin-top: 25px;
+}
+
+.table-formato {
+  border: 1px solid #CCCCCC;
+  font-size: 10px;
+  font-family: Tahoma;
+  padding: 4px;
+}
+
+.table-formato-color {
+  background-color: #D8D8D8;
+}
+
+.padding-table {
+  padding-left: 45px;
+  padding-right: 45px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.margen-formatos {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-left: 25px;
+  padding-right: 25px
+}
+
+.firma{
+  margin-top: 35px;
+}
+
+.firma > .text{
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.text-footer{
+  margin-top: 35px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}

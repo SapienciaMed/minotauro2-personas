@@ -1,0 +1,38 @@
+<%
+  isadmin = is_admin
+  #user = User.find(isadmin)
+  #isportafolio = is_portafolio
+  #issygma = is_sygma
+  gescount = Usersmodulo.joins(:modulo).where(["usersmodulos.user_id = ? and modulos.nivel = ?", isadmin, 1]).select("modulos.*").order("modulos.descripcion")
+  #procount = Usersmodulo.joins(:modulo).where(["usersmodulos.user_id = ? and modulos.nivel = ?", isadmin, 2]).select("modulos.*").order("modulos.descripcion")
+  #parcount = Usersmodulo.joins(:modulo).where(["usersmodulos.user_id = ? and modulos.nivel = ?", isadmin, 3]).select("modulos.*").order("modulos.descripcion")
+  #dascount = Userspermiso.joins(:objeto).where(["userspermisos.user_id = ? and objetos.autorizado = 'DS'", isadmin]).select("objetos.*").order("objetos.observacion")
+%>
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu" data-widget="tree">
+      <li class="header"><%= t :menu_principal %></li>
+      <!-- Optionally, you can add icons to the links -->
+      <% if gescount.present? %>
+        <li class="treeview" style="font-size: 12px !important;">
+          <a href="#"><i class="fa fa-sticky-note"></i> <span>Gestion</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <% gescount.each do |item| %>
+              <li>
+                <%= link_to item.controlador do %>
+                  <span style="font-size: 12px !important; "><%= item.descripcion %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+</aside>

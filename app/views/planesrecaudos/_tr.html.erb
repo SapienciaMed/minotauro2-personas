@@ -1,0 +1,59 @@
+<tr id="planesrecaudos_<%= planesrecaudo.id %>" style="border-bottom:1px solid black;">
+  <td class="text-center">
+      <% 
+       colorestado = "black";
+       if planesrecaudo.estado.to_s != ""
+         colorestado = "red";
+       end
+       
+       if @auth_personasrecaudo and @i == 1 %>
+        <% if planesrecaudo.estado.to_s != 'ANULADO'%>
+          <%= link_to preparaa_planesrecaudos_path(id: planesrecaudo.id), data: { toggle: 'tooltip' }, title: 'Anulación' do %>
+            <button class="btn btn-xs btn-danger"><i class="fa fa-close"></i></button>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if planesrecaudo.estado.to_s != 'ANULADO'%>
+          <%= link_to veraplicacion_planesrecaudos_path(id: planesrecaudo.id), remote: true, data: { toggle: 'tooltip' }, title: 'Ver Información Completa' do %>
+            <button class="btn btn-xs btn-info"><i class="fa fa-bars"></i></button>
+          <% end %>
+      <% end %>
+  </td>
+    <td class="text-center" style='font-size: 12px;'><%= planesrecaudo.fecha_recaudo rescue nil %></td>
+    <td class="text-right" style='font-size: 12px;'>
+      <div id="abrir<%= planesrecaudo.id %>" class="">
+        <%= link_to show_detalle_planesrecaudos_path(id: planesrecaudo.id, ruta: 'ABRIR'), remote: true do %>
+          <strong style="color: <%=colorestado%>;"><span data-toggle="tooltip" data-original-title="Pulsa aqui para ver el detalle de la aplicación">
+            <%= camponumerico planesrecaudo.valor rescue nil %>
+          </span></strong>
+        <% end %>
+      </div>
+      <div id="cerrar<%= planesrecaudo.id %>" class="hide">
+        <%= link_to show_detalle_planesrecaudos_path(id: planesrecaudo.id, ruta: 'CERRAR'), remote: true do %>
+          <strong style="color: <%=colorestado%>;"><span data-toggle="tooltip" data-original-title="Pulsa aqui para ver el detalle de la aplicación">
+            <%= camponumerico planesrecaudo.valor rescue nil %>
+          </span></strong>
+        <% end %>
+      </div>
+    </td>
+    <td class="text-center" style='font-size: 12px;'><%= planesrecaudo.tipo_pago rescue nil%></td>
+    <td class="text-center" style='font-size: 12px;'><%= planesrecaudo.tipo_afecta rescue nil%></td>
+    <td>
+      <div align="justify" style='font-size: 12px;'><%= planesrecaudo.nombreusers rescue nil %>
+        <span data-toggle="tooltip" onclick="copiarAlPortapapeles('idprograma_<%= planesrecaudo.id rescue 0 %>')" data-original-title="Fecha Real: <%= planesrecaudo.created_at.strftime("%d-%m-%Y %H:%M:%S %p") rescue nil %> // ID: <%= planesrecaudo.id %>">
+          <p id="idprograma_<%= planesrecaudo.id rescue 0 %>" class="hidden"><%= planesrecaudo.id rescue 0 %></p><i class="fa fa-comment"></i>
+        </span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+      <td></td>
+      <td colspan="5"> <!-- inicio pestaña informativa -->
+        <div id="abrir_detalle<%= planesrecaudo.id %>"></div>
+      </td>
+  </tr>
+  
+
+
+
+

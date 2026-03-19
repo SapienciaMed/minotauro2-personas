@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  procedimiento: MyString
+  descripcion: MyString
+  inicioejecucion: 2026-02-16 16:25:13
+  finejecucion: 2026-02-16 16:25:13
+  estado: MyString
+  observacion: MyString
+  tiempoejecucion: 1
+  procesamiento_id: 1
+
+two:
+  user: two
+  procedimiento: MyString
+  descripcion: MyString
+  inicioejecucion: 2026-02-16 16:25:13
+  finejecucion: 2026-02-16 16:25:13
+  estado: MyString
+  observacion: MyString
+  tiempoejecucion: 1
+  procesamiento_id: 1

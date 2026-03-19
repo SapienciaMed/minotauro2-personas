@@ -1,0 +1,23 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+	  <thead>
+		<tr class="thcolor">
+			<th width="5%"></th>
+			<th width="15%">Fecha</th>
+			<th width="10%">Tipo</th>
+			<th width="15%">Estado del deudor</th>
+			<th width="55%">Observacion</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personasobservaciones">
+	<% 
+		@is_auth_a_personasobservacion = is_auth_a('personasobservacion')
+		@is_auth_e_personasobservacion = is_auth_e('personasobservacion')		
+		@persona.personasobservaciones.joins(:user,:tiposestado)
+									  .select("personasobservaciones.*, users.username, tiposestados.descripcion desestado")
+								   	  .order('personasobservaciones.created_at DESC').each do |personasobservacion| %>
+	       <%= render 'personasobservaciones/tr', personasobservacion: personasobservacion %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

@@ -1,0 +1,47 @@
+<%= form_for(moduloscampo) do |f| %>
+  <% if moduloscampo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(moduloscampo.errors.count, "error") %> prohibited this moduloscampo from being saved:</h2>
+
+      <ul>
+      <% moduloscampo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :modulo_id %>
+    <%= f.text_field :modulo_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :orden %>
+    <%= f.number_field :orden %>
+  </div>
+
+  <div class="field">
+    <%= f.label :encabezado %>
+    <%= f.text_field :encabezado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :campo %>
+    <%= f.text_field :campo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo %>
+    <%= f.text_field :tipo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :detalle %>
+    <%= f.text_field :detalle %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

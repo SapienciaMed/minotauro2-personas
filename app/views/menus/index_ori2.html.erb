@@ -1,0 +1,159 @@
+<% if [63495,10875,11035,10876,123526,122235,122236,122546,124885,125346,123145].include?(current_user.id)  %><!-- admin-facturas -->
+    <section class="content-header" style="padding: 10px;">
+      <h1>Hola <b><%= current_user.nombre rescue nil %></b>, estos son los archivos de pagos generados</h1>
+    </section>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-solid">
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                <tr class="thcolor">
+                  <th width="10%"></th>
+                  <th width="15%" class="text-center">Fecha</th>
+                  <th>Documentos</th>
+                </tr>
+                </thead>
+                <tbody id="tbody_campanasclientes">
+
+                <% documento = File.join(Rails.root, "public", "download") %>
+                <% Dir["#{documento}/**/*.zip"].sort_by { |registro| registro.gsub("#{File.join(Rails.root, 'public', 'download')}/Facturas_",'').split("_")[0].to_date }.reverse.each do |registro| %>
+                <tr>
+                    <td class="text-center">
+                      <%= link_to download_zip_personasobligaciones_path(info: registro.gsub(documento + '/', "")), data: { toggle: 'tooltip' }, title: 'Descargar Facturas' do %>
+                        <i class="fa fa-cloud-download fa-fw text-success" aria-hidden="true"></i>
+                      <% end %>
+                    </td>
+                    <td class="text-center">
+                      <%= registro.gsub("#{File.join(Rails.root, 'public', 'download')}/Facturas_", '').split("_")[0].to_date.strftime("%d-%m-%Y") rescue nil %>
+                    </td>
+                    <td><%= registro.gsub(documento + '/', "") rescue nil %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% else %>
+  <div class="content-wrapper">
+    <section class="content-header" style="padding: 10px;">
+      <h1>Hola <b><%= @persona.nombre_completo rescue nil %></b>, estos son tus créditos.</h1>
+    </section>
+    <% if @persona.personasobligaciones.present? %>
+      <% @persona.personasobligaciones.each do |personasobligacion| %>
+        <% if personasobligacion.estadoobli != 'CANCELADO' %>
+          <div class="box color-palette-box">
+            <div class="box-body">
+              <div class="div_container_programa">
+                <div class="table-responsive">
+                  <table class="table table-bordered container_table_margin">
+                    <tr>
+                      <th colspan="10" class="text-center thcolorred">
+                        Obligación Nro <%= personasobligacion.nro_obligacion %> -
+                        <b>(<%= personasobligacion.estadoobli %>)</b>
+                        <div class="pull-right">
+                          <%= link_to ver_facturas_personasobligaciones_path(personasobligacion_id: personasobligacion.id), remote: true, data: { toggle: 'tooltip' }, style: "color: white", title: 'Ver Facturas de Pago' do %>
+                            <i class="fa fa-file-pdf-o fa-fw text-success" aria-hidden="true" style="color: white"></i>
+                            Ver
+                            Facturación
+                          <% end %>
+                        </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th class="text-center thcolorred text-table">​Saldo Vencido</th>
+                      <th class="text-center thcolororange text-table">​Saldo
+                        Vigente <%= is_fechahoy.strftime("%m-%Y") rescue nil %></th>
+                      <th class="text-center thcolorgreen text-table">​​Saldo por Pagar</th>
+                      <th class="text-center thcolor text-table">​Saldo Deuda</th>
+                      <th width="14%" class="text-center thcolor text-table">Pago minimo</th>
+                      <th width="14%" class="text-center thcolor text-table">Pago Total</th>
+                      <th width="14%" class="text-center thcolor text-table">Otro Valor</th>
+                      <th class="text-center thcolor text-table">Opciones</th>
+                    </tr>
+                    <tr>
+                      <td class="text-right">$ <%= camponumerico(personasobligacion.totalvencido) %></td>
+                      <td class="text-right">$ <%= camponumerico(personasobligacion.vlrcuota) rescue 0 %></td>
+                      <td class="text-right">$ <%= camponumerico(personasobligacion.totalporpagar) rescue 0 %></td>
+                      <td class="text-right">$ <%= camponumerico(personasobligacion.saldototaldeuda) rescue 0 %></td>
+
+                      <%= form_tag resumen_paymentez_personasobligaciones_path(personasobligacion_id: personasobligacion.id), method: 'get', id: personasobligacion.nro_obligacion do %>
+                        <%= hidden_field_tag :personasobligacion_id, personasobligacion.id %>
+                        <td class="text-right">
+                          <div class="input-group">
+                          <span class="input-group-addon">
+                            <input onclick="document.getElementById('opcion1_<%= personasobligacion.nro_obligacion %>').disabled = true; document.getElementById('opcion2_<%= personasobligacion.nro_obligacion %>').disabled = true; document.getElementById('opcion3_<%= personasobligacion.nro_obligacion %>').disabled = true;" type="radio" name="opciones" value="<%= (personasobligacion.totalvencido + personasobligacion.vlrcuota).to_f.ceil %>" checked="checked">
+                          </span>
+                            <%= number_field_tag :valor, params[:valor], value: (personasobligacion.totalvencido + personasobligacion.vlrcuota).to_f.ceil, id: 'opcion1_' + personasobligacion.nro_obligacion.to_s, disabled: true, name: 'valor', class: 'form-control text-right', style: 'width: 90px;' %>
+                          </div>
+                        </td>
+                        <td class="text-right">
+                          <div class="input-group">
+                            <span class="input-group-addon">
+                              <input onclick="document.getElementById('opcion2_<%= personasobligacion.nro_obligacion %>').disabled = true; document.getElementById('opcion3_<%= personasobligacion.nro_obligacion %>').disabled = true;" type="radio" name="opciones" value="<%= personasobligacion.saldototaldeuda.to_f.ceil %>" checked="checked">
+                            </span>
+                            <%= number_field_tag :valor, params[:valor], value: personasobligacion.saldototaldeuda.to_f.ceil, id: 'opcion2_' + personasobligacion.nro_obligacion.to_s, disabled: true, name: 'valor', class: "form-control text-right opcion2_#{personasobligacion.nro_obligacion}", style: 'width: 90px;' %>
+                          </div>
+                        </td>
+                        <td class="text-right">
+                          <div class="input-group">
+                              <span class="input-group-addon">
+                                <input onclick="document.getElementById('opcion2_<%= personasobligacion.nro_obligacion %>').disabled = true; document.getElementById('opcion3_<%= personasobligacion.nro_obligacion %>').disabled = false;" type="radio" name="opciones" value="<%= params[:valor].to_f.ceil %>">
+                              </span>
+                            <%= number_field_tag :valor, params[:valor].to_f.ceil, id: 'opcion3_' + personasobligacion.nro_obligacion.to_s, disabled: true, name: 'valor', class: 'form-control text-right', style: 'width: 90px;' %>
+                          </div>
+                        </td>
+                        <td rowspan="2" class="text-center">
+                          <%= submit_tag 'Pagar', class: 'btn btn-success' %>
+                        </td>
+                      <% end %>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="box color-palette-box">
+            <div class="box-body">
+              <div class="callout callout-warning">
+                <h4>Nota!</h4>
+                <p>Obligación Nro <%= personasobligacion.nro_obligacion %> -
+                  <b>(<%= personasobligacion.estadoobli %>)</b>
+                  no cuenta con saldos pendientes.</p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+
+        <div class="modal fade" id="manual">
+          <div class="modal-dialog" style="width: 98% !important; margin-left: 10px !important;">
+            <div class="modal-content" style="width: 98% !important; margin-left: 10px !important;">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="obliglacion<%= personasobligacion.id %>">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="box color-palette-box">
+        <div class="box-body">
+          <div class="callout callout-warning">
+            <h4>Nota!</h4>
+            <p>Actualmente no cuentas con Obligaciones...</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

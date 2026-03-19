@@ -1,0 +1,67 @@
+<tr id="personasacademico_<%= personasacademico.id %>">
+  <td class="text-center">
+    <% if is_auth_a('personasacademico') %>
+      <%= link_to edit_persona_personasacademico_path(@persona, personasacademico), remote: true, data: { toggle: 'tooltip' }, class: 'edit_personasacademico_button', title: "#{t :title_editar}" do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+    <% end %>
+    <% if is_auth_e('personasacademico') %>
+      <%= link_to persona_personasacademico_path(@persona, personasacademico), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr valign="middle">
+        <td width="30%">IES</td>
+        <td><div align="center"><strong><%=personasacademico.ies rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td >Direccion</td>
+        <td><div align="center"><strong><%=personasacademico.direccion_ies rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td >Ciudad</td>
+        <td><div align="center"><strong><%=personasacademico.ciudad_ies rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td >Departamento</td>
+        <td><div align="center"><strong><%=personasacademico.departamento_ies rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td >Pais</td>
+        <td><div align="center"><strong><%=personasacademico.pais_ies rescue nil%></strong></td>
+      </tr>
+    </table>
+  </td>
+  <td>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr valign="middle">
+        <td width="40%">Programa</td>
+        <td><div align="center"><strong><%=personasacademico.nombre_del_programa rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td>Duración del programa</td>
+        <td><div align="center"><strong><%=personasacademico.semestres_o_anos_del_programa rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td>Semestre en el que ingresa</td>
+        <td><div align="center"><strong><%=personasacademico.semestre_al_que_ingresa rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td>Periodos a financiar</td>
+        <td><div align="center"><strong><%=personasacademico.periodos_a_financiar rescue nil%></strong></td>
+      </tr>
+      <tr valign="middle">
+        <td>Nivel de Formación</td>
+        <td><div align="center"><strong><%=personasacademico.nivel_de_formacion rescue nil%></td>
+      </tr>
+      <tr valign="middle">
+        <td>Periodicidad Programa</td>
+        <td><div align="center"><strong><%=personasacademico.periodicidad_programa rescue nil%></td>
+      </tr>
+    </table>
+  </td>
+  <td><strong>Motivo PAC : </strong><br/><%=personasacademico.detalle_motivo %></td>
+</tr>

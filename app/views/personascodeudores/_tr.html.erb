@@ -1,0 +1,39 @@
+<tr id="personascodeudor_<%= personascodeudor.id %>">
+  <td class="text-center">
+    <% if is_auth_a('personascodeudor') %>
+      <%= link_to edit_persona_personascodeudor_path(@persona, personascodeudor), remote: true, data: { toggle: 'tooltip' }, class: 'edit_personascodeudor_button', title: "#{t :title_editar}" do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+    <% end %>
+    <% if is_auth_e('personascodeudor') %>
+      <%= link_to persona_personascodeudor_path(@persona, personascodeudor), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td><%=personascodeudor.identificacion %> - <%=personascodeudor.nombres rescue nil %></td>
+  <td><% if personascodeudor.direccion_trabajo.to_s != ""%>
+          <div align="left"><strong>TRABAJO - Dirección: </strong><%=personascodeudor.direccion_trabajo.to_s%></div>
+      <% end
+         if personascodeudor.telefono_oficina.to_s != ""%>
+          <div align="left"><strong>TRABAJO - Telefono: </strong><%=personascodeudor.telefono_oficina.to_s%></div>
+      <% end
+         if personascodeudor.celular_secundario.to_s != ""%>
+         <div align="left"><strong>TRABAJO - Celular: </strong><%=personascodeudor.celular_secundario.to_s%></div>
+      <% end
+         if personascodeudor.direccion_casa.to_s != ""%>
+          <div align="left"><strong>CASA - Dirección: </strong><%=personascodeudor.direccion_casa.to_s%></div>
+      <% end
+         if personascodeudor.telefono_casa.to_s != ""%>
+          <div align="left"><strong>CASA - Telefono: </strong><%=personascodeudor.telefono_casa.to_s%></div>
+      <% end
+         if personascodeudor.celular.to_s != ""%>
+          <div align="left"><strong>CASA - Celular: </strong><%=personascodeudor.celular.to_s%></div>
+      <% end%></td>
+  <td><%=personascodeudor.email rescue nil %>
+      <% if personascodeudor.email_secundario.to_s != ""%>
+          <div align="left"><%=personascodeudor.email_secundario.to_s%></div>
+      <% end%></td>
+</tr>
+
+

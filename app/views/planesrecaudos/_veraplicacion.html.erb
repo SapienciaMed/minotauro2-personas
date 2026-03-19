@@ -1,0 +1,82 @@
+<%
+   @personasobligacion = Personasobligacion.find(@planesrecaudo.personasobligacion_id)
+%>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+  <h4 class="modal-title">Obligación (<%=@personasobligacion.persona.autobuscar rescue nil%>)</h4>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped">
+      <tr>
+        <td width="100%">
+          <legend>Recaudo del <%=@planesrecaudo.fecha_recaudo.strftime("%Y-%m-%d") rescue nil %></legend>
+          <table class="table table-bordered table-condensed table-striped">
+            <tr class="thcolor">
+              <th width="75%"><div align="left" style="font-size: 12px;">Aplicación de Pagos</div></th>
+              <th width="10%"><div align="left" style="font-size: 12px;">Tipo pago</div></th>
+              <th width="15%"><div align="left" style="font-size: 12px;">Tipo de Afectacion</div></th>
+            </tr>
+            <tr>
+              <td>
+                <table class="table table-bordered table-condensed table-striped">
+                  <tr class="thcolor">
+                    <th width="70%"><div align="left" style="font-size: 12px;">Tipo</div></th>
+                    <th width="30%"><div align="center" style="font-size: 12px;">Valor aplicado</div></th>
+                  </tr>
+                <% for planesrecaudosdetalle in @planesrecaudo.planesrecaudosdetalles.all.where("valor_aplicado > 0").order('id asc') %>
+                  <tr>
+                    <td><div align="left" style="font-size: 12px;"><%=h planesrecaudosdetalle.tipo %></div></td>
+                    <td><div align="right" style="font-size: 12px;"><%=camponumerico(planesrecaudosdetalle.valor_aplicado) rescue nil %></div></td>
+                  </tr>
+                <% end %>
+                  <tr>
+                    <th><div align="left" style="font-size: 12px;">VALOR TOTAL DEL PAGO</div></th>
+                    <th><div align="right" style="font-size: 12px;"><%=camponumerico(@planesrecaudo.valor) rescue nil %></div></th>
+                  </tr>
+                </table>
+              </td>
+              <td><div align="left" style="font-size: 12px;"><%=h @planesrecaudo.tipo_pago %></div></td>
+              <td><div align="left" style="font-size: 12px;"><%=h @planesrecaudo.tipo_afecta %></div></td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <% if @planesrecaudo.observaciones %>
+                   <div style="color:red; font-size: 11px;" align="justify"><strong>OBSERVACION: </strong><%=@planesrecaudo.observaciones rescue nil%> <em><%=@planesrecaudo.codcuenta_origen rescue nil%></em></div>
+                <% end %>
+                <div style="color:red; font-size: 11px;" align="justify"><strong>TRANSACCIÓN REALIZADA POR: </strong><%=@planesrecaudo.user.nombre rescue nil%> - (<%=Portafoliossucursal.find(@planesrecaudo.portafoliossucursal_id).descripcion rescue nil%>)</strong> <span data-toggle="tooltip" data-original-title="Fecha Real: <%=@planesrecaudo.fchreal_registro.strftime("%d-%m-%Y %H:%M:%S %p") rescue nil %> // ID: <%=@planesrecaudo.id %>"><i class="fa fa-info" aria-hidden="true"></i></span>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <h4>Informacion Obligacion antes del Pago</h4>
+            <table class="table table-bordered table-condensed table-striped">
+              <tr class="thcolor">
+                <th class="text-center" style='font-size: 10px;'>#</th>
+                <th class="text-center" style='font-size: 10px;'>Fecha Corte</th>
+                <th class="text-center" style='font-size: 10px;'>Inicial</th>
+                <th class="text-center" style='font-size: 10px;'>Cuota</th>
+                <th class="text-center" style='font-size: 10px;'>Capital</th>
+                <th class="text-center" style='font-size: 10px;'>Corriente</th>
+                <th class="text-center" style='font-size: 10px;'>Otros</th>
+                <th class="text-center" style='font-size: 10px;'>Final</th>
+              </tr>
+              <% for planesobligacion in @planesrecaudo.planesrespaldos.where("cuota > 0").order('nro_cuota asc') %>
+                <tr>
+                  <td><div align="center" style='font-size: 10px;'><%= planesobligacion.nro_cuota rescue nil %></div></td>
+                  <td><div align="center" style='font-size: 10px;'><%= planesobligacion.fecha_vence.strftime("%Y-%m-%d") rescue nil %></div></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.inicial) rescue nil %></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.cuota) rescue nil %></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.amortiza) rescue nil %></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.corriente.to_f) rescue nil %></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.otros.to_f) rescue nil %></td>
+                  <td class="text-right" style='font-size: 10px;'><%= camponumerico(planesobligacion.final) rescue nil %></td>
+                </tr>
+              <% end %>
+            </table>
+          
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

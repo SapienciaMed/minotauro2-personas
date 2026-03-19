@@ -1,0 +1,45 @@
+<tr id="personasgiro_<%= personasgiro.id %>">
+  <td><div align="center"><%=@i%> - <%=personasgiro.beneficiario_giro %></div></td>
+  <td>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr class="thcolor">
+        <td width="15%"><strong><div align="center"><small>Fecha Aprobación Crédito</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Fondo Recursos</small></div></strong></td>
+        <td width="15%"><strong><div align="center"><small>Modalidad</small></div></strong></td>
+        <td width="20%"><strong><div align="center"><small>Fecha Legalización o Renovación</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Fecha Giro</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Valor Giro</small></div></strong></td>
+        <td><strong><div align="center"><small>Entidad que Gira</small></div></strong></td>
+      </tr>
+      <tr>
+        <td><div align="center"><%=personasgiro.fecha_aprobacion_credito %></div></td>
+        <td><div align="center"><%=personasgiro.fondo_recursos %></div></td>
+        <td><div align="center"><%=personasgiro.modalidad %></div></td>
+        <td><div align="center"><%=personasgiro.fecha_leg_ren %></div></td>
+        <td><div align="center"><%=personasgiro.fecha_giro %></div></td>
+        <td><div align="center"><%=camponumerico(personasgiro.valor_giro) rescue nil %></div></td>
+        <td><div align="center"><%=personasgiro.entidad_que_gira %></div></td>
+      </tr>
+    </table>
+    <table class="table table-bordered table-condensed table-striped">
+      <tr class="thcolor">
+        <td width="10%"><strong><div align="center"><small>Soporte Giro</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Beneficiario Giro</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Es Giro Adicional</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Estado Actual</small></div></strong></td>
+        <td width="10%"><strong><div align="center"><small>Motivo Estado</small></div></strong></td>
+        <td width="20%"><strong><div align="center"><small>Fecha Inicio Estado</small></div></strong></td>
+        <td width="20%"><strong><div align="center"><small>Fecha Finalización Estado</small></div></strong></td>
+      </tr>
+      <tr>
+        <td><div align="center"><%=personasgiro.soporte_giro %></div></td>
+        <td><div align="center"><%=personasgiro.beneficiario_giro %></div></td>
+        <td><div align="center"><%=personasgiro.es_giro_adicional %></div></td>
+        <td><div align="center"><%=personasgiro.estado_actual %></div></td>
+        <td><div align="center"><%=personasgiro.motivo_estado %></div></td>
+        <td><div align="center"><%=personasgiro.fecha_inicio_estado %></div></td>
+        <td><div align="center"><%=personasgiro.fecha_finalizacion_estado %></div></td>
+      </tr>
+    </table>
+  </td>
+</tr>

@@ -1,0 +1,80 @@
+<div class="box-header with-border">
+  <legend>
+    Generador de Links
+  </legend>
+</div>
+<div class="box box-primary">
+  <div class="box-body">
+    <%= simple_form_for @personasoblrecibo, html: { class: 'js-personasoblrecibo-form', multipart: true, autocomplete: "off" } do |f| %>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="">Identificacion o Nombre del Deudor</label>
+          <select id="personasoblrecibo_persona_id"
+                  class="form-control select2Persona select2"
+                  name="personasoblrecibo[persona_id]">
+
+            <option selected="selected" value="<%= f.object.persona_id -%>">
+              <%= "#{f.object.descripcion_persona}" -%>
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4"><%= f.input :personasobligacion_id, as: :select, collection: [].collect { |p| [p.nro_obligacion + " - " + p.totalvencido + p.vlrcuota, p.id] }, prompt: 'Seleccione', label: 'Obligaciones', disabled: true, input_html: { data: { width: '100%' }, class: 'clean select2' } %></div>
+        <div class="col-md-2">
+          <%= f.input :valor, input_html: { class: 'clean' }, label: 'Valor Pago' %>
+        </div>
+        <div class="col-md-2"><%= f.input :tipo_envio, label: 'Tipo Envio', as: :select, collection: select_tipo_envio_epayco, input_html: { class: 'select2' } %></div>
+      </div>
+      <div class="row">
+        <div class="col-md-5"><%= f.input :descripcion, as: :text, input_html: { class: 'clean' } %></div>
+        <div class="col-md-2" style="margin-top: 25px;">
+          <%= f.button :submit, 'Generar', data: { disable_with: "Procesando" }, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+    <br>
+    <table class="table table-bordered table-condensed table-striped">
+      <thead>
+      <tr class="thcolor">
+        <th width="15%" class="text-center" style="font-size: 11px">Fecha</th>
+        <th style="font-size: 11px">Deudor</th>
+        <th style="font-size: 11px">Obligación</th>
+        <th style="font-size: 11px" class="text-right">Valor</th>
+        <th style="font-size: 11px" class="text-center">Estado</th>
+        <th style="font-size: 11px" class="text-center">Tipo Envio</th>
+      </tr>
+      </thead>
+      <tbody id="tbody_campanasclientes">
+
+
+      <% @personasoblrecibos.each do |personasoblrecibo| %>
+        <tr>
+          <td class="text-center" style="font-size: 11px">
+            <%= personasoblrecibo.created_at.strftime("%Y-%m-%d %X") rescue nil %>
+          </td>
+          <td class="text-left" style="font-size: 11px">
+            <%= personasoblrecibo.persona.autobuscar rescue nil %>
+            <% if personasoblrecibo.link_pago.present? %> <br>
+              <code><b>Link: </b> <%= personasoblrecibo.link_pago rescue nil %></code>
+            <% end %>
+          </td>
+          <td class="text-left" style="font-size: 11px">
+            <%= personasoblrecibo.personasobligacion.nro_obligacion rescue nil %>
+          </td>
+          <td class="text-right" style="font-size: 11px">
+            <%= camponumerico personasoblrecibo.valor rescue nil %>
+          </td>
+          <td class="text-center" style="font-size: 11px">
+            <%= camponumerico personasoblrecibo.estado rescue nil %>
+          </td>
+          <td class="text-center" style="font-size: 11px">
+            <%= personasoblrecibo.tipo_envio rescue nil %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+

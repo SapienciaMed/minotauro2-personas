@@ -1,0 +1,36 @@
+<legend>Personas (<%=@personas.count.to_i rescue 0%>)</legend>
+<% 
+  is_auth_e_persona  = is_auth_e("persona1") 
+%>
+<table class="table table-bordered table-responsive table-striped">
+  <thead>
+    <tr class="thcolor">
+      <th width="8%" class='text-center'>Acción</th>
+      <th width="10%" height="30" class='text-center'>Identificación</th>
+      <th class='text-center'>Nombre</th>
+    </tr>
+  </thead>
+<% @personas.each do |persona| %>
+  <tr>
+    <td class='text-center'>
+      <%= link_to edit_persona_path(id: persona.id, etapa: "A"), class: 'edit_contrato_button', data: { toggle: 'tooltip' }, title: "#{t :title_editar}" do %>
+          <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+      <% if is_auth_e_persona %>
+        <%= link_to persona_path(persona), method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+          <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+        <% end %>
+      <% end %>
+    </td>
+    <td height="30" class='text-center'><%=persona.identificacion%></td>
+    <td class='text-justify'><%=persona.nombre_completo rescue nil%>
+        <% if persona.personascodeudores.present?
+             persona.personascodeudores.each do |a|%>
+           <small><br/><strong>Codeudor:</strong> <em><%=a.autobuscar%></em></small>
+          <% end %>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+

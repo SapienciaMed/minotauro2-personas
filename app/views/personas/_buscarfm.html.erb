@@ -1,0 +1,30 @@
+  <legend>
+    Buscar
+    <div class="pull-right">
+      <h3>
+        <% if is_auth_c("persona") %> 
+          <%= link_to new_persona_path do %><button class="btn btn-info"><%= fa_icon("plus") %> Nuevo</button><% end %> 
+        <%end%>
+        <% if is_auth_c("actualizacionacceso") %>
+          <%= link_to procesocreausers_personas_path do %> <button class="btn btn-danger">Iniciar JOB-Creacion Usuarios</button><% end %> 
+        <% end %>
+      </h3>
+    </div>
+  </legend>
+  <%= form_tag personas_path, remote: true, method: :get, class: 'form-inline' do %>
+    <div class="row">
+      <div class="col-md-4">
+        <label for="">Identificación - Nombres</label>
+        <%= text_field_tag :identificacion, params[:identificacion], class: 'form-control', style: 'width: 100%;', autocomplete: 'off', placeholder: 'Identificacion - Nombre' %>
+      </div>
+      <div class="col-md-2">
+        <label for="">Nro Obligacion</label>
+        <%= text_field_tag :nro_obligacion, params[:nro_obligacion], class: 'form-control', style: 'width: 100%;', autocomplete: 'off', placeholder: 'Nro de Obligacion' %>
+      </div>
+      <div class="col-md-1">
+        <%= button_tag type: 'submit', class: 'btn btn-success btn-sm', style: 'margin-top: 25px;', data: { toggle: 'tooltip' }, title: 'Buscar' do %>
+          <%= fa_icon("search") %> Buscar
+        <% end %>
+      </div>
+    </div>
+  <% end %>

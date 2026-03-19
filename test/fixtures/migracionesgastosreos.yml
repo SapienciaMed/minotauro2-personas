@@ -1,0 +1,43 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consecutivo: 1
+  user_id: 1
+  namefile: MyString
+  inmueble_id: 1
+  tipo_registro: MyString
+  tiposgasto_id: 1
+  observacion: MyString
+  monto: 1
+  unidad_denominacion: MyString
+  fecha_rendicion: 2019-07-29
+  proveedor_id: 1
+  fecha_documento: 2019-07-29
+  nro_documento: MyString
+  tipo_documento: MyString
+  instancia_gasto: MyString
+  periodicidad: MyString
+  reembolso: MyString
+  aplicado: MyString
+  error: MyString
+
+two:
+  consecutivo: 1
+  user_id: 1
+  namefile: MyString
+  inmueble_id: 1
+  tipo_registro: MyString
+  tiposgasto_id: 1
+  observacion: MyString
+  monto: 1
+  unidad_denominacion: MyString
+  fecha_rendicion: 2019-07-29
+  proveedor_id: 1
+  fecha_documento: 2019-07-29
+  nro_documento: MyString
+  tipo_documento: MyString
+  instancia_gasto: MyString
+  periodicidad: MyString
+  reembolso: MyString
+  aplicado: MyString
+  error: MyString

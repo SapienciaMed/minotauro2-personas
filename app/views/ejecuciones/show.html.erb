@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @ejecucion.user %>
+</p>
+
+<p>
+  <strong>Procedimiento:</strong>
+  <%= @ejecucion.procedimiento %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @ejecucion.descripcion %>
+</p>
+
+<p>
+  <strong>Inicioejecucion:</strong>
+  <%= @ejecucion.inicioejecucion %>
+</p>
+
+<p>
+  <strong>Finejecucion:</strong>
+  <%= @ejecucion.finejecucion %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @ejecucion.estado %>
+</p>
+
+<p>
+  <strong>Observacion:</strong>
+  <%= @ejecucion.observacion %>
+</p>
+
+<p>
+  <strong>Tiempoejecucion:</strong>
+  <%= @ejecucion.tiempoejecucion %>
+</p>
+
+<p>
+  <strong>Procesamiento:</strong>
+  <%= @ejecucion.procesamiento_id %>
+</p>
+
+<%= link_to 'Edit', edit_ejecucion_path(@ejecucion) %> |
+<%= link_to 'Back', ejecuciones_path %>

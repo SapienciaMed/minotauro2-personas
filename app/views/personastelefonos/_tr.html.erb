@@ -1,0 +1,30 @@
+<tr id="personastelefono_<%= personastelefono.id %>">
+  <td class="text-center">
+    <%= link_to activo_persona_personastelefono_path(@persona, personastelefono), remote: true, data: { toggle: 'tooltip' }, title: 'Efectivo' do %>
+      <button class="btn btn-xs btn-success"><i class="fa fa-check-circle"></i></button>
+    <% end %>
+    <%= link_to inactivo_persona_personastelefono_path(@persona, personastelefono), remote: true, data: { toggle: 'tooltip' }, title: 'No Efectivo' do %>
+      <button class="btn btn-xs btn-danger"><i class="fa fa-ban"></i></button>
+    <% end %>
+    <%= link_to tercero_persona_personastelefono_path(@persona, personastelefono), remote: true, data: { toggle: 'tooltip' }, title: 'Contacto Tercero' do %>
+      <button class="btn btn-xs btn-warning"><i class="fa fa-ban"></i></button>
+    <% end %>
+    <% if is_auth_e('personastelefono') %>
+      <%= link_to persona_personastelefono_path(@persona, personastelefono), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td class="<%=personastelefono.estadoa.to_s%>">
+    <%= personastelefono.updated_at.strftime("%Y-%m-%d %X") rescue nil %>
+    <% if personastelefono.user_id.to_s != "" %>
+      <br/>Creado por : <%= personastelefono.user.username rescue nil%>
+    <% end%>
+    <% if personastelefono.user_actualiza.to_s != "" %>
+      <br/>Ult. Act.: <%=User.find(personastelefono.user_actualiza).username rescue nil%>
+    <% end%>
+  </td>
+  <td><%= personastelefono.telefono rescue nil %></td>
+  <td><%= personastelefono.tipo rescue nil %></td>
+	<td><%= personastelefono.observacion rescue nil %></td>
+</tr>

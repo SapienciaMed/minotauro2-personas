@@ -1,0 +1,97 @@
+<style type="text/css">
+  <!--
+  H1.SaltoDePagina {
+    PAGE-BREAK-AFTER: always
+  }
+
+  -->
+</style>
+<div align="center">
+  <br/>
+  <table width="700" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+          <tr>
+            <td rowspan="2" width="25%" height="100" style="border:1px solid #000000; font-size: 12px; font-family: Tahoma; line-height: 150%; ">
+              <div align="center"><img src="../../images/logomin.png"/></div>
+            </td>
+            <td rowspan="2" width="50%" style="border:1px solid #000000; font-size: 16px; font-family: Tahoma; line-height: 150%; ">
+              <div align="center">FORMATO</div>
+            </td>
+            <td width="25%" style="border:1px solid #000000; font-size: 16px; font-family: Tahoma; line-height: 150%; ">Código:
+              F-AP-GJ-038
+            </td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; ">Versión: 03
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" height="30" style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; ">
+              <div align="center">NOTIFICACION PERSONAL</div>
+            </td>
+            <td style="border:1px solid #000000;font-size: 16px; font-family: Tahoma; line-height: 150%; ">Página: 1 de
+              1
+            </td>
+          </tr>
+        </table>
+        <br/>
+        <div align="right" style="font-family: Tahoma; font-size: 10px; line-height: 150%;"><%= @control.persona.caja rescue nil %>
+          | <%= @control.persona.carpeta rescue nil %></div>
+        <br/>
+        <div align="center" style="font-family: Tahoma; font-size: 18px; line-height: 150%;">
+          <strong>ACTO DE NOTIFICACIÓN PERSONAL</strong></div>
+        <br/><br/>
+        <div align="justify" style="font-family: Tahoma; font-size: 16px; line-height: 150%;">
+          Hoy <strong><%= namedate(@control.fecha) rescue nil %></strong>, siendo las
+          <strong><%= @control.created_at.strftime("%X") rescue nil %></strong> se presentó en
+          <strong>LA AGENCIA DE EDUCACIÓN SUPERIOR DE MEDELLIN –SAPIENCIA</strong>, el (la) señor (a)
+          <strong><%= @control.persona.nombres rescue nil %></strong>, identificado (a) con
+          <strong><%= @control.persona.tipodocumento.to_s rescue nil %></strong> Nº
+          <strong><%= camponumerico(@control.persona.identificacion) rescue nil %></strong> con el fin de notificarle
+          del contenido de la Resolución N° <strong><%= @control.persona.resolucion_2017 rescue nil %></strong> expedida
+          por <strong><%= @control.nombredirector rescue nil %></strong>, Director(a) General, de fecha
+          <strong><%= @control.fecharesol rescue nil %></strong>, de la cual se entrega copia íntegra y gratuita de la
+          resolución.
+          <br/><br/>
+          Se le hace saber que contra ese acto administrativo procede Recurso de Reposición, el cual puede ser
+          interpuesto ante el Director(a) General <strong><%= @control.nombredirector rescue nil %></strong>, Para
+          interponerlo deberá hacerlo por escrito en la diligencia de notificación personal, o dentro de los diez (10)
+          días hábiles siguientes a ella.
+          <br/><br/>
+          Para constancia firman:
+          <br/><br/><br/>
+          <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+            <tr>
+              <td width="50%" style="font-family: Tahoma; font-size: 16px; line-height: 150%;">
+                EL (LA) NOTIFICADO (A),
+                <br/><br/><br/><br/>_______________________________<br/>
+                <strong><%= @control.persona.nombres rescue nil %></strong><br/>
+                <strong><strong><%= @control.persona.tipodocumento.to_s rescue nil %></strong> <%= camponumerico(@control.persona.identificacion) rescue nil %>
+                </strong><br/>
+              </td>
+              <td style="font-family: Tahoma; font-size: 16px; line-height: 150%;">
+                EL (LA) NOTIFICADOR (A),
+                <br/><br/><br/><br/>_______________________________<br/>
+                <strong><%= @control.user.nombre rescue nil %></strong><br/>
+                <strong>C.C. <%= camponumerico(@control.user.identificacion) rescue nil %></strong><br/>
+              </td>
+            </tr>
+          </table>
+          <br/><br/>
+        </div>
+        <br/>
+        <table width="100%" border="0" cellpadding="2" cellspacing="2" align="center">
+          <tr>
+            <td height="0" style="font-family: Tahoma; font-size: 10px;"> S I I S - Sistema de Informacion Integrado
+              SAPIENCIA - <%= User.find(is_admin).nombre rescue nil %></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <br/>
+</div>

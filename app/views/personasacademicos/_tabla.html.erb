@@ -1,0 +1,15 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+	  <thead>
+		<tr class="thcolor">
+			<th width="8%"></th>
+			<th colspan="3">Datos</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_personasacademicos">
+	    <% @persona.personasacademicos.order('updated_at DESC, id DESC').each do |personasacademico| %>
+	       <%= render 'personasacademicos/tr', personasacademico: personasacademico %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

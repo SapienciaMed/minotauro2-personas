@@ -1,0 +1,6 @@
+<div id="tbody_personasobligaciones">
+  <%
+    @persona.personasobligaciones.each do |personasobligacion| %>
+     <%= render '/personasobligaciones/tr', personasobligacion: personasobligacion %>
+   <% end %>  
+</div>

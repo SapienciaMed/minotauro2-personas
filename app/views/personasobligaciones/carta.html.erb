@@ -1,0 +1,133 @@
+<style type="text/css">
+<!--
+  H1.SaltoDePagina { PAGE-BREAK-AFTER: always  }
+-->
+</style>
+<div align="center">
+  <table width="750" border="0">
+    <tr>
+      <td height="0"><div align="center"><img src="/images/logosupcarta.png" width="40%" height="40%"/></div></td>
+    </tr>
+    <tr valign="top">
+      <td height="700"><br/><br/>
+          <div align="left" style="font-size: 12px; font-family: Arial;">Medellin, <%=namedate(Time.now)%><br/><div align="right"><strong>RADICADO NRO. <%=@personasobligacion.persona.radicado rescue nil%></strong></div>
+          <br/>Señor(a):<br/>
+          <%=@personasobligacion.persona.nombres rescue nil%><br/>
+          <%=@personasobligacion.persona.perdireccion rescue nil%><br/>
+          <%=@personasobligacion.persona.perciudad rescue nil%> - Antioquia<br/>
+          </div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>ASUNTO REF: Inicio Etapa Amortización</strong></div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>Obligación No.: <%=@personasobligacion.nro_obligacion rescue nil%></strong></div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>Beneficiario: <%=@personasobligacion.persona.nombres rescue nil%></strong></div>
+          <br/><br/><br/>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+          Respetado señor (a) <%=@personasobligacion.persona.nombres rescue nil%>:<br/><br/>
+          A través de esta comunicación SAPIENCIA le informa que se ha iniciado la etapa final de amortización o pago del crédito de la obligación No. <strong><%=@personasobligacion.nro_obligacion rescue nil%></strong> originada con los recursos del Fondo Medellín EPM y de la cual usted es el Deudor Principal. De acuerdo con las condiciones de financiación establecidas en las normas que regulan el crédito y su etapa de amortización, el plan de pagos del crédito tiene las siguientes condiciones:<br/><br/>
+          </div>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+            <ul>
+              <li>Saldo Inicial: la deuda a su cargo asciende a la suma de <strong>&nbsp;$ <%=camponumerico(@personasobligacion.valor) rescue nil%></strong> (Resolución No. <%=@personasobligacion.persona.nro_resolucion rescue nil%> de 2014).</li>
+              <li>Plazo: su deuda se amortiza en <strong>&nbsp;<%=@personasobligacion.plazo rescue nil%></strong> cuotas mensuales.</li>
+              <li>Tasa de Interés Efectiva Anual: <strong>&nbsp;<%=@personasobligacion.tasa_final rescue nil%></strong>%.</li>
+              <li>Cuota Mensual: <strong>&nbsp;$ <%=camponumerico(@personasobligacion.vlrcuota) rescue nil%></strong>.</li>
+              <li>Interés de Mora: La tasa máxima permitida por ley.</li>
+              <li>Fechas de Pago: Los días 30 de cada mes, comenzando en <strong>&nbsp;<%=descmesmin(@personasobligacion.fchiniciocredito.strftime("%m").to_i) rescue nil%></strong> de 2014.</li>
+              <li>Sistema de Amortización: Cuota Constante en Pesos.</li>
+              <li>Incumplimiento: El incumplimiento del pago en las fechas establecidas, genera intereses de mora.</li>
+              <li>Garantía: Pagaré y Deudor Solidario <strong>&nbsp;<%=@personasobligacion.nombrecodeudor rescue nil%></strong>.</li>
+            </ul>
+          </div>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+          Los pagos deben ser realizados únicamente a través de la Red de Oficinas de BANCOLOMBIA, presentando la factura vigente del mes a cancelar que le será remitida a la dirección por usted registrada. También puede acercarse a las oficinas de SAPIENCIA para que le sea entregada su factura mensual.<br/><br/>
+          Es preciso que tenga en cuenta las siguientes recomendaciones: <br/>
+          <ol id="1">
+            <li>En cualquier momento puede realizar la cancelación anticipada del crédito y/o podrá realizar abonos extraordinarios a su crédito definiendo si ajusta cuota o plazo, sin ningún tipo de sanción.</li>
+            <li>El hecho de no recibir la factura de pago, no lo exime de cancelar su cuota mensual en la fecha pactada. El incumplimiento en el pago de dos o más cuotas, dará lugar al cobro pre jurídico o jurídico, previa gestión de cobro se generarán gastos de cobranza a su cargo.</li>
+            <li>Mantener su crédito al día es su mejor referencia, una calificación positiva en las Centrales de Información Financiera le abre las puertas al crédito en todo tipo de entidades.</li>
+            <li>Si el valor de la cuota no se ajusta a sus posibilidades económicas, por favor dirigirse a nuestras oficinas para ofrecerle diferentes alternativas.</li>
+            <li>Con el propósito de asegurar un canal de comunicación adecuado, le agradecemos actualizar su información de contacto, acercándose a nuestras oficinas ubicadas en la ciudad de Medellín en la Transversal 73 # 65 - 296.</li>
+          </ol>
+          SAPIENCIA lo invita a ser cumplido con sus pagos ya que con estos recursos continuará promoviendo el acceso a la educación superior de jóvenes que, como usted, esperan una oportunidad para emprender su proyecto de estudios superiores.<br/><br/>
+          Cordialmente,<br/><br/><br/><br/>
+          <strong><%=Parametro.find(9).valor.to_s rescue nil%><br/>
+          <%=Parametro.find(12).valor.to_s rescue nil%></strong>
+          </div>
+          <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="50%" height="0" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Arial;">Proyectó: <%=Parametro.find(7).valor.to_s rescue nil%></td>
+            <td width="50%" height="0" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Arial;">Aprobó: <%=Parametro.find(8).valor.to_s rescue nil%></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="0"><div align="center"><img src="/images/logoinfcarta1.png" width="95%" height="40%"/></div></td>
+    </tr>
+  </table>
+  </div>
+  <H1 class=SaltoDePagina> </H1>
+  <div align="center">
+  <table width="750" border="0">
+    <tr>
+      <td height="0"><div align="center"><img src="/images/logosupcarta.png" width="40%" height="40%"/></div></td>
+    </tr>
+    <tr valign="top">
+      <td height="700"><br/><br/>
+          <div align="left" style="font-size: 12px; font-family: Arial;">Medellin, <%=namedate(Time.now)%><br/><div align="right"><strong>RADICADO NRO. <%=@personasobligacion.persona.radicado_solidario rescue nil%></strong></div>
+          <br/>Señor(a):<br/>
+          <%=@personasobligacion.nombrecodeudor rescue nil%><br/>
+          <%=@personasobligacion.dircodeudor rescue nil%><br/>
+          <%=@personasobligacion.ciucodeudor rescue nil%><br/>
+          </div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>ASUNTO REF: Inicio Etapa Amortización</strong></div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>Obligación No.: <%=@personasobligacion.nro_obligacion rescue nil%></strong></div>
+          <div style='padding-left: 25em; font-size: 12px; font-family: Arial;'><strong>Beneficiario: <%=@personasobligacion.persona.nombres rescue nil%></strong></div>
+          <br/><br/><br/>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+          Respetado señor (a) <%=@personasobligacion.nombrecodeudor rescue nil%>:<br/><br/>
+          A través de esta comunicación SAPIENCIA le informa que se ha iniciado la etapa final de amortización o pago del crédito de la obligación No. <strong><%=@personasobligacion.nro_obligacion rescue nil%></strong> originada con los recursos del Fondo Medellín EPM y de la cual usted es el Deudor Solidario. De acuerdo con las condiciones de financiación establecidas en las normas que regulan el crédito y su etapa de amortización, el plan de pagos del crédito tiene las siguientes condiciones:<br/><br/>
+          </div>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+            <ul>
+              <li>Saldo Inicial: la deuda a su cargo asciende a la suma de <strong>&nbsp;$ <%=camponumerico(@personasobligacion.valor) rescue nil%></strong> (Resolución No. <%=@personasobligacion.persona.nro_resolucion rescue nil%> de 2014).</li>
+              <li>Plazo: su deuda se amortiza en <strong>&nbsp;<%=@personasobligacion.plazo rescue nil%></strong> cuotas mensuales.</li>
+              <li>Tasa de Interés Efectiva Anual: <strong>&nbsp;<%=@personasobligacion.tasa_final rescue nil%></strong>%.</li>
+              <li>Cuota Mensual: <strong>&nbsp;$ <%=camponumerico(@personasobligacion.vlrcuota) rescue nil%></strong>.</li>
+              <li>Interés de Mora: La tasa máxima permitida por ley.</li>
+              <li>Fechas de Pago: Los días 30 de cada mes, comenzando en <strong>&nbsp;<%=descmesmin(@personasobligacion.fchiniciocredito.strftime("%m").to_i) rescue nil%></strong> de 2014.</li>
+              <li>Sistema de Amortización: Cuota Constante en Pesos.</li>
+              <li>Incumplimiento: El incumplimiento del pago en las fechas establecidas, genera intereses de mora.</li>
+              <li>Garantía: Pagaré y Deudor Solidario <strong>&nbsp;<%=@personasobligacion.nombrecodeudor rescue nil%></strong>.</li>
+            </ul>
+          </div>
+          <div align="justify" style="font-size: 11px; font-family: Arial;">
+          Los pagos deben ser realizados únicamente a través de la Red de Oficinas de BANCOLOMBIA, presentando la factura vigente del mes a cancelar que le será remitida a la dirección por usted registrada. También puede acercarse a las oficinas de SAPIENCIA para que le sea entregada su factura mensual.<br/><br/>
+          Es preciso que tenga en cuenta las siguientes recomendaciones: <br/>
+          <ol id="1">
+            <li>En cualquier momento puede realizar la cancelación anticipada del crédito y/o podrá realizar abonos extraordinarios a su crédito definiendo si ajusta cuota o plazo, sin ningún tipo de sanción.</li>
+            <li>El hecho de no recibir la factura de pago, no lo exime de cancelar su cuota mensual en la fecha pactada. El incumplimiento en el pago de dos o más cuotas, dará lugar al cobro pre jurídico o jurídico, previa gestión de cobro se generarán gastos de cobranza a su cargo.</li>
+            <li>Mantener su crédito al día es su mejor referencia, una calificación positiva en las Centrales de Información Financiera le abre las puertas al crédito en todo tipo de entidades.</li>
+            <li>Si el valor de la cuota no se ajusta a sus posibilidades económicas, por favor dirigirse a nuestras oficinas para ofrecerle diferentes alternativas.</li>
+            <li>Con el propósito de asegurar un canal de comunicación adecuado, le agradecemos actualizar su información de contacto, acercándose a nuestras oficinas ubicadas en la ciudad de Medellín en la Transversal 73 # 65 - 296.</li>
+          </ol>
+          SAPIENCIA le agradece haber apoyado el proyecto de educación superior del beneficiario y lo invita a ser cumplido con sus pagos ya que con dichos recursos continuará promoviendo el acceso a la educación superior de jóvenes que buscan una oportunidad para emprender su proyecto de estudios superiores.<br/><br/>
+          Cordialmente,<br/><br/><br/><br/>
+          <strong><%=Parametro.find(9).valor.to_s rescue nil%><br/>
+            <%=Parametro.find(12).valor.to_s rescue nil%></strong>
+          </div>
+          <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="33%" height="0" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Arial;">Proyectó: <%=Parametro.find(7).valor.to_s rescue nil%></td>
+            <td width="33%" height="0" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Arial;">Revisó: <%=Parametro.find(8).valor.to_s rescue nil%></td>
+            <td width="33%" height="0" style="border:1px solid #CCCCCC; font-size: 11px; font-family: Arial;">Aprobó: <%=Parametro.find(9).valor.to_s rescue nil%></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="0"><div align="center"><img src="/images/logoinfcarta1.png" width="95%" height="40%"/></div></td>
+    </tr>
+  </table>
+</div>
+
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sapiencia</title>
+  <%= csrf_meta_tags %>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <%= javascript_include_tag 'application' %>
+  <%= favicon_link_tag asset_path('favicon.ico') %>
+</head>
+
+<body>
+<%= yield %>
+
+<script>
+    function disableIE() {
+        if (document.all) {
+            return false;
+        }
+    }
+
+    function disableNS(e) {
+        if (document.layers || (document.getElementById && !document.all)) {
+            if (e.which == 2 || e.which == 3) {
+                return false;
+            }
+        }
+    }
+
+    if (document.layers) {
+        document.captureEvents(Event.MOUSEDOWN);
+        document.onmousedown = disableNS;
+    } else {
+        document.onmouseup = disableNS;
+        document.oncontextmenu = disableIE;
+    }
+    document.oncontextmenu = new Function("return false");
+
+    window.onload = function () {
+        window.location.hash = 'no-back-button';
+        window.location.hash = 'Again-No-back-button';
+
+        window.onhashchange = function () {
+            window.location.hash = 'no-back-button';
+        }
+    };
+
+
+    function hideAddressBar() {
+        if (!window.location.hash) {
+            if (document.height < window.outerHeight)
+                document.body.style.height = (window.outerHeight + 50) + 'px';
+            setTimeout(function () {
+                window.scrollTo(0, 1);
+                document.body.style.height = 'auto';
+            }, 50);
+        }
+    }
+
+    setTimeout(function () {
+        $("#alert_remove").fadeOut(1000, function () {
+            $(this).remove();
+        });
+    }, 3000);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<%
+  moduloId  = 10260
+   modulo = Modulo.find(moduloId)
+   moduloscampos = Moduloscampo.where(modulo_id: moduloId).order("orden asc")
+   @dato1 = Objeto.find_by_sql("SELECT l.consecutivo, l.archivo_id, TRUNC(l.created_at) AS fecha, a.upload_file_name AS nombre, COUNT(*) AS cant,
+                                    u.username AS nombre_usuario,
+                                    COUNT(CASE WHEN ml.error IS NULL THEN 1 END) AS correctos,
+                                    COUNT(CASE WHEN ml.error IS NOT NULL THEN 1 END) AS errores
+                                FROM #{modulo.tabla.to_s} l
+                                    INNER JOIN archivos a ON l.archivo_id = a.id
+                                    INNER JOIN users u ON l.user_id = u.id
+                                    LEFT JOIN #{modulo.tabla.to_s} ml ON ml.consecutivo = l.consecutivo
+                                GROUP BY l.consecutivo, l.archivo_id, TRUNC(l.created_at), a.upload_file_name, u.username
+                                ORDER BY fecha DESC")
+%>
+<% title modulo.descripcion.to_s %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab<%=moduloId%>_1" data-toggle="tab"><i class="fa fa-bank"></i> Proceso</a></li>
+        <li><a href="#tab<%=moduloId%>_2" data-toggle="tab"><i class="fa fa-th-large"></i> Seguimiento</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab<%=moduloId%>_1">
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped">
+              <thead class="thcolor">
+              <tr>
+                <td colspan="4" class="text-center"><strong>Orden de archivos (<%=modulo.descripcion rescue nil %>)</strong></td>
+              </tr>
+              <tr class="text-table">
+                <td class="text-center"><strong>Orden</strong></td>
+                <td class="text-center"><strong>Descripcion</strong></td>
+                <td class="text-center"><strong>Formato</strong></td>
+                <td class="text-center"><strong>Obligatorio</strong></td>
+              </tr>
+              </thead>
+              <tbody>
+              <% moduloscampos.each do |m| %>
+                <tr class="text-table">
+                  <td class="text-center"><%=m.orden rescue nil %></td>
+                  <td class="text-left"><%=m.encabezado rescue nil %></td>
+                  <td class="text-center"><%=m.tipo rescue nil %></td>
+                  <td class="text-center"><%=m.detalle rescue nil %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+            <div class="col-md-6" align="left" style="padding-left: 0px">
+              <%= link_to headxls_archivos_path(modulo_id: moduloId,format: :xlsx) do %>
+                <button class="btn btn-xs btn-warning"><i class="fa fa-file-excel-o"></i> Estructura de Encabezados</button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab<%=moduloId%>_2">
+          <div class="table-responsive">
+            <legend>Registro de Cargue de información (<%=modulo.descripcion rescue nil %>)</legend>
+            <% if @dato1.any? %>
+              <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                <tr class="thcolor">
+                  <th class="text-center" style="font-size: 11px;" width="10%"></th>
+                  <th class="text-center" style="font-size: 11px;">Consecutivo</th>
+                  <th class="text-center" style="font-size: 11px;">Fecha Cargue</th>
+                  <th class="text-left" style="font-size: 11px;">Nombre Archivo</th>
+                  <th class="text-center" style="font-size: 11px;">Cant.Total</th>
+                  <th class="text-center" style="font-size: 11px;">Aprobados</th>
+                  <th class="text-center" style="font-size: 11px;">Rechazados</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @dato1.each do |d| %>
+                  <tr>
+                    <td class="text-center">
+                      <% if d.archivo_id.to_i > 0 %>
+                        <%= link_to download_ctl_archivos_path(id: d.archivo_id, tipo: 'xlsx'), data: { toggle: 'tooltip' }, title: 'Archivo xlsx' do %>
+                          <button class="btn btn-xs btn-success"><i class="fa fa-file-excel-o"></i></button>
+                        <% end %>
+                      <% end %>
+                      <% if d.errores.to_i > 10000 %>
+                        <%= link_to inconsistenciasgen_archivos_path(cons: d.consecutivo, modulo_id: moduloId, format: :xlsx), data: { toggle: 'tooltip' }, title: 'Inconsistencias' do %>
+                          <button class="btn btn-xs btn-danger"><i class="fa fa-plus-square"></i></button>
+                        <% end %>
+                      <% end %>
+                    </td>
+                    <td class="text-center" style='font-size: 11px;'><%= d.consecutivo rescue nil %></td>
+                    <td class="text-center" style="font-size: 11px;"><%= d.fecha.strftime("%Y-%m-%d") rescue nil %></td>
+                    <td class="text-left" style="font-size: 11px;"><%= d.nombre rescue nil %> <small>(<%=d.nombreuser rescue nil%>)</small></td>
+                    <td class="text-center" style="font-size: 11px;"><%= camponumerico(d.cant) rescue nil %></td>
+                    <td class="text-center" style="font-size: 11px;"><%= camponumerico(d.correctos) rescue nil %></td>
+                    <td class="text-center" style="font-size: 11px;"><%= camponumerico(d.errores) rescue nil %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="alert alert-warning" style="margin-bottom: 10px"><i class="icon fa fa-info"></i> Atención! No hay información cargada.</div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

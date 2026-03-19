@@ -1,0 +1,63 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  personasobligacion: one
+  persona_id: 1
+  nro_cuota: 1
+  cuota: 9.99
+  fecha_vence: 2021-02-01
+  inicial: 9.99
+  amortiza: 9.99
+  corriente: 9.99
+  final: 9.99
+  mora: 9.99
+  morapendiente: 9.99
+  fecha_pago: 2021-02-01
+  valor_pagar: 9.99
+  otros: 9.99
+  fechadepago: 2021-02-01
+  fecha_inicio: 2021-02-01
+  valor_seguro: 9.99
+  valor_seguroacum: 9.99
+  valor_seguro2: 9.99
+  valor_seguro2acum: 9.99
+  valor_seguro3: 9.99
+  valor_seguro3acum: 9.99
+  fecha_limitei: 2021-02-01
+  igv: 9.99
+  comp: 9.99
+  igv_comp: 9.99
+  comp_pend: 9.99
+  igv_comp_pend: 9.99
+  valor_porte: 9.99
+
+two:
+  personasobligacion: two
+  persona_id: 1
+  nro_cuota: 1
+  cuota: 9.99
+  fecha_vence: 2021-02-01
+  inicial: 9.99
+  amortiza: 9.99
+  corriente: 9.99
+  final: 9.99
+  mora: 9.99
+  morapendiente: 9.99
+  fecha_pago: 2021-02-01
+  valor_pagar: 9.99
+  otros: 9.99
+  fechadepago: 2021-02-01
+  fecha_inicio: 2021-02-01
+  valor_seguro: 9.99
+  valor_seguroacum: 9.99
+  valor_seguro2: 9.99
+  valor_seguro2acum: 9.99
+  valor_seguro3: 9.99
+  valor_seguro3acum: 9.99
+  fecha_limitei: 2021-02-01
+  igv: 9.99
+  comp: 9.99
+  igv_comp: 9.99
+  comp_pend: 9.99
+  igv_comp_pend: 9.99
+  valor_porte: 9.99

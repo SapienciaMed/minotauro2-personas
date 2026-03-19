@@ -1,0 +1,18 @@
+<tr id="personascontrol_<%= personascontrol.id %>">
+  <td class="text-center">
+    <% if @is_auth_a_personascontrol %>
+      <%= link_to edit_persona_personascontrol_path(@persona, personascontrol), remote: true, data: { toggle: 'tooltip' }, class: 'edit_personascontrol_button', title: "#{t :title_editar}" do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+      <% end %>
+    <% end %>
+    <% if @is_auth_e_personascontrol %>
+      <%= link_to persona_personascontrol_path(@persona, personascontrol), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td><%=personascontrol.updated_at.strftime("%Y-%m-%d %X")%><br/>
+      <%=personascontrol.username rescue nil%></td>
+  <td><%=personascontrol.tipo_atencion %></td>
+  <td><div align="justify"><%=personascontrol.observacion %></div></td>
+</tr>

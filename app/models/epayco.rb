@@ -1,0 +1,2 @@
+class Epayco < ApplicationRecord
+end

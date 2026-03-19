@@ -1,0 +1,83 @@
+<% if @persona.etapa.to_s == "A" %>
+  <%= render "form" %>
+  <% unless @persona.new_record? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-phone"></i> <span></span> <%= t :personas_telefono %></a></li>
+            <li><a href="#tab2" data-toggle="tab"><i class="fa fa-file"></i><span></span> <%= t :personas_direcciones %></a></li>
+            <li><a href="#tab3" data-toggle="tab"><i class="fa fa-send"></i> <span></span> <%= t :personas_correos %></a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab1"><%= render 'telefonos' %></div>
+            <div class="tab-pane" id="tab2"><%= render 'direcciones' rescue nil %></div>
+            <div class="tab-pane" id="tab3"><%= render '/personascorreos/personascorreos' %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% elsif @persona.etapa.to_s == 'B' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personascodeudores/personascodeudores' %>
+<% elsif @persona.etapa.to_s == 'C' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personasacademicos/personasacademicos' %>
+<% elsif @persona.etapa.to_s == 'D' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personasgiros/personasgiros' %>
+<% elsif @persona.etapa.to_s == 'E' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personasliquidaciones/personasliquidaciones' %>
+<% elsif @persona.etapa.to_s == 'F' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personasobligaciones/personasobligaciones' %>
+<% elsif @persona.etapa.to_s == 'G' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/controles/controles' %>
+  <%= render '/personascontroles/personascontroles' %>
+<% elsif @persona.etapa.to_s == 'H' %><br/>
+  <%= link_to 'Crear alistamiento', {:controller => "personasalistamientos", :action => "new", :id => @persona.id}, :class => "btn btn-success" %> -
+  <%= link_to 'Vigilancia judicial', {:controller => "personasprocesos", :action => "new", :id => @persona.id}, :class => "btn btn-success" %>
+  <br/><br/>
+  <%= render '/personas/alistamiento' %>
+  <br/>
+  <%= render '/personas/proceso' %>
+<% elsif @persona.etapa.to_s == 'I' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <%= render '/personasimagenes/personasimagenes' %>
+<% elsif @persona.etapa.to_s == 'J' %>
+  <legend style="margin-top: -25px;">Informacion (<%= @persona.autobuscar rescue nil %>)</legend>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab0" data-toggle="tab"><i class="fa fa-comment-o"></i> <span></span>Gestion</a></li>
+          <li><a href="#tab1" data-toggle="tab"><i class="fa fa-phone"></i> <span></span> <%= t :personas_telefono %></a></li>
+          <li><a href="#tab2" data-toggle="tab"><i class="fa fa-file"></i><span></span> <%= t :personas_direcciones %></a></li>
+          <li><a href="#tab3" data-toggle="tab"><i class="fa fa-send"></i> <span></span> <%= t :personas_correos %></a></li>
+          <li><a href="#tab4" data-toggle="tab"><i class="fa fa-credit-card"></i> <span></span> Creditos</a></li>
+          <li><a href="#tab5" data-toggle="tab"><i class="fa fa-folder-open-o"></i> <span></span> Digital</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab0">
+            <%= render '/personasobservaciones/personasobservaciones' %>
+          </div>
+          <div class="tab-pane" id="tab1"><%= render 'telefonos' %></div>
+          <div class="tab-pane" id="tab2"><%= render 'direcciones' rescue nil %></div>
+          <div class="tab-pane" id="tab3"><%= render '/personascorreos/personascorreos' %></div>
+          <div class="tab-pane" id="tab4">
+            <legend>Obligaciones</legend>
+            <% @persona.personasobligaciones.each do |pe| %>
+              <%= render "/personasobligaciones/parte1", personasobligacion: pe %>
+              <%= render "/personasobligaciones/parte2", personasobligacion: pe %>
+            <% end %>
+          </div>
+          <div class="tab-pane" id="tab5"><%= render '/personasimagenes/personasimagenes' %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

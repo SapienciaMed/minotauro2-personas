@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesajuste: one
+  planesrecaudo: one
+  valor: 9.99
+
+two:
+  planesajuste: two
+  planesrecaudo: two
+  valor: 9.99

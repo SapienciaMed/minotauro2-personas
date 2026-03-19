@@ -1,0 +1,108 @@
+<div class="page-header">
+  <h3>Informe Contable</h3>
+</div>
+<table border="1">
+  <tr valign="middle" bgcolor="#00FF00">
+    <th colspan="5"><div align="center">Datos Basicos</div></th>
+    <th colspan="5"><div align="center">Saldos Iniciales</div></th>
+    <th colspan="4"><div align="center">Factura Periodo</div></th>
+    <th colspan="4"><div align="center">Factura Valores Vencidos</div></th>
+    <th colspan="2"><div align="center">Comportamiento Mora</div></th>
+    <th colspan="6"><div align="center">Recaudo</div></th>
+    <th colspan="5"><div align="center">Saldos Finales</div></th>
+    <th colspan="6"><div align="center">Recaudos Reestructurados</div></th>
+    <th colspan="2"><div align="center">Otros Restructurados</div></th>
+  </tr>
+  <tr valign="middle" bgcolor="#00FF00">
+    <th><div align="center">Nro Obligacion</div></th>
+    <th><div align="center">Fecha Creación</div></th>
+    <th><div align="center">Identificacion</div></th>
+    <th><div align="center">Nombre</div></th>
+    <th><div align="center">Fecha Corte</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corrientes</div></th>
+    <th><div align="center">Mora</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">Saldo Deuda</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">Total Factura</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">Total Vencido</div></th>
+
+    <th><div align="center">Mora Paga</div></th>
+    <th><div align="center">Mora por pagar</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Mora</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">SFC</div></th>
+    <th><div align="center">Total Recaudo</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Mora</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">Saldo Final</div></th>
+
+    <th><div align="center">Capital</div></th>
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Mora</div></th>
+    <th><div align="center">Otros</div></th>
+    <th><div align="center">SFC</div></th>
+    <th><div align="center">Total Recaudo</div></th>
+
+    <th><div align="center">Corriente</div></th>
+    <th><div align="center">Mora</div></th>
+  </tr>
+<% @informescontables.each do |objeto|%>
+  <tr valign="middle">
+    <td><div align="left"><%=objeto.nro_obligacion rescue nil%></div></td>
+    <td><div align="left"><%=objeto.saldo_fecha_creacion rescue nil%></div></td>
+    <td><div align="left"><%=objeto.identificacion rescue nil%></div></td>
+    <td><div align="left"><%=objeto.titular rescue nil%></div></td>
+    <td><div align="left"><%=objeto.fecha_corte rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.saldo_valor_credito) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.saldo_int_corrientes) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.saldo_int_mora) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.saldo_otros) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.saldo_deuda) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.factura_capital) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.factura_corrientes) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.factura_otros) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.factura_valor) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.facturap_capital) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.facturap_corrientes) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.facturap_otros) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.facturap_valor) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_mora) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_mora) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_capital) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_corriente) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_mora) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_otros) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_sfc) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudo_total) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_capital) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_corriente) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_mora) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_otros) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.final_saldo) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudocapitalreest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudocorrientereest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudomorareest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudootrosreest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudosfcreest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.recaudototalreest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.otrosreest) rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico(objeto.morareest) rescue nil%></div></td>
+  </tr>
+<% end %>
+</table>

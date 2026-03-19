@@ -1,0 +1,54 @@
+<tr id="personasdireccion_<%= personasdireccion.id %>">
+  <td class="text-center">
+      <%= link_to activo_persona_personasdireccion_path(@persona, personasdireccion), remote: true, data: { toggle: 'tooltip' }, title: 'Efectivo' do %>
+        <button class="btn btn-xs btn-success"><i class="fa fa-check-circle"></i></button>
+      <% end %>
+
+      <%= link_to inactivo_persona_personasdireccion_path(@persona, personasdireccion), remote: true, data: { toggle: 'tooltip' }, title: 'No Efectivo' do %>
+        <button class="btn btn-xs btn-danger"><i class="fa fa-ban"></i></button>
+      <% end %>
+
+      <%= link_to tercero_persona_personasdireccion_path(@persona, personasdireccion), remote: true, data: { toggle: 'tooltip' }, title: 'Contacto Tercero' do %>
+        <button class="btn btn-xs btn-warning"><i class="fa fa-ban"></i></button>
+      <% end %>
+    
+    <% if is_auth_e('personasdireccion') %>
+      <%= link_to persona_personasdireccion_path(@persona, personasdireccion), remote: true, method: :delete, data: { confirm: "#{t :elimina_confirma}", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+          <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+      <% end %>
+    <% end %>
+  </td>
+  <td class="<%=personasdireccion.estadoa.to_s rescue nil%>">
+    <strong><%= personasdireccion.updated_at.strftime("%Y-%m-%d %X") rescue nil%></strong>
+    <% if personasdireccion.user_id.to_s != "" %>
+      <br/>Creado por : <%=h personasdireccion.user.username rescue nil%>
+    <% end%>
+    <% if personasdireccion.user_actualiza.to_s != "" %>
+      <br/>Ult. Act.: <%=User.find(personasdireccion.user_actualiza).username rescue nil%>
+    <% end%>
+  </td>
+   <td><%= personasdireccion.direccion %> (<%= personasdireccion.tipo %>)</td>
+   <td><%= personasdireccion.barrio %> - (<%=personasdireccion.municipio.descripcion rescue nil %>)</td>
+   <td><%= personasdireccion.observacion %></td>
+</tr>
+
+<div class="modal fade" id="abrirmapa">
+  <div class="modal-dialog" style="width: 1300px;">
+    <div class="modal-content" style="width: 1300px;">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="abrirmapa">
+  <div class="modal-dialog" style="width: 1300px;">
+    <div class="modal-content" style="width: 1300px;">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="abrirmapa2">
+  <div class="modal-dialog" style="width: 1300px;">
+    <div class="modal-content" style="width: 1300px;">
+    </div>
+  </div>
+</div>

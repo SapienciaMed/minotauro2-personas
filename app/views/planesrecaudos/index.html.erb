@@ -1,0 +1,312 @@
+<% title 'Recaudos' %>
+<%
+  datoid = 1 #is_portafolio
+  is_permiso_detallegastos = ""#is_permiso('detallesgasto')
+  is_permiso_alivios = ""#is_permiso('procesoalivio')
+  is_permiso_planh = ""#is_permiso('planhobligacion')
+  is_permiso_plangastos = ""#is_permiso('plangastos')
+  is_permiso_appcontable = ""#is_permiso('appcontable')
+  iscargoasesordentix = ""#is_cargoasesordentix
+  @auth_personasoblcambio = is_auth_e('personasobligacion')
+  @auth_ajustesaldomenor = is_auth_e("ajustesaldomenorcuotavencida")
+%>
+<div class="box box-primary">
+  <div id="obligaciondetalle">
+    <%= render "/personasobligaciones/detalle" %>
+  </div>
+</div>
+<div class="flash_messages"></div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab"> <i class="fa fa-dollar"></i> <span></span> Recaudo</a></li>
+        <li><a href="#tab2" data-toggle="tab"> <i class="fa fa-file-text"></i> Detalle plan de pagos</a></li>
+        <li><a href="#tab3" data-toggle="tab"> <i class="fa fa-server"></i> <span></span> Extractos</a></li>
+        <% if @personasobligacion.solicitudes.exists? %>
+          <li><a href="#tab4" data-toggle="tab"> <i class="fa fa-server"></i> <span></span> Solicitudes </a></li>
+        <% end %>
+        <% if @personasobligacion.personasoblcambios.exists? or @auth_personasoblcambio  %>
+          <li><a href="#tab5" data-toggle="tab"> <i class="fa fa-server"></i> <span></span> Recreaciones </a></li>
+        <% end %>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <div class="box-header with-border">
+            <h3 class="box-title">
+              <% if @personasobligacion.estadoobli.to_s != 'CANCELADO' %>
+                <% if is_auth_c('personasrecaudo') %>
+                  <%= link_to new_personasobligacion_planesrecaudo_path, remote: true, class: 'btn btn-sm btn-success' do %>
+                    <i class="fa fa-plus-square"> </i> <span>Nuevo</span>
+                  <% end %>
+                <% end %>
+                <% if is_auth_c('extincionobligacion') %>
+                  <%= link_to prepara_planesrecaudos_path(id: @personasobligacion.id), data: { toggle: 'tooltip' }, title: "Extinción - Ajuste", remote: true, class: 'btn btn-sm btn-danger' do %>
+                    <i class="fa fa-gavel"> </i>
+                  <% end %>
+                <% end %>
+                <% if is_auth_c('devolucionsfc') %>
+                  <%= link_to preparaajuste_planesrecaudos_path(id: @personasobligacion.id), data: { toggle: 'tooltip' }, title: "Devolución SFC", remote: true, class: 'btn btn-sm btn-warning' do %>
+                    <i class="fa fa-newspaper-o"> </i>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <%= link_to historico_pagos_personasobligaciones_path(id: @personasobligacion.id, format: :pdf), data: { toggle: 'tooltip' }, title: "Historial PDF", class: "btn btn-sm btn-warning", onclick: 'window.open(this.href,"new_window","height=600,width=900,scrollbars=yes");return false;' do %>
+                <i class="fa fa-file-pdf-o"></i>
+              <% end %>
+              <%= link_to historico_pagos2_personasobligaciones_path(id: @personasobligacion.id), data: { toggle: 'tooltip' }, title: "Historial XLS", class: "btn btn-sm btn-primary" do %>
+                <i class="fa fa-file-excel-o"></i>
+              <% end %>
+              <% if @auth_ajustesaldomenor
+                   if @personasobligacion.totalvencido.to_f <= 4000 and @personasobligacion.totalvencido.to_f > 0 %>
+                    <%= link_to ajustesaldomenor_persona_personasobligacion_path(persona_id: @personasobligacion.persona_id, id: @personasobligacion.id), data: { confirm: 'Esta seguro que desea aplicar este Ajuste?', toggle: 'tooltip' }, title: "Ajuste Saldo Menor", class: "btn btn-sm btn-primary" do %>
+                      <i class="fa fa-battery-quarter"></i>
+                    <% end %>
+              <%   end
+                 end %>
+            </h3>
+            <div class="box-tools pull-right">
+              <div id="sumtotal">
+                <%= render 'planesrecaudos/total' %>
+              </div>
+            </div>
+          </div>
+          <div class="flash_messages"></div>
+          <div class="box-body">
+            <div id="planesrecaudo_form" class="collapse"></div>
+            <div id="planesrecaudos">
+              <% if @planesrecaudos.any? %>
+                <%= render 'planesrecaudos/tabla' %>
+              <% else %>
+                <div class="alert alert-warning">
+                  <h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4><%= t :atencion_msj %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab2">
+          <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped">
+              <thead>
+              <tr class="thcolor">
+                <th><div align="center">#</div></th>
+                <th><div align="center">Fecha vence</div></th>
+                <th><div align="center">Inicial</div></th>
+                <th><div align="center">Cuota</div></th>
+                <th><div align="center">Capital</div></th>
+                <th><div align="center">Capital Ori</div></th>
+                <th><div align="center">Corriente</div></th>
+                <th><div align="center">Corriente Ori</div></th>
+                <th><div align="center">Otros</div></th>
+                <th><div align="center">Final</div></th>
+                <th><div align="center">#</div></th>
+              </tr>
+              </thead>
+            <%  i = 0
+                muestra = 'NO' 
+                @personasobligacion.planesobligaciones.order('to_number(nro_cuota) ASC').each do |planesobligacion|
+                  i = i +1
+                    if i == 1 and planesobligacion.cuota.to_i > 0
+                      muestra = 'SI'
+                    end
+                    if planesobligacion.cuota.to_i > 0 and i != 1 and muestra == 'NO'
+                  %>
+                      <tr class="thcolor">
+                        <th><div align="center">#</div></th>
+                        <th><div align="center">Fecha vence</div></th>
+                        <th><div align="center">Inicial</div></th>
+                        <th><div align="center">Cuota</div></th>
+                        <th><div align="center">Capital</div></th>
+                        <th><div align="center">Capital Ori</div></th>
+                        <th><div align="center">Corriente</div></th>
+                        <th><div align="center">Corriente Ori</div></th>
+                        <th><div align="center">Otros</div></th>
+                        <th><div align="center">Final</div></th>
+                        <th><div align="center">#</div></th>
+                      </tr>
+                    <% muestra = 'SI'
+                      end %>
+                <tr>
+                  <td><div align="center"><%=planesobligacion.nro_cuota%>
+                      <% if planesobligacion.fecha_vence.strftime("%Y-%m").to_s == Time.now.strftime("%Y-%m").to_s %>
+                            <i class="fa fa-chrome text-red"></i>
+                      <% end %>
+                  </div></td>
+                  <td><div align="center"><%=planesobligacion.fecha_vence.strftime("%Y-%m-%d") %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.inicial) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.cuota) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.amortiza) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.amortiza_ori) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.corriente) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.corriente_ori) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.otros) rescue 0 %></div></td>
+                  <td><div align="right"><%=camponumerico(planesobligacion.final) rescue 0 %></div>
+                  <td><div align="center"><%=planesobligacion.nro_cuota%></div></td>
+                </tr>
+            <% end %>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab3">
+          <div class="table-responsive">
+              <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                <tr class="thcolor">
+                  <th width="10%"><div align="center">Fecha Factura</div></th>
+                  <th width="90%">Datos</th>
+                </tr>
+                </thead>
+              <%  @personasobligacion.planesfacturas.order("id desc").each do |planesfactura|%>
+                <tr valign="middle">
+                  <td><div align="center"><%= planesfactura.fecha_corte.strftime("%Y-%m-%d")%></div></td>
+                  <td>
+                    <table class="table table-bordered table-condensed table-striped">
+                      <tr class="thcolor">
+                        <td style='font-size: 11px;'><div align="center">S_Vencido</div></td>
+                        <td style='font-size: 11px;'><div align="center">I_Mora</div></td>
+                        <td style='font-size: 11px;'><div align="center">C_Actual</div></td>
+                        <td style='font-size: 11px;'><div align="center">P_Minimo</div></td>
+                        <td style='font-size: 11px;'><div align="center">D_Mora</div></td>
+                        <td style='font-size: 11px;'><div align="center">S_Capital</div></td>
+                        <td style='font-size: 11px;'><div align="center">S_I_Corriente</div></td>
+                        <td style='font-size: 11px;'><div align="center">S_I_Mora</div></td>
+                        <td style='font-size: 11px;'><div align="center">Saldo_Total</div></td>
+                      </tr>
+                      <tr>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.s_vencido) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.i_mora) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.c_actual) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.p_minimo) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.d_mora) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.s_capital) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.s_i_corriente) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.s_i_mora) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.saldo_total) rescue nil%></div></td>
+                      </tr>
+                      <tr class="thcolor">
+                        <td style='font-size: 11px;'><div align="center">V_Capital</div></td>
+                        <td style='font-size: 11px;'><div align="center">V_I_Corriente</div></td>
+                        <td style='font-size: 11px;'><div align="center">Valor_Cuota_Actual</div></td>
+                        <td style='font-size: 11px;'><div align="center">C_Pactadas</div></td>
+                        <td style='font-size: 11px;'><div align="center">C_Pagadas</div></td>
+                        <td style='font-size: 11px;'><div align="center">C_Mora</div></td>
+                        <td style='font-size: 11px;'><div align="center">C_Facturadas</div></td>
+                        <td style='font-size: 11px;'><div align="center">Int_Corriente_EA</div></td>
+                        <td style='font-size: 11px;'><div align="center">Int_Mora_EA</div></td>
+                      </tr>
+                      <tr>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.v_capital) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.v_i_corriente) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=camponumerico(planesfactura.valor_cuota_actual) rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.c_pactadas rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.c_pagadas rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.c_mora rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.c_facturadas rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.int_corriente_ea rescue nil%></div></td>
+                        <td style='font-size: 11px;'><div align="center"><%=planesfactura.int_mora_ea rescue nil%></div></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              <% end %>
+              </table>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab4">
+          <div class="table-responsive">
+            <% if @personasobligacion.solicitudes.exists? %>
+              <table class="table table-bordered table-condensed table-striped">
+                <tr class="thcolor">
+                  <th width="8%"></th>
+                  <th width="10%"><div align="center">Fecha Solicitud</div></th>
+                  <th width="12%"><div align="center">Analista</div></th>
+                  <th><div align="center">Antecedentes</div></th>
+                  <th width="12%"><div align="center">Propuesta</div></th>
+                  <th width="12%"><div align="center">Estado</div></th>
+                </tr>
+                <% @personasobligacion.solicitudes.order("id desc").each do |solicitud|  %>
+                <tr>
+                  <td><div align="center">
+                    <% if solicitud.estado.to_s == "RADICADA" or solicitud.estado.to_s == "PENDIENTE"%>
+                      <% if is_auth_a('solicitud') %>
+                            <%= link_to edit_solicitud_path(solicitud), data: { toggle: 'tooltip' }, class: 'edit_personasobservacion_button', title: "#{t :title_editar}" do %>
+                              <button class="btn btn-xs btn-warning"><i class="fa fa-edit"></i></button>
+                            <% end %>
+                      <% end %>
+                      <% if is_auth_e('solicitud') %>
+                            <%= link_to solicitud_path(solicitud), remote: true, method: :delete, data: { confirm:'Esta Seguro de Eliminar?', toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+                              <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                            <% end %>
+                      <% end %>
+                        <% if is_auth_e('personasobligacion') %>
+                              <%= link_to activar_solicitudes_path(id: solicitud.id), remote: true, data: { confirm:'Esta seguro que desea habilitar para el comite?', toggle: 'tooltip' }, title: "Habilitar para comite" do %>
+                                <button class="btn btn-xs btn-success"><i class="fa fa-check-circle"></i></button>
+                              <% end %>
+                        <% end %>
+                    <% else %>
+                        <%= link_to visualizar_solicitudes_path(id: solicitud.id, :format => :pdf), data: { toggle: 'tooltip' }, class: 'popup', title: "Evaluar Solicitud" do %>
+                          <button class="btn btn-xs btn-info"><i class="fa fa-copy"></i></button>
+                        <% end %>
+                    <% end %>
+                    </div>
+                  </td>
+                  <td><div align="center"><%=solicitud.fecha_solicitud rescue nil %></div></td>
+                  <td><div align="center"><%=solicitud.user.username rescue nil %></div></td>
+                  <td><div style="font-size:11px;" align="justify"><%=solicitud.antecedentes rescue nil %></div></td>
+                  <td><div style="font-size:11px;" align="center"><%=solicitud.propuesta rescue nil %></div></td>
+                  <td><div style="color:red; font-size:13px; font-family: Tahoma;" align="center"><strong><%=solicitud.estado rescue nil %></strong></div></td>
+                </tr>
+                <% end  %>
+              </table>
+            <% end %>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab5">
+            <%= render '/personasoblcambios/personasoblcambios' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="extincion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="veraplicacion">
+  <div class="modal-dialog" style="width: 906px;">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="prereversion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="verliquidacion">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="adddocumento">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pagoModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>

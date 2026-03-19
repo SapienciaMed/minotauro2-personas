@@ -1,0 +1,135 @@
+<%= form_tag request.path, :method => 'get', :class=>"well" do %>
+  <% content_tag :label do %>
+     <div class="control-group">
+        <div class="controls">
+          <div class="input-append">
+            <%= hidden_field_tag :id, @personasobligacion.id %>
+            <%= hidden_field_tag :reestructuacion, @reestructuacion %>
+            Digite el Nro de Cuotas de la simulación : <%= text_field_tag :plazo, params[:plazo],{:autocomplete=>"off", :placeholder=>"Nro Cuotas" } %>
+            <%= submit_tag 'Generar', :class=>"btn btn-primary"%>
+          </div>
+        </div>
+     </div>
+  <% end %>
+<% end %>
+<legend>Escenario actual</legend>
+<table class="table table-bordered table-condensed table-striped">
+  <tr class="thcolor">
+    <th><div align="center">Nro Obligacion</div></th>
+    <th><div align="center">Fecha Creación</div></th>
+    <th><div align="center">Tasa Interes PAC</div></th>
+    <th><div align="center">Dias Vencidos Credito</div></th>
+    <th><div align="center">Calificación Cartera</div></th>
+    <th><div align="center">Valor Credito</div></th>
+    <th><div align="center">Fch Ult. Pago</div></th>
+    <th><div align="center">Vlr Ult. Pago</div></th>
+  </tr>
+  <tr>
+    <td><div align="center"><%=@personasobligacion.nro_obligacion rescue nil %></div></td>
+    <td><div align="center"><%=@personasobligacion.created_at.strftime("%Y-%m-%d %X") rescue nil %></div></td>
+    <td><div align="center"><a title="IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%> - Tasa Mora: <%=@personasobligacion.tasa_mora rescue nil %>"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+    <td><div align="center"><%=@personasobligacion.diasvencoblig rescue nil%></div></td>
+    <td><div align="center"><%=@personasobligacion.calificacion rescue nil%></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.valor) rescue nil%></div></td>
+    <td><div align="center"><%=@personasobligacion.fch_ult_pago.strftime("%Y-%m-%d") rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(Planesrecaudo.find(:first, :conditions=>["personasobligacion_id = #{@personasobligacion.id} and fecha_recaudo = '#{@personasobligacion.fch_ult_pago.to_date}'"]).valor) rescue nil%></div></td>
+  </tr>
+</table>
+<table class="table table-bordered table-condensed table-striped">
+  <tr class="thcolor">
+    <th><div align="center">Saldo Capital Vencido</div></th>
+    <th><div align="center">Saldo Int. Corriente Vencido</div></th>
+    <th><div align="center">Saldo Otros</div></th>
+    <th><div align="center">Saldo Int. de Mora</div></th>
+    <th><div align="center">Total Vencido</div></th>
+    <th><div align="center">Cuota <%=is_fechahoy.strftime("%m-%Y") rescue nil%></div></th>
+    <th><div align="center">Vlr Minimo Pagar</div></th>
+    <th><div align="center">Capital por Pagar</div></th>
+    <th><div align="center">Saldo Total Deuda</div></th>
+  </tr>
+  <tr>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldocapitalvencido) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldointerescorriente) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldootros) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldointeresmora) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.totalvencido) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.vlrcuota) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.vlrcuota.to_i + @personasobligacion.totalvencido.to_i) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.capitalporpagar) rescue nil%></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldototaldeuda) rescue nil%></div></td>
+  </tr>
+</table>
+<table class="table table-bordered table-condensed table-striped">
+  <tr>
+    <th width="8%" class="thcolor"><div align="center">Plazo</div></th>
+    <td width="5%"><div align="center"><%=@personasobligacion.obplazo rescue nil%></div></td>
+    <th width="12%" class="thcolor"><div align="center">Altura del Credito</div></th>
+    <td width="5%"><div align="center"><%=@personasobligacion.obaltura rescue nil%></div></td>
+    <th width="12%" class="thcolor"><div align="center">Cuotas Pagadas</div></th>
+    <td width="5%"><div align="center"><%=@personasobligacion.obcuotaspagadas rescue nil%></div></td>
+    <th width="12%" class="thcolor"><div align="center">Cuotas en Mora</div></th>
+    <td width="5%"><div align="center"><%=@personasobligacion.obcuotasmora rescue nil%></div></td>
+    <th width="12%" class="thcolor"><div align="center">Cuotas por Facturar</div></th>
+    <td width="5%"><div align="center"><%=@personasobligacion.obcuotasporpagar rescue nil%></div></td>
+    <td width="15%"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center"><strong><%=@personasobligacion.estadoobli rescue nil%></strong></div></td>
+  </tr>
+</table>
+<br/>
+<legend>Escenario SIMULACIÓN</legend>
+<table class="table table-bordered table-striped table-hover">
+  <tr class="thcolor">
+    <th><div align="center">Tasa Interes PAC</div></th>
+    <th><div align="center">Cuota <%=is_fechahoy.strftime("%m-%Y") rescue nil%></div></th>
+    <th><div align="center">Saldo Capital</div></th>
+    <th><div align="center">Total Intereses</div></th>
+    <th><div align="center">Total Otros</div></th>
+    <th><div align="center">Total a pagar</div></th>
+    <th><div align="center">Plazo Simulación</div></th>
+  </tr>
+  <tr>
+    <td><div align="center"><a title="IPC <%=@personasobligacion.tasa_ipc rescue nil%> + <%=@personasobligacion.tasa_puntos rescue nil%> - Tasa Mora: <%=@personasobligacion.tasa_mora rescue nil %>" style="color:red; font-family: Tahoma;"><%=@personasobligacion.tasa_final rescue nil%> E.A.</a></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.vlrcuotasimulacion) rescue nil %></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldocapital) rescue nil%></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.totalcorrientesimulacion) rescue nil%></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.totalotrossimulacion) rescue nil%></div></td>
+    <td><div align="center">$ <%=camponumerico(@personasobligacion.saldocapital.to_i + @personasobligacion.totalcorrientesimulacion.to_i +  + @personasobligacion.totalotrossimulacion.to_i) rescue nil%></div></td>
+    <td><div align="center"><%=@personasobligacion.obplazosimulacion rescue nil%></div></td>
+  </tr>
+</table>
+<% if @personasobligacion.obplazosimulacion.to_i > (@personasobligacion.obplazo*2).to_i  %>
+  <div class="alert alert-warning"><h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4>Advertencia: El plazo simulado supera el doble del plazo original (Norma)</div>
+<% end  %>
+<br/>
+<legend>Detalle Simulación plan de pagos</legend>
+<% if @planessimulaciones.present? %>
+  <table class="table table-bordered table-condensed table-striped">
+    <tr class="thcolor">
+      <th><div align="center">#</div></th>
+      <th><div align="center">Fecha vence</div></th>
+      <th><div align="center">Inicial</div></th>
+      <th><div align="center">Cuota</div></th>
+      <th><div align="center">Capital</div></th>
+      <th><div align="center">Corriente</div></th>
+      <th><div align="center">Final</div></th>
+      <th><div align="center">Otros</div></th>
+      <th><div align="center">Valor a pagar</div></th>
+      <th><div align="center">#</div></th>
+    </tr>
+  <%  @planessimulaciones.each do |planessimulacion|%>
+    <tr valign="middle">
+      <td><div align="center"><%=planessimulacion.nro_cuota%></div></td>
+      <td><div align="center"><%=planessimulacion.fecha_vence.strftime("%Y-%m-%d") %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.inicial) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.cuota) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.amortiza) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.corriente) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.final) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.otros) %></div></td>
+      <td><div align="right"><%=camponumerico(planessimulacion.valor_pagar) %></div></td>
+      <td><div align="center"><%=planessimulacion.nro_cuota%></div></td>
+    </tr>
+  <% end %>
+  </table>
+<% else %>
+  <div class="alert alert-warning"><h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4><%= t :atencion_msj %></div>
+<% end %>

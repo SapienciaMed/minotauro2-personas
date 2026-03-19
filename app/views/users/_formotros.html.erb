@@ -1,0 +1,157 @@
+<%= simple_form_for(@user) do |f| %>
+<% isportafolio = is_portafolio %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header">
+          <legend>
+            <% if @user.new_record? %>
+              <%= link_to users_path, data: { toggle: 'tooltip' }, title: 'Regresar a usuarios' do %>
+        				<i class="fa fa-arrow-left fa-fw text-success" aria-hidden="true"></i>
+        			<% end %>
+            <% end %>
+            <%= @user.new_record? ? 'Agregar nuevo' : 'Editar' %> Usuario
+          </legend>
+          <div class="box-tools pull-right">
+            <%= link_to new_user_path, class: 'btn btn-sm btn-success' do %>
+              <i class="fa fa-plus-square"> </i> <span>Nuevo usuario</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2"><%= f.input :identificacion, label: 'Identificación' %></div>
+            <div class="col-md-7"><%= f.input :nombre, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase'} %></div>
+            <div class="col-md-3"><%= f.input :activo, as: :select, collection: select_sinocorto, input_html: { class: 'select2' } %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><%= f.input :username, label: 'Usuario' %></div>
+            <div class="col-md-2"><%= f.input :password, label: 'Clave' %></div>
+            <div class="col-md-2"><%= f.input :password_confirmation, label: 'Confirmar Clave' %></div>
+            <div class="col-md-4"><%= f.input :email %></div>
+          </div>
+          <div class="row">
+            <% if is_portafolio != 10101 %>
+              <div class="col-md-3"><%= f.input :tipoconsulta, as: :select, collection: select_tipoconsulta, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true}, label: 'Tipo Consulta' %></div>
+            <% else %>
+              <div class="col-md-3"><%= f.input :tipoconsulta, as: :select, collection: select_tipoconsultaexp, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true}, label: 'Tipo Consulta' %></div>
+            <% end %>
+            <% if [10140,10144,10141,10143].include?(isportafolio) %>
+              <div class="col-md-4"><%= f.input :ambito, as: :select, label: 'Ambito', collection: select_ambitogps, input_html: {class: "select2"} %></div>
+            <% end %>
+            <div class="col-md-5"><%= f.input :cliente_id, as: :select, label: 'Originador', collection: Cliente.where(portafolio_id: isportafolio).order(:nombre).collect {|p| [p.nombre, p.id]}, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true} %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <% if [10140,10144,10143].include?(isportafolio) %>
+                <%= f.input :portafoliossucursal_id, as: :select, label: 'Sucursal', collection: Portafoliossucursal.where(portafolio_id: isportafolio, estado: 'ACTIVO').order(:id).collect {|p| [p.descripciontipo, p.id]}, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true} %>
+              <% else %>
+                <%= f.input :portafoliossucursal_id, as: :select, label: 'Sucursal', collection: Portafoliossucursal.where(portafolio_id: isportafolio, estado: 'ACTIVO').order(:id).collect {|p| [p.descripcion, p.id]}, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true} %>
+              <% end %>
+            </div>
+            <div class="col-md-4">
+              <%= f.input :portafoliosvehiculo_id, as: :select, label: 'Vehiculo', collection: Portafoliosvehiculo.where(portafolio_id: isportafolio).order(:id).collect {|p| [p.descripcion, p.id]}, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true} %>
+            </div>
+            <div class="col-md-4"><%= f.input :direccion, label: 'Dirección', input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase'} %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="">Ciudad</label>
+              <% if f.object.new_record? -%>
+                <select class="form-control select2Ciudad select2" name="user[municipio_id]">
+                  <option selected="selected" value="<%= f.object.municipio_id -%>">
+                    <%= "#{f.object.ciudadmunicipio}" -%>
+                  </option>
+                 </select>
+              <% else -%>
+                <select class="form-control select2Ciudad select2" name="user[municipio_id]">
+                  <option selected="selected" value="<%= f.object.municipio_id -%>">
+                    <%= "#{f.object.ciudadmunicipio}" -%>
+                  </option>
+                </select>  
+              <% end -%>
+            </div>
+            <div class="col-md-2"><%= f.input :telefonos %></div>
+            <div class="col-md-2"><%= f.input :celular %></div>
+            <div class="col-md-2"><%= f.input :fecha_nacimiento, label: 'Fecha de Nacimiento', as: :datetime_picker, input_html: { data: { date_options: { format: 'DD/MM/YYYY', ignoreReadonly: true } }, onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase', readonly: true } %></div>
+            <div class="col-md-2"><%= f.input :fecha_ingreso, label: 'Fecha de Ingreso', as: :datetime_picker, input_html: { data: { date_options: { format: 'DD/MM/YYYY', ignoreReadonly: true } }, onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase', readonly: true } %></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"><%= f.input :fecha_salida, label: 'Fecha de Retiro', as: :datetime_picker, input_html: { data: { date_options: { format: 'DD/MM/YYYY', ignoreReadonly: true } }, onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase', readonly: true } %></div>
+            <div class="col-md-3"><%= f.input :genero, as: :select, collection: select_genero, input_html: { class: 'select2' } %></div>
+            <div class="col-md-3"><%= f.input :extension, label: 'Extensión' %></div>
+            <div class="col-md-4"><%= f.input :observaciones, as: :text, input_html: { onChange: 'javascript:this.value=this.value.toUpperCase();', class: 'input_uppercase'} %></div>
+         </div>
+         <% if isportafolio == 10100 or isportafolio == 10101 or isportafolio == 10041 %>
+          <div class="row">
+            <div class="col-md-3"><%= f.input :centro_id, as: :select, label: 'Centro', collection: Centro.where(portafolio_id: isportafolio, estado: 'ACTIVO').collect {|p| [p.sigla, p.id]}, input_html: { class: 'select2' } %></div>
+            <div class="col-md-3"><%= f.input :banco, as: :select, label: 'Banco', collection: Banco.all.collect {|p| [p.nombre, p.id]}, input_html: { class: 'select2' } %></div>
+            <div class="col-md-3"><%= f.input :tipo_cuenta, as: :select, label: 'Tipo de Cuenta', collection: tipo_entidades, input_html: {class: "select2"} %></div>
+            <div class="col-md-3"><%= f.input :nro_cuenta, label: 'Nro de Cuenta' %></div>
+          </div>
+         <% end %>
+         <div class="row">
+           <div class="col-md-2"><%= f.input :ingresoseguro, label: 'Ingreso Seguro', as: :select, collection: select_sino, input_html: { class: 'select2' } %></div>
+           <div class="col-md-4"><%= f.input :portafoliosarea_id, collection: Portafoliosarea.where(["portafolio_id = #{isportafolio}"]).order(:descripcion).collect { |p| [p.descripcion.to_s, p.id] }, input_html: { class: 'clean select2' }, label: "Area", style: "width: 100%" %></div>
+           <div class="col-md-2"><%= f.input :avatar, as: :file %></div>
+           <% unless @user.new_record? %>
+              <% if (isportafolio == 10100 or isportafolio == 10101 or isportafolio == 10041) and (@user.tipoconsulta.to_s == 'ESTUDIANTE' or @user.tipoconsulta2.to_s != "") %>
+                <% if is_portafolio != 10101 %>
+                  <div class="col-md-3"><%= f.input :tipoconsulta2, as: :select, collection: select_tipoconsulta, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true}, label: 'Tipo Consulta Alterno' %></div>
+                <% else %>
+                  <div class="col-md-3"><%= f.input :tipoconsulta2, as: :select, collection: select_tipoconsultaexp, input_html: {data: {width: '100%'}, class: 'select2', include_blank: true}, label: 'Tipo Consulta Alterno' %></div>
+                <% end %>
+              <% end %>
+           <% end %>
+           <div class="col-md-2"><%= f.input :lider_pqrs, as: :select, label: 'Lider PQRS', collection: select_sino, input_html: {class: "select2"} %></div>
+         </div>
+        </div>
+        <div class="box-footer">
+          <div class="box-tools pull-right">
+            <%= f.button :submit, 'Aceptar', class: 'btn-flat btn-danger' %>
+          </div><!-- /.box-tools -->
+        </div><!-- box-footer -->
+      </div><!-- /.box -->
+    </div>
+  </div>
+<% end %>
+<% unless @user.new_record? %>
+  <% if is_auth_c('userscargo') %>
+    <div class="box box-primary">
+      <div class="box-header">
+        <legend>Portafolios asignados - Cargos</legend>
+        <div class="box-tools pull-right">
+          <%= link_to retirarcargos_users_path(id: @user.id), data: { confirm: "Enserio quiere quitarle los cargos a este usuario", toggle: 'tooltip' }, title: 'Retirar Cargos' do %>
+            <button class="btn btn-sm btn-danger">Retirar cargos</button>
+          <% end %>
+        </div>
+      </div>
+      <div class="box-body">
+        <% if @user.portafolio_id.to_s != ""%>
+          <% if @portafolioscargos.nil? == false %>
+            <div class="btn-group">
+              <% @portafolioscargos.each do |c|%>
+                <% if @user.portafolioscargo_id.to_s != "" %>
+                  <% if c.id == @user.portafolioscargo.id %>
+                    <%= link_to cambiarperfil_users_path(id: @user.id, portafolioscargo_id: c.id), data: { toggle: 'tooltip' }, title: 'Asignado', disabled: true do %>
+                      <button class="btn btn-sm btn-danger disabled"><%= c.descripcion %></button>
+                    <% end %>
+                  <% else %>
+                    <%= link_to cambiarperfil_users_path(id: @user.id, portafolioscargo_id: c.id), data: { toggle: 'tooltip', confirm: "Seguro que desea asignar este perfil al usuario #{@user.nombre}?" }, title: 'Asignar' do %>
+                      <button class="btn btn-sm btn-primary"><%= c.descripcion %></button>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <%= link_to cambiarperfil_users_path(id: @user.id, portafolioscargo_id: c.id), data: { toggle: 'tooltip', confirm: "Seguro que desea asignar este perfil al usuario #{@user.nombre}?" }, title: 'Asignar' do %>
+                    <button class="btn btn-sm btn-primary"><%= c.descripcion %></button>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+

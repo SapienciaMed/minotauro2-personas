@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consecutivo: 1
+  user: one
+  archivo_id: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  valor: 1
+  mensaje: MyString
+  persona_id: 1
+  personasobligacion_id: 1
+  estado: MyString
+  error: MyString
+
+two:
+  consecutivo: 1
+  user: two
+  archivo_id: 1
+  identificacion: MyString
+  nro_obligacion: MyString
+  valor: 1
+  mensaje: MyString
+  persona_id: 1
+  personasobligacion_id: 1
+  estado: MyString
+  error: MyString

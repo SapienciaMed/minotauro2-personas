@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  segmento: MyString
+  reference_document: MyString
+  borrower: MyString
+  address: MyString
+  comercial_usd: 1
+  fecha_compra: 2019-08-21
+  purchase_usd: 1
+
+two:
+  segmento: MyString
+  reference_document: MyString
+  borrower: MyString
+  address: MyString
+  comercial_usd: 1
+  fecha_compra: 2019-08-21
+  purchase_usd: 1

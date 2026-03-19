@@ -1,0 +1,57 @@
+
+<%
+   is_auth_e_personasimagen = is_auth_e("personasimagen")
+   @objetos = Objeto.find_by_sql("select ROW_NUMBER() OVER(ORDER BY tipo ASC) AS fila, tipo, count(0) canttipo from personasimagenes where persona_id = #{@persona.id} group by tipo order by tipo asc")
+%>
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped">
+      <tr class="thcolor">
+        <td width="20%" style="font-size:10px;"><strong><div align="center">Tipo de documento</div></strong></td>
+        <td style="font-size:12px;"><strong>Detalle</strong></td>
+      </tr>
+<%
+   @objetos.each do |objeto|
+     imagenes = @persona.personasimagenes.joins("left outer join users on users.id = personasimagenes.user_id")
+                                         .select("personasimagenes.*, users.username")
+                                         .where("personasimagenes.tipo = '#{objeto.tipo.to_s}'").order('personasimagenes.created_at DESC')
+     if imagenes.present?
+%>
+        <tr>
+          <td class="text-left"><strong>
+            <a href="javascript:void(0);" onclick="SINO('img_<%=objeto.fila%>')"><%=objeto.tipo rescue nil%> (<%=objeto.canttipo rescue 0 %>)</a>
+            </strong></td>
+          <td style="font-size:12px;">
+            <div id="img_<%=objeto.fila%>" style="display:none;">
+              <table class="table table-bordered table-condensed table-striped">
+                <tr class="thcolor">
+                  <td width="12%"></td>
+                  <td width="38%" style="font-size:12px;"><strong>Descripcion</strong></td>
+                  <td width="50%" style="font-size:12px;"><strong>Nombre del Archivo</strong></td>
+                </tr>
+                <% for personasimagen in imagenes %>
+                  <tr>
+                    <td class="text-center">
+                      <%= link_to personasimagen.persona.url(:original, false), data: { toggle: 'tooltip' },title: "Ver Documento", onclick: 'window.open(this.href,"new_window","height=450,width=600,scrollbars=yes");return false;' do %>
+                        <button class="btn btn-xs btn-primary"><i class="fa fa-cloud-download"></i></button>
+                      <% end %>
+                      <% if is_auth_e_personasimagen %>
+                        <%= link_to persona_personasimagen_path(@persona, personasimagen), method: :delete, remote: true, data: { confirm: "¿Seguro?", toggle: 'tooltip' }, title: "#{t :title_elimina}" do %>
+                          <button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                        <% end %>
+                      <% end %>
+                      <button class="btn btn-xs btn-info"><span data-toggle="tooltip" data-html="true" data-original-title="<div align='left'>Creación: <%= personasimagen.created_at.strftime("%Y-%m-%d %X") rescue nil %><br/>Por: <%= personasimagen.username rescue nil %></div>"><i class="fa fa-child" aria-hidden="true"></i></span></button>
+                    </td>
+                    <td style="font-size:11px;"><%=personasimagen.descripcion rescue nil%></td>
+                    <td style="font-size:11px;"><%= link_to personasimagen.persona_file_name, personasimagen.persona.url(:original, false), data: { toggle: 'tooltip' }, title: 'Ver documento', onclick: 'window.open(this.href,"new_window","height=450,width=600,scrollbars=yes");return false;' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+          </td>
+        </tr>
+  <%  end
+    end %>
+
+    </table>
+  </div> 

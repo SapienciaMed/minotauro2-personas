@@ -1,0 +1,15 @@
+var $select = $('#personasoblrecibo_personasobligacion_id');
+$select.empty();
+
+<% if @personasobligaciones.present? %>
+$select.append('<option value="">Seleccione</option>');
+
+<% @personasobligaciones.each do |o| %>
+$select.append('<option value="<%= o.id %>"><%= camponumerico o.descripcion_input %></option>');
+<% end %>
+
+$select.prop('disabled', false);
+<% else %>
+$select.append('<option value="">Sin obligación</option>');
+$select.prop('disabled', true);
+<% end %>

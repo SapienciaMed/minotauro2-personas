@@ -1,0 +1,56 @@
+<legend>Publicación</legend>
+<% form_tag request.path, :method => 'get', :class=>"well" do %>
+  <% content_tag :label do %>
+     <div class="control-group">
+        <label class="control-label" for="appendedInputButtons">Digite el dato a buscar</label>
+        <div class="controls">
+          <div class="input-append">
+            <%= text_field_tag :search, params[:search],{ :class => "span6", :autocomplete=>"off", :placeholder=>"Dato" } %>
+            <%= submit_tag 'Buscar', :class=>"btn btn-primary"%>
+          </div>
+        </div>
+     </div>
+  <% end %>
+<% end %>
+<% if @controles %>
+	<div align="center">
+	<table width="60%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+	<% @controles.each do |control| 
+	   personasimagen = Personasimagen.find(:first, :conditions=>["persona_id = #{control.persona_id} and tipo = 'RESOLUCION' 
+	   	and (descripcion like '%%RESOLUC%%CONSOL%%' or descripcion like '%%RESPUEST%%RECUR%%')"])
+	   personasimagen2 = Personasimagen.find(:first, :conditions=>["persona_id = #{control.persona_id} and tipo = 'RESOLUCIONES' 
+	   	and descripcion like '%%RESPUEST%%RECUR%%'"])	   
+	   personasimagen3 = Personasimagen.find(:first, :conditions=>["persona_id = #{control.persona_id} and tipo = 'RESOLUCIONES' 
+	   	and descripcion like '%%RESOLUC%%NOTIFI%%'"])	   
+	%>
+	   <tr valign="middle">
+	     <td width="20%" height="50"><div align="center">
+	     <% if personasimagen %>
+	     <%= link_to image_tag("pdf.png",:border=>0,:title => "Ver resolucion"),personasimagen.persona.url(:original, false),{ :title=>"#{personasimagen.descripcion}", :popup => ['new_window','height=450,width=600,scrollbars=yes'] }%>
+	    <% end %>  	
+	    <% if personasimagen2 %>
+	     <%= link_to image_tag("pdf.png",:border=>0,:title => "Ver resolucion"),personasimagen2.persona.url(:original, false),{ :title=>"#{personasimagen2.descripcion}", :popup => ['new_window','height=450,width=600,scrollbars=yes'] }%>
+	    <% end %>  	
+	    <% if personasimagen3 %>
+	     <%= link_to image_tag("pdf.png",:border=>0,:title => "Ver resolucion"),personasimagen3.persona.url(:original, false),{ :title=>"#{personasimagen3.descripcion}", :popup => ['new_window','height=450,width=600,scrollbars=yes'] }%>
+	    <% end %>  	
+	     </div></td>
+	      <td  style="font-size: 14px; font-family: Tahoma; line-height: 150%; "><strong>Fecha publicación: </strong><%=h control.updated_at.strftime("%Y-%m-%d") rescue nil%><br/>
+	      <strong>Beneficiario: </strong><%=h control.persona.nombres rescue nil %><br/>
+	      <strong>Nro de Resolución: </strong><%=h control.persona.resolucion_2017 rescue nil %></td>
+	   </tr>
+	<% end %>
+	</table>
+	</div>
+<div class="pagination">
+      <%= will_paginate @controles, :previous_label => '&laquo; Anterior', :next_label => 'Siguiente &raquo;'  %>
+</div>
+<div id="personasdireccion">
+    <div class="alert alert-success">Total Registros : <%= @controles.count %></div>
+</div>
+	
+<% else %>
+	<div class="alert alert-danger"><strong>En proceso</strong></div>
+<% end %>
+
+

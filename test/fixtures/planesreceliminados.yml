@@ -1,0 +1,53 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesrecaudo_id: 1
+  personasobligacion_id: 1
+  portafolio_id: 1
+  valor: 9.99
+  capital: 9.99
+  corriente: 9.99
+  mora: 9.99
+  seguro: 9.99
+  otros: 9.99
+  sfc: 9.99
+  user_id: 1
+  portafolioscuenta_id: 1
+  portafoliossucursal_id: 1
+  parorigenespago_id: 1
+  observacion: MyString
+  tipo_pago: MyString
+  tipo_afecta: MyString
+  denominacion: MyString
+  fchreal_registro: 2019-08-05 10:37:34
+  fecha_movimiento: 2019-08-05
+  fecha_recaudo: 2019-08-05
+  useranula_id: 1
+  obser_anulacion: MyString
+  estado_envio: MyString
+
+two:
+  planesrecaudo_id: 1
+  personasobligacion_id: 1
+  portafolio_id: 1
+  valor: 9.99
+  capital: 9.99
+  corriente: 9.99
+  mora: 9.99
+  seguro: 9.99
+  otros: 9.99
+  sfc: 9.99
+  user_id: 1
+  portafolioscuenta_id: 1
+  portafoliossucursal_id: 1
+  parorigenespago_id: 1
+  observacion: MyString
+  tipo_pago: MyString
+  tipo_afecta: MyString
+  denominacion: MyString
+  fchreal_registro: 2019-08-05 10:37:34
+  fecha_movimiento: 2019-08-05
+  fecha_recaudo: 2019-08-05
+  useranula_id: 1
+  obser_anulacion: MyString
+  estado_envio: MyString

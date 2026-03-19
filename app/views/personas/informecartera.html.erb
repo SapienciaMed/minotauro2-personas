@@ -1,0 +1,128 @@
+<div class="page-header">
+  <h3>Informe Cartera</h3>
+</div>
+<table border="1">
+  <tr valign="middle" bgcolor="#CCCCCC">
+    <th colspan="6"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center">TITULAR</div></th>
+    <th colspan="10"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center">INFORMACION BASICA</div></th>
+    <th colspan="5"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center">VENCIDOS</div></th>
+    <th colspan="4"><div style="color:orange; font-size:14px; font-family: Tahoma;" align="center">VIGENTES <%=is_fechahoy.strftime("%m-%Y") rescue nil%></div></th>
+    <th colspan="3"><div style="color:green; font-size:14px; font-family: Tahoma;" align="center">VALORES POR PAGAR</div></th>
+    <th rowspan="2"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center">SALDO TOTAL<br/>DEUDA</div></th>
+    <th colspan="5"><div align="center">Contadores</div></th>
+    <th colspan="3"><div align="center">Estado del Credito</div></th>
+    <th colspan="8"><div align="center">Solicitudes</div></th>
+    <th rowspan="2"><div align="center">Analista Responsable</div></th>
+    <th rowspan="2"><div align="center">Rankig</div></th>
+    <th colspan="6"><div style="color:red; font-size:14px; font-family: Tahoma;" align="center">ULTIMA GESTION</div></th>
+  </tr>
+  <tr valign="middle" bgcolor="#CCCCCC">
+    <th><div align="center"><strong>Obligacion</strong></div></th>
+    <th><div align="center"><strong>Identificacion Titular</strong></div></th>
+    <th><div align="center"><strong>Titular</strong></div></th>
+    <th><div align="center"><strong>Telefono</strong></div></th>
+    <th><div align="center"><strong>Direccion</strong></div></th>
+    <th><div align="center"><strong>Ciudad</strong></div></th>
+    <th><div align="center"><strong>Nro Obligacion</strong></div></th>
+    <th><div align="center"><strong>Fondo</strong></div></th>
+    <th><div align="center"><strong>Pac</strong></div></th>
+    <th><div align="center"><strong>Fecha Creación</strong></div></th>
+    <th><div align="center"><strong>Tasa Interes PAC</strong></div></th>
+    <th><div align="center"><strong>Tasa Mora E.A</strong></div></th>
+    <th><div align="center"><strong>Valor Credito</strong></div></th>
+    <th><div align="center"><strong>Valor Otros</strong></div></th>
+    <th><div align="center"><strong>Total Financiado</strong></div></th>
+    <th><div align="center"><strong>Vlr Total Recaudos</strong></div></th>
+    <th><div align="center"><strong>Capital</strong></div></th>
+    <th><div align="center"><strong>Corriente</strong></div></th>
+    <th><div align="center"><strong>Otros</strong></div></th>
+    <th><div align="center"><strong>Mora</strong></div></th>
+    <th><div align="center"><strong>Total</strong></div></th>
+    <th><div align="center"><strong>Capital</strong></div></th>
+    <th><div align="center"><strong>Corriente</strong></div></th>
+    <th><div align="center"><strong>Otros</strong></div></th>
+    <th><div align="center"><strong>Total</strong></div></th>
+    <th><div align="center"><strong>Capital</strong></div></th>
+    <th><div align="center"><strong>Otros</strong></div></th>
+    <th><div align="center"><strong>Total</strong></div></th>
+    <th><div align="center"><strong>Plazo</strong></div></th>
+    <th><div align="center"><strong>Altura</strong></div></th>
+    <th><div align="center"><strong>Pagadas</strong></div></th>
+    <th><div align="center"><strong>En Mora</strong></div></th>
+    <th><div align="center"><strong>Por Facturar</strong></div></th>
+    <th><div align="center"><strong>Dias Vencidos</strong></div></th>
+    <th><div align="center"><strong>Calificación Cartera</strong></div></th>
+    <th><div align="center"><strong>Estado Obligacion</strong></div></th>
+    <th><div align="center"><strong>Ampliacion de plazo</strong></div></th>
+    <th><div align="center"><strong>Disminucion de plazo</strong></div></th>
+    <th><div align="center"><strong>Acuerdo de pago - efectivo</strong></div></th>
+    <th><div align="center"><strong>Acuerdo de pago - plazo</strong></div></th>
+    <th><div align="center"><strong>Reestructuracion</strong></div></th>
+    <th><div align="center"><strong>Remate</strong></div></th>
+    <th><div align="center"><strong>Congelamiento obligacion</strong></div></th>
+    <th><div align="center"><strong>Otras solicitudes</strong></div></th>
+    <th><div align="center"><strong>Fecha</strong></div></th>
+    <th><div align="center"><strong>Tipo de atención</strong></div></th>
+    <th><div align="center"><strong>Clase de gestion</strong></div></th>
+    <th><div align="center"><strong>Observacion</strong></div></th>
+    <th><div align="center"><strong>Situación economica del beneficiario</strong></div></th>
+    <th><div align="center"><strong>Situación educ. superior beneficiario</strong></div></th>
+  </tr>
+<% @objetos.each do |i|%>
+  <tr valign="middle">
+    <td><div align="left"><%=i.nro_obligacion rescue nil%></div></td>
+    <td><div align="left"><%=i.identificacion rescue nil%></div></td>
+    <td><div align="left"><%=i.nombre rescue nil%></div></td>
+    <td><div align="left"><%=i.telefono rescue nil%></div></td>
+    <td><div align="left"><%=i.direccion rescue nil%></div></td>
+    <td><div align="left"><%=i.ciudad rescue nil%></div></td>
+    <td><div align="left"><%=i.nro_obligacion rescue nil%></div></td>
+    <td><div align="left"><%=i.fondo rescue nil%></div></td>
+    <td><div align="left"><%=i.pac rescue nil%></div></td>
+    <td><div align="left"><%=i.created_at rescue nil%></div></td>
+    <td><div align="left"><%=i.tasa_final rescue nil%></div></td>
+    <td><div align="left"><%=i.tasa_mora rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.valor rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.reestruc_vlr_otros_ori rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.totalfinanciado rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.totalrecaudo rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.saldocapitalvencido rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.saldointerescorriente rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.saldootros rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.saldointeresmora rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.totalvencido rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.vlrcuotacapital rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.vlrcuotacorriente rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.vlrcuotaotros rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.vlrcuota rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.capitalporpagar rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.otrosporpagar rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.totalporpagar rescue nil%></div></td>
+    <td><div align="right"><%=camponumerico i.saldototaldeuda rescue nil%></div></td>
+    <td><div align="center"><%=i.obplazo rescue nil%></div></td>
+    <td><div align="center"><%=i.obaltura rescue nil%></div></td>
+    <td><div align="center"><%=i.obcuotaspagadas rescue nil%></div></td>
+    <td><div align="center"><%=i.obcuotasmora rescue nil%></div></td>
+    <td><div align="center"><%=i.obcuotasporpagar rescue nil%></div></td>
+    <td><div align="center"><%=i.diasvencoblig rescue nil%></div></td>
+    <td><div align="center"><%=i.calificacion rescue nil%></div></td>
+    <td><div align="center"><%=i.estadoobli rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_ampliacion_plazo rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_disminucion_plazo rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_acuerdo_pago_efectivo rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_acuerdo_pago_plazo rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_reestructuracion rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_remate rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_congelamiento rescue nil%></div></td>
+    <td><div align="center"><%=i.sol_otras rescue nil%></div></td>
+    <td><div align="left"><%=i.asesor rescue nil%></div></td>
+    <td><div align="left"><%=i.ranking rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_created_at rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_tipo rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_tiposestado rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_observacion rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_situacion_econo rescue nil%></div></td>
+    <td><div align="left"><%=i.observacion_situacion_bene rescue nil%></div></td>
+  </tr>
+<% end %>
+</table>

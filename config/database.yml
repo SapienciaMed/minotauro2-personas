@@ -1,0 +1,28 @@
+
+development:
+  adapter: oracle_enhanced
+  database: //104.198.246.56:1521/sid
+  username: minotauro
+  password: .Sapiencia2019#
+  encoding: utf8
+
+production:
+  adapter: oracle_enhanced
+  database: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  encoding: utf8
+
+development_mino:
+  adapter: oracle_enhanced
+  database: //192.168.4.32:1521/sid
+  username: minotauro
+  password: .Sapiencia2019#
+  encoding: utf8
+
+production_mino:
+  adapter: oracle_enhanced
+  database: //192.168.4.32:1521/sid
+  username: minotauro
+  password: .Sapiencia2019#
+  encoding: utf8

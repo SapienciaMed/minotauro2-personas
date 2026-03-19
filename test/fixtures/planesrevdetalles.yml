@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planesreversion: one
+  idplanesrecaudo: 1
+  estado1: MyString
+  estado2: MyString
+  estado3: MyString
+
+two:
+  planesreversion: two
+  idplanesrecaudo: 1
+  estado1: MyString
+  estado2: MyString
+  estado3: MyString

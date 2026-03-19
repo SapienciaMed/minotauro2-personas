@@ -1,0 +1,21 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-condensed table-striped">
+	  <thead>
+		<tr class="thcolor">
+			<th width="10%"></th>
+			<th width="15%">Fecha</th>
+			<th>Tipo de Control</th>
+			<th width="12%" class="text-center">Fecha Inicio</th>
+			<th width="12%" class="text-center">Fecha Limite</th>
+			<th width="15%" class="text-center">Fecha Terminación</th>
+		</tr>
+	  </thead>
+	  <tbody id="tbody_controles">
+	<% 
+		@con = @persona.controlbloqueo
+		@persona.controles.order('controles.updated_at DESC').each do |control| %>
+	       <%= render 'controles/tr', control: control %>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

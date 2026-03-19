@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  consecutivo: 1
+  namefile: MyString
+  user_id: 1
+  portafolio_id: 1
+  personasoblcesion_id: 1
+  useranalista_id: MyString
+  error: MyString
+  aplicado: MyString
+  valida_cesion: MyString
+  valida_analista: MyString
+
+two:
+  consecutivo: 1
+  namefile: MyString
+  user_id: 1
+  portafolio_id: 1
+  personasoblcesion_id: 1
+  useranalista_id: MyString
+  error: MyString
+  aplicado: MyString
+  valida_cesion: MyString
+  valida_analista: MyString

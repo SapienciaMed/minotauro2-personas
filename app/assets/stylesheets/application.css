@@ -1,0 +1,161 @@
+/*
+ *= require base
+ *= require plugins/select2/select2.min
+ *= require bootstrap-datetimepicker.min
+ *= require dist/css/AdminLTE.min
+ *= require dist/css/skins/_all-skins.min
+ *= require jquery-ui/datepicker
+ *= require font-awesome
+ *= require_tree .
+ *= require datatables
+ *= require_self
+*/
+
+
+.file_droparea {
+    margin-bottom: 10px;
+    border: 1px solid #d2d6de;
+    border-radius: 1px;
+    background-color: fff;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 5px 0px 0px;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    text-align: center;
+    cursor: pointer;
+}
+
+.file_droparea :hover {
+    border-color: blue;
+}
+
+
+.file_msg {
+    color: #777;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 5px 0px 5px -25px;
+    max-width: calc(100% - 130px);
+    vertical-align: middle;
+    margin: 5px 5px 5px 10px;
+    position: relative;
+    bottom: 2px;
+}
+
+
+.file_input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.file_input :focus {
+    outline: none;
+}
+
+.ui-menu.ui-widget.ui-widget-content.ui-autocomplete.ui-front {
+    padding-top: 2%;
+}
+
+
+@media (max-width: 600px) {
+ 
+    table.miestilo {
+        width: 100%;
+    }
+    table.miestilo tr {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid grey;
+        padding: 1em;
+    }
+
+    table.miestilo thead {
+        display: none;
+       
+    }
+
+    table.miestilo thead tr td{
+        width: 100% !important;  
+        border: none; 
+    }
+
+    table.miestilo td[data-titulo] {
+        display: block;
+        width: 100%;
+    }
+
+    table.miestilo td[data-titulo].brmobile {
+        display: block;
+        width: 100%;
+       
+    }
+
+    table.miestilo td[data-titulo]::before {
+       content: attr( data-titulo ) ;
+       width: 100px;       
+    }
+
+     table.miestilo td[data-titulo="Observaciones:"]::before {
+       display: block;
+    }
+
+    table.miestilo2 {
+        width: 100%;
+    }
+    table.miestilo2 tr {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid grey;
+        padding: 1em;
+    }
+
+    table.miestilo2 thead tr{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+       
+    }
+
+    table.miestilo2 thead tr th{
+        width: 100% !important;  
+        border: none; 
+    }
+
+    table.miestilo2 td[data-titulo] {
+        display: flex;
+        width: 100%;
+       
+    }
+
+    table.miestilo2 td[data-titulo].brmobile {
+        display: block;
+        width: 100%;
+       
+    }
+
+    .tp-5 {
+        margin-top: 25px;
+    }
+
+    .hiddenmobile {
+        display: none;
+    }
+
+    .cancelcenter {
+        text-align: justify;
+    }
+
+
+ 
+}

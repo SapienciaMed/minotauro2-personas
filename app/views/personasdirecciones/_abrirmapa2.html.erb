@@ -1,0 +1,51 @@
+<%
+  coor = ""
+  if  is_auth_c('coordenadasdirecciones') and is_permiso('demograficosperu')
+    coor = params[:direccion].to_s + ' ' + params[:perumunicipio].to_s
+  else
+    coor = params[:direccion].to_s + ' ' + params[:municipio].to_s
+  end
+%>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzdJ4apPLQbCjiG4Mvrc4_AssKzDP88Ys&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters"></script>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+    <h3 class="modal-title"><strong><i class="fa fa-map-marker" aria-hidden="true"></i> <%= @personasdireccion.persona.identificacion rescue nil%> <%= @personasdireccion.persona.primer_nombre rescue nil%></strong> <small><%= @personasdireccion.direccion rescue nil%></small></h3>
+  </div>
+  <div class="modal-body" style="height: 720px;">
+  <div style='width: 800px;'>
+    <div id="map" style='width: 1275px; height: 660px;'></div>
+  </div>
+</div>
+<div id="map"></div>
+<script>
+  var geocoder;
+  var map;
+  var address = "<%= coor %>";
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 17,
+      center: {lat: -34.397, lng: 150.644}
+    });
+    geocoder = new google.maps.Geocoder();
+    codeAddress(geocoder, map);
+  }
+
+  function codeAddress(geocoder, map) {
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+</script> 
+
+
+
+

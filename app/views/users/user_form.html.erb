@@ -1,0 +1,62 @@
+<% title @user.nombre %>
+<% if @user.etapa.to_s != "A" %>
+  <section class="content-header" style="margin-top: -39px; margin-left: -12px;">
+    <h4><%= @user.nombre rescue nil %>
+      <small><%= @user.username %></small>
+    </h4>
+  </section>
+<% end %>
+<% if @user.etapa.to_s == "A" %>
+  <% if is_sygma %>
+    <%= render partial: "form", locals: {user: @user} %>
+  <% else %>
+    <%= render partial: "formotros", locals: {user: @user} %>
+  <% end %>
+<% elsif @user.etapa.to_s == "F" %>
+  <%= render 'usersvehiculos/usersvehiculos' %>
+<% elsif @user.etapa.to_s == "H" %>
+  <%= render 'usersportafolios/usersportafolios' %>
+<% elsif @user.etapa.to_s == "G" %>
+  <%= render 'userssucursales/userssucursales' %>
+<% elsif @user.etapa.to_s == "B" %>
+  <% unless @user.new_record? %>
+    <div class="box box-primary">
+      <div class="flash_messages"></div>
+      <div class="box-header">
+        <legend>Modulos Asociados</legend>
+        <div class="box-tools pull-right">
+          <%= link_to new_user_usersmodulo_path(@user), remote: true, id: 'new_usersmodulo_button', class: 'btn btn-sm btn-success' do %>
+            <i class="fa fa-plus-square"> </i> <span><%= t :agregar %></span>
+          <% end %>
+        </div>
+      </div>
+      <div class="box-body">
+        <div id="usersmodulo_form" class="collapse"></div>
+        <div id="usersmodulos">
+          <% if @usersmodulos.any? %>
+            <%= render 'usersmodulos/tabla' %>
+          <% else %>
+            <div class="alert alert-warning">
+              <h4><i class="icon fa fa-info"></i> <%= t :atencion %></h4><%= t :atencion_msj %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% elsif @user.etapa.to_s == "C" %>
+  <%= render 'userspermisos/userspermisos' %>
+<% elsif @user.etapa.to_s == "I" %>
+  <%= render 'usersreportes/usersreportes' %>
+<% elsif @user.etapa.to_s == "D" %>
+  <%= render '/usersfechas/usersfechas' %>
+<% elsif @user.etapa.to_s == "E" %>
+  <% unless @user.new_record? %>
+    <% @usersimagenes.each do |p| %>
+      <%= render '/usersimagenes/usersimagenes', :p, p %>
+    <% end %>
+  <% end %>
+<% elsif @user.etapa.to_s == "Q" %>
+  <% if @user.lider_pqrs.to_s == 'SI' %>
+    <%= render '/usersanalistas/usersanalistas' %>
+  <% end %>
+<% end %>
