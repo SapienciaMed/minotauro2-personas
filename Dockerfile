@@ -139,4 +139,8 @@ RUN chmod +x /home/sapiencia/app/entrypoint.sh
 
 ENTRYPOINT ["bash", "/home/sapiencia/app/entrypoint.sh"]
 EXPOSE 3000
+<<<<<<< HEAD
 CMD bash -c "bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"
+=======
+CMD ["bash","-c","bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]
+>>>>>>> 2f0f85e7c70f855bb0257f9957421dd8fd9802d4
